@@ -1,0 +1,24 @@
+name: Quality Assurance
+
+on: push
+
+jobs:
+  quality_assurance:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: any
+        flutter-version: 3.x
+    - name: Restore dependencies
+      run: flutter pub get
+    - name: Format
+      run: dart format --set-exit-if-changed --output none lib test
+    - name: Analyze
+      run: flutter analyze
+    - name: Test
+      run: flutter test
