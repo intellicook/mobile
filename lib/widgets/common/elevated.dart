@@ -11,11 +11,11 @@ class AnimatedElevatedArgs {
     this.curve = defaultCurve,
   });
 
-  final Duration duration;
-  final Curve curve;
-
   static const defaultDuration = Duration(milliseconds: 80);
   static const defaultCurve = Curves.easeOut;
+
+  final Duration duration;
+  final Curve curve;
 }
 
 class Elevated extends StatelessWidget {
@@ -72,34 +72,32 @@ class Elevated extends StatelessWidget {
     final padding = this.padding ?? const EdgeInsets.all(SpacingConsts.m);
     final color = this.color ?? theme.colorScheme.surfaceContainerLowest;
 
-    if (animatedElevatedArgs != null) {
-      return AnimatedContainer(
-        duration: animatedElevatedArgs!.duration,
-        curve: animatedElevatedArgs!.curve,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: color,
-          border: border,
-          borderRadius: borderRadius,
-          boxShadow: shadows,
-        ),
-        constraints: constraints,
-        padding: padding,
-        child: child,
-      );
-    }
-
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: color,
-        border: border,
-        borderRadius: borderRadius,
-        boxShadow: shadows,
-      ),
-      constraints: constraints,
-      padding: padding,
-      child: child,
+    final boxDecoration = BoxDecoration(
+      color: color,
+      border: border,
+      borderRadius: borderRadius,
+      boxShadow: shadows,
     );
+
+    final container = switch (animatedElevatedArgs) {
+      null => (Widget? child) => Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: boxDecoration,
+            constraints: constraints,
+            padding: padding,
+            child: child,
+          ),
+      var args => (Widget? child) => AnimatedContainer(
+            duration: args.duration,
+            curve: args.curve,
+            clipBehavior: Clip.antiAlias,
+            decoration: boxDecoration,
+            constraints: constraints,
+            padding: padding,
+            child: child,
+          ),
+    };
+
+    return container(child);
   }
 }

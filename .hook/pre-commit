@@ -7,7 +7,7 @@ echo "Checking formatting..."
 if dart format --set-exit-if-changed --output none lib test ; then
   echo "Formatting is OK."
 else
-  echo "Formatting is NOT OK. Please fix the formatting or run \`flutter format\`, then try again."
+  echo "Formatting is NOT OK. Please fix the formatting or run \`dart format .\`, then try again."
   exit 1
 fi
 

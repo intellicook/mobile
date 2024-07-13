@@ -1,37 +1,31 @@
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
-import 'package:intellicook_mobile/theme.dart';
 
 class ShadowConsts {
-  static const highOffset = Offset(0.0, 8.0);
-  static const highBlurRadius = 48.0;
-  static const highSpreadRadius = -16.0;
-
-  static const lowOffset = Offset(0.0, 2.0);
-  static const lowBlurRadius = 6.0;
-  static const lowSpreadRadius = -2.0;
+  static const highBlurRadius = 16.0;
+  static const lowBlurRadius = 4.0;
+  static final highShadowColor = Colors.black.withOpacity(0.2);
+  static final lowShadowColor = Colors.black.withOpacity(0.3);
 
   static List<BoxShadow> high({bool inset = false}) {
     return [
       BoxShadow(
-        color: IntelliCookTheme.shadow,
-        offset: highOffset,
+        color: highShadowColor,
         blurRadius: highBlurRadius,
-        spreadRadius: highSpreadRadius,
+        blurStyle: BlurStyle.outer,
         inset: inset,
-      )
+      ),
     ];
   }
 
   static List<BoxShadow> low({bool inset = false}) {
     return [
       BoxShadow(
-        color: IntelliCookTheme.shadow,
-        offset: lowOffset,
+        color: lowShadowColor,
         blurRadius: lowBlurRadius,
-        spreadRadius: lowSpreadRadius,
+        blurStyle: BlurStyle.outer,
         inset: inset,
-      )
+      ),
     ];
   }
 }

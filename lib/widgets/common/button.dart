@@ -74,6 +74,7 @@ class Button extends StatefulWidget {
   static const pressedPaletteTone = 70;
   static const releasedPaletteTone = 80;
   static const secondaryBorderWidth = 1.5;
+  static const secondaryOpacity = 0.5;
 
   @override
   State<Button> createState() => _ButtonState();
@@ -85,10 +86,12 @@ class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final pressedColor =
-        widget.pressedColor ?? theme.colorScheme.surfaceContainerLow;
-    final releasedColor =
-        widget.releasedColor ?? theme.colorScheme.surfaceContainerLowest;
+    final pressedColor = widget.pressedColor ??
+        theme.colorScheme.surfaceContainerLow
+            .withOpacity(Button.secondaryOpacity);
+    final releasedColor = widget.releasedColor ??
+        theme.colorScheme.surfaceContainerLowest
+            .withOpacity(Button.secondaryOpacity);
 
     return Clickable(
       onClick: widget.onClick,
