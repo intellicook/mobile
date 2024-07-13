@@ -6,6 +6,18 @@ class ComponentGallery extends StatelessWidget {
   const ComponentGallery({super.key});
 
   static const title = 'Component Gallery';
+  static final components = [
+    () => Button.primary(
+          child: const Center(
+            child: Text('Hello World'),
+          ),
+        ),
+    () => Button.secondary(
+          child: const Center(
+            child: Text('Hello World'),
+          ),
+        ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +28,12 @@ class ComponentGallery extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(SpacingConsts.s),
-        child: ListView(
-          children: [
-            PrimaryButton(
-              child: const Center(
-                child: Text('Hello World'),
-              ),
-            ),
-          ],
+        child: ListView.separated(
+          itemCount: components.length,
+          separatorBuilder: (context, index) => const SizedBox(
+            height: SpacingConsts.s,
+          ),
+          itemBuilder: (context, index) => components[index](),
         ),
       ),
     );

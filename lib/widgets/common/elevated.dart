@@ -1,9 +1,19 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
-import 'package:intellicook_mobile/constants/corner_radius.dart';
 import 'package:intellicook_mobile/constants/shadow.dart';
+import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
+
+class AnimatedElevatedArgs {
+  const AnimatedElevatedArgs({
+    Duration? duration,
+    this.curve = Curves.easeOut,
+  }) : duration = duration ?? const Duration(milliseconds: 80);
+
+  final Duration duration;
+  final Curve curve;
+}
 
 class Elevated extends StatelessWidget {
   const Elevated({
@@ -14,7 +24,7 @@ class Elevated extends StatelessWidget {
     this.padding,
     this.color,
     this.constraints,
-    this.isAnimated = false,
+    this.animatedElevatedArgs,
     this.child,
   });
 
@@ -24,7 +34,7 @@ class Elevated extends StatelessWidget {
     this.padding,
     this.color,
     this.constraints,
-    this.isAnimated = false,
+    this.animatedElevatedArgs,
     insetShadow = false,
     this.child,
   })  : borderRadius = SmoothBorderRadiusConsts.s,
@@ -36,7 +46,7 @@ class Elevated extends StatelessWidget {
     this.padding,
     this.color,
     this.constraints,
-    this.isAnimated = false,
+    this.animatedElevatedArgs,
     insetShadow = false,
     this.child,
   })  : borderRadius = SmoothBorderRadiusConsts.l,
@@ -48,21 +58,21 @@ class Elevated extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? color;
   final BoxConstraints? constraints;
-  final bool isAnimated;
+  final AnimatedElevatedArgs? animatedElevatedArgs;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final borderRadius = this.borderRadius ?? SmoothBorderRadiusConsts.l;
-    final shadows = this.shadows ?? ShadowConsts.low();
+    final shadows = this.shadows ?? ShadowConsts.high();
     final padding = this.padding ?? const EdgeInsets.all(SpacingConsts.m);
     final color = this.color ?? theme.colorScheme.surfaceContainerLowest;
 
-    if (isAnimated) {
+    if (animatedElevatedArgs != null) {
       return AnimatedContainer(
-        duration: const Duration(milliseconds: 50),
-        curve: Curves.easeOut,
+        duration: animatedElevatedArgs!.duration,
+        curve: animatedElevatedArgs!.curve,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: color,

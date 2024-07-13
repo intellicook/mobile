@@ -5,35 +5,81 @@ import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dar
 import 'package:intellicook_mobile/widgets/common/clickable.dart';
 import 'package:intellicook_mobile/widgets/common/elevated.dart';
 
-class BaseButton extends StatefulWidget {
-  const BaseButton({
+class Button extends StatefulWidget {
+  const Button({
     super.key,
-    this.pressedColor,
-    this.releasedColor,
-    this.pressedBorder,
-    this.releasedBorder,
     this.onClick,
     this.onPress,
     this.onRelease,
     this.onStateChange,
+    this.pressedColor,
+    this.releasedColor,
+    this.pressedBorder,
+    this.releasedBorder,
     this.child,
   });
 
-  final Color? pressedColor;
-  final Color? releasedColor;
-  final BoxBorder? pressedBorder;
-  final BoxBorder? releasedBorder;
+  Button.primary({
+    super.key,
+    this.onClick,
+    this.onPress,
+    this.onRelease,
+    this.onStateChange,
+    this.pressedBorder,
+    this.releasedBorder,
+    Color? pressedColor,
+    Color? releasedColor,
+    this.child,
+  })  : pressedColor = pressedColor ??
+            IntelliCookTheme.primaryPalette.getColor(pressedPaletteTone),
+        releasedColor = releasedColor ??
+            IntelliCookTheme.primaryPalette.getColor(releasedPaletteTone);
+
+  Button.secondary({
+    super.key,
+    this.onClick,
+    this.onPress,
+    this.onRelease,
+    this.onStateChange,
+    this.pressedColor,
+    this.releasedColor,
+    BoxBorder? pressedBorder,
+    BoxBorder? releasedBorder,
+    this.child,
+  })  : pressedBorder = pressedBorder ??
+            Border.all(
+              color:
+                  IntelliCookTheme.primaryPalette.getColor(pressedPaletteTone),
+              width: secondaryBorderWidth,
+            ),
+        releasedBorder = releasedBorder ??
+            Border.all(
+              color:
+                  IntelliCookTheme.primaryPalette.getColor(releasedPaletteTone),
+              width: secondaryBorderWidth,
+            );
+
   final ClickableOnClickCallback? onClick;
   final ClickableOnPressCallback? onPress;
   final ClickableOnReleaseCallback? onRelease;
   final ClickableOnStateChangeCallback? onStateChange;
+  final Color? pressedColor;
+  final Color? releasedColor;
+  final BoxBorder? pressedBorder;
+  final BoxBorder? releasedBorder;
   final Widget? child;
 
+  static const minHeight = 40.0;
+  static const minWidth = 50.0;
+  static const pressedPaletteTone = 70;
+  static const releasedPaletteTone = 80;
+  static const secondaryBorderWidth = 1.5;
+
   @override
-  State<BaseButton> createState() => _BaseButtonState();
+  State<Button> createState() => _ButtonState();
 }
 
-class _BaseButtonState extends State<BaseButton> {
+class _ButtonState extends State<Button> {
   bool isPressed = false;
 
   @override
@@ -56,8 +102,8 @@ class _BaseButtonState extends State<BaseButton> {
       },
       child: Elevated.low(
         constraints: const BoxConstraints(
-          minHeight: 40.0,
-          minWidth: 50.0,
+          minHeight: Button.minHeight,
+          minWidth: Button.minWidth,
         ),
         padding: const EdgeInsets.symmetric(
           vertical: SpacingConsts.s,
@@ -65,52 +111,10 @@ class _BaseButtonState extends State<BaseButton> {
         ),
         color: isPressed ? pressedColor : releasedColor,
         border: isPressed ? widget.pressedBorder : widget.releasedBorder,
-        isAnimated: true,
+        animatedElevatedArgs: const AnimatedElevatedArgs(),
         insetShadow: isPressed,
         child: widget.child,
       ),
     );
   }
-}
-
-class PrimaryButton extends BaseButton {
-  PrimaryButton({
-    super.key,
-    super.onClick,
-    super.onPress,
-    super.onRelease,
-    super.onStateChange,
-    Color? pressedColor,
-    Color? releasedColor,
-    super.child,
-  }) : super(
-          pressedColor:
-              pressedColor ?? IntelliCookTheme.primaryPalette.getColor(70),
-          releasedColor:
-              releasedColor ?? IntelliCookTheme.primaryPalette.getColor(80),
-        );
-}
-
-class SecondaryButton extends BaseButton {
-  SecondaryButton({
-    super.key,
-    super.onClick,
-    super.onPress,
-    super.onRelease,
-    super.onStateChange,
-    BoxBorder? pressedBorder,
-    BoxBorder? releasedBorder,
-    super.child,
-  }) : super(
-          pressedBorder: pressedBorder ??
-              Border.all(
-                color: IntelliCookTheme.primaryPalette.getColor(70),
-                width: 1.5,
-              ),
-          releasedBorder: releasedBorder ??
-              Border.all(
-                color: IntelliCookTheme.primaryPalette.getColor(80),
-                width: 1.5,
-              ),
-        );
 }
