@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_color_utilities/material_color_utilities.dart';
 
 class IntelliCookTheme {
   static ThemeData theme(BuildContext context, Brightness brightness) {
     var textTheme = createTextTheme(context, bodyFont, displayFont);
-    var colorScheme = createColorScheme(colorSchemeSeed, brightness);
+    var colorScheme = ColorScheme.fromSeed(
+      seedColor: primaryColor,
+      brightness: brightness,
+      shadow: shadow,
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -18,7 +23,10 @@ class IntelliCookTheme {
 
   static const displayFont = 'Figtree';
   static const bodyFont = 'Roboto';
-  static const colorSchemeSeed = Color(0xffffa07a);
+  static const primaryColor = Color(0xffffa07a);
+  static const shadow = Color(0x66000000);
+
+  static final primaryPalette = createTonalPalette(primaryColor.value);
 
   /// Contrast Color
   static const contrastColor = ExtendedColor(
@@ -98,16 +106,6 @@ class ColorFamily {
   final Color onColorContainer;
 }
 
-ColorScheme createColorScheme(
-  Color seedColor,
-  Brightness brightness,
-) {
-  return ColorScheme.fromSeed(
-    seedColor: seedColor,
-    brightness: brightness,
-  );
-}
-
 TextTheme createTextTheme(
   BuildContext context,
   String bodyFontString,
@@ -127,4 +125,9 @@ TextTheme createTextTheme(
     labelSmall: bodyTextTheme.labelSmall,
   );
   return textTheme;
+}
+
+TonalPalette createTonalPalette(int value) {
+  final color = Hct.fromInt(value);
+  return TonalPalette.of(color.hue, color.chroma);
 }

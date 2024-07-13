@@ -26,6 +26,7 @@ linter:
     directives_ordering: true
     prefer_single_quotes: true
     sort_constructors_first: true
+    always_declare_return_types: true
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
