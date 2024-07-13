@@ -41,9 +41,10 @@ class _ClickableState extends State<Clickable> {
 
         setState(() {
           isPressed = true;
-          widget.onStateChange?.call(isPressed);
-          widget.onPress?.call();
         });
+
+        widget.onStateChange?.call(true);
+        widget.onPress?.call();
       },
       onPointerUp: (PointerUpEvent event) {
         if (!isPressed) {
@@ -52,10 +53,11 @@ class _ClickableState extends State<Clickable> {
 
         setState(() {
           isPressed = false;
-          widget.onStateChange?.call(isPressed);
-          widget.onRelease?.call();
-          widget.onClick?.call();
         });
+
+        widget.onStateChange?.call(false);
+        widget.onRelease?.call();
+        widget.onClick?.call();
       },
       onPointerCancel: (PointerCancelEvent event) {
         if (!isPressed) {
@@ -64,8 +66,9 @@ class _ClickableState extends State<Clickable> {
 
         setState(() {
           isPressed = false;
-          widget.onStateChange?.call(isPressed);
         });
+
+        widget.onStateChange?.call(false);
       },
       child: widget.child,
     );

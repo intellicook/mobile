@@ -7,12 +7,15 @@ import 'package:intellicook_mobile/constants/spacing.dart';
 
 class AnimatedElevatedArgs {
   const AnimatedElevatedArgs({
-    Duration? duration,
-    this.curve = Curves.easeOut,
-  }) : duration = duration ?? const Duration(milliseconds: 80);
+    this.duration = defaultDuration,
+    this.curve = defaultCurve,
+  });
 
   final Duration duration;
   final Curve curve;
+
+  static const defaultDuration = Duration(milliseconds: 80);
+  static const defaultCurve = Curves.easeOut;
 }
 
 class Elevated extends StatelessWidget {
