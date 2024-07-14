@@ -51,7 +51,7 @@ void main() {
 
       expect(find.text(TextFixture.text), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(elevated.color, releasedColor);
       expect(elevated.border, releasedBorder);
     },
@@ -78,7 +78,7 @@ void main() {
 
       expect(find.text(TextFixture.text), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(elevated.color, pressedColor);
       expect(elevated.border, pressedBorder);
     },
@@ -107,7 +107,7 @@ void main() {
 
       expect(find.text(testText), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
         IntelliCookTheme.primaryPalette.getColor(Button.releasedPaletteTone),
@@ -142,7 +142,7 @@ void main() {
 
       expect(find.text(testText), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
         IntelliCookTheme.primaryPalette.getColor(Button.pressedPaletteTone),
@@ -170,7 +170,7 @@ void main() {
 
       expect(find.text(testText), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
         theme.colorScheme.surfaceContainerLowest
@@ -209,7 +209,7 @@ void main() {
 
       expect(find.text(testText), findsOneWidget);
 
-      final elevated = tester.widget(find.byType(Elevated)) as Elevated;
+      final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
         theme.colorScheme.surfaceContainerLow
