@@ -7,7 +7,8 @@ import 'package:intellicook_mobile/widgets/common/elevated.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<ButtonCallbacks>(), MockSpec<BuildContext>()])
+import '../../fixtures.dart';
+@GenerateNiceMocks([MockSpec<ButtonCallbacks>()])
 import 'button_test.mocks.dart';
 
 abstract class ButtonCallbacks {
@@ -24,16 +25,11 @@ void main() {
   testWidgets(
     'Button shows child',
     (WidgetTester tester) async {
-      const testText = 'Test Text';
-
-      await tester.pumpWidget(const Button(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+      await tester.pumpWidget(Button(
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
     },
   );
 
@@ -44,20 +40,16 @@ void main() {
       const releasedColor = Colors.blue;
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Button(
         pressedColor: pressedColor,
         releasedColor: releasedColor,
         pressedBorder: pressedBorder,
         releasedBorder: releasedBorder,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final elevated = tester.widget(find.byType(Elevated)) as Elevated;
       expect(elevated.color, releasedColor);
@@ -72,23 +64,19 @@ void main() {
       const releasedColor = Colors.blue;
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Button(
         pressedColor: pressedColor,
         releasedColor: releasedColor,
         pressedBorder: pressedBorder,
         releasedBorder: releasedBorder,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
       await tester.press(find.byType(Button));
       await tester.pumpAndSettle();
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final elevated = tester.widget(find.byType(Elevated)) as Elevated;
       expect(elevated.color, pressedColor);
@@ -100,12 +88,13 @@ void main() {
     'Primary button shows child with defaults when released',
     (WidgetTester tester) async {
       final context = MockBuildContext();
+      final theme = IntelliCookTheme.theme(context, Brightness.light);
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MaterialApp(
-        theme: IntelliCookTheme.theme(context, Brightness.light),
+        theme: theme,
         home: Button.primary(
           pressedBorder: pressedBorder,
           releasedBorder: releasedBorder,
@@ -131,12 +120,13 @@ void main() {
     'Primary button shows child with defaults when pressed',
     (WidgetTester tester) async {
       final context = MockBuildContext();
+      final theme = IntelliCookTheme.theme(context, Brightness.light);
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MaterialApp(
-        theme: IntelliCookTheme.theme(context, Brightness.light),
+        theme: theme,
         home: Button.primary(
           pressedBorder: pressedBorder,
           releasedBorder: releasedBorder,
@@ -165,15 +155,12 @@ void main() {
     'Secondary button shows child with defaults when released',
     (WidgetTester tester) async {
       final context = MockBuildContext();
-      const pressedColor = Colors.red;
-      const releasedColor = Colors.blue;
+      final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MaterialApp(
-        theme: IntelliCookTheme.theme(context, Brightness.light),
+        theme: theme,
         home: Button.secondary(
-          pressedColor: pressedColor,
-          releasedColor: releasedColor,
           child: const Directionality(
             textDirection: TextDirection.ltr,
             child: Text(testText),
@@ -184,7 +171,11 @@ void main() {
       expect(find.text(testText), findsOneWidget);
 
       final elevated = tester.widget(find.byType(Elevated)) as Elevated;
-      expect(elevated.color, releasedColor);
+      expect(
+        elevated.color,
+        theme.colorScheme.surfaceContainerLowest
+            .withOpacity(Button.secondaryOpacity),
+      );
       expect(
         elevated.border,
         Border.all(
@@ -200,15 +191,12 @@ void main() {
     'Secondary button shows child with defaults when pressed',
     (WidgetTester tester) async {
       final context = MockBuildContext();
-      const pressedColor = Colors.red;
-      const releasedColor = Colors.blue;
+      final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MaterialApp(
-        theme: IntelliCookTheme.theme(context, Brightness.light),
+        theme: theme,
         home: Button.secondary(
-          pressedColor: pressedColor,
-          releasedColor: releasedColor,
           child: const Directionality(
             textDirection: TextDirection.ltr,
             child: Text(testText),
@@ -222,7 +210,11 @@ void main() {
       expect(find.text(testText), findsOneWidget);
 
       final elevated = tester.widget(find.byType(Elevated)) as Elevated;
-      expect(elevated.color, pressedColor);
+      expect(
+        elevated.color,
+        theme.colorScheme.surfaceContainerLow
+            .withOpacity(Button.secondaryOpacity),
+      );
       expect(
         elevated.border,
         Border.all(

@@ -9,7 +9,7 @@ class Background extends StatelessWidget {
     this.child,
   });
 
-  static const double blur = 64;
+  static const blur = 64.0;
 
   final Widget? child;
 

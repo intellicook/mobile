@@ -6,20 +6,17 @@ import 'package:intellicook_mobile/constants/shadow.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
 import 'package:intellicook_mobile/widgets/common/elevated.dart';
 
+import '../../fixtures.dart';
+
 void main() {
   testWidgets(
     'Elevated shows child',
     (WidgetTester tester) async {
-      const testText = 'Test Text';
-
-      await tester.pumpWidget(const Elevated(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+      await tester.pumpWidget(Elevated(
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
     },
   );
 
@@ -37,7 +34,6 @@ void main() {
       const padding = EdgeInsets.all(10);
       const color = Colors.red;
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Elevated(
         border: border,
@@ -46,13 +42,10 @@ void main() {
         padding: padding,
         color: color,
         constraints: constraints,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final container = tester.widget(find.byType(Container)) as Container;
 
@@ -85,7 +78,6 @@ void main() {
         duration: Duration(seconds: 1),
         curve: Curves.easeInOut,
       );
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Elevated(
         border: border,
@@ -95,13 +87,10 @@ void main() {
         color: color,
         constraints: constraints,
         animatedElevatedArgs: animatedElevatedArgs,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final container =
           tester.widget(find.byType(AnimatedContainer)) as AnimatedContainer;
@@ -126,20 +115,16 @@ void main() {
       const padding = EdgeInsets.all(10);
       const color = Colors.red;
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Elevated.high(
         border: border,
         padding: padding,
         color: color,
         constraints: constraints,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final container = tester.widget(find.byType(Container)) as Container;
 
@@ -161,20 +146,16 @@ void main() {
       const padding = EdgeInsets.all(10);
       const color = Colors.red;
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
-      const testText = 'Test Text';
 
       await tester.pumpWidget(Elevated.low(
         border: border,
         padding: padding,
         color: color,
         constraints: constraints,
-        child: const Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
 
       final container = tester.widget(find.byType(Container)) as Container;
 

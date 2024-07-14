@@ -11,7 +11,7 @@ class Panel extends StatelessWidget {
     this.child,
   });
 
-  static const defaultOpacity = 0.5;
+  static const opacity = 0.5;
 
   final Color? color;
   final EdgeInsets? padding;
@@ -22,7 +22,7 @@ class Panel extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final color = this.color ??
-        theme.colorScheme.surfaceContainerLowest.withOpacity(defaultOpacity);
+        theme.colorScheme.surfaceContainerLowest.withOpacity(opacity);
 
     return Elevated.high(
       color: color,
