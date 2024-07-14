@@ -34,7 +34,7 @@ void main() {
 
       expect(find.text(TextFixture.text), findsOneWidget);
 
-      final container = tester.widget(find.byType(Container)) as Container;
+      final container = tester.widget<Container>(find.byType(Container));
 
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.color, color);
@@ -63,7 +63,7 @@ void main() {
 
       expect(find.text(TextFixture.text), findsOneWidget);
 
-      final container = tester.widget(find.byType(Container)) as Container;
+      final container = tester.widget<Container>(find.byType(Container));
 
       final decoration = container.decoration as BoxDecoration;
       expect(
