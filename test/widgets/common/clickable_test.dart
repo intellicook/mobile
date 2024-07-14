@@ -4,6 +4,7 @@ import 'package:intellicook_mobile/widgets/common/clickable.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../fixtures.dart';
 @GenerateNiceMocks([MockSpec<ClickableCallbacks>()])
 import 'clickable_test.mocks.dart';
 
@@ -21,16 +22,11 @@ void main() {
   testWidgets(
     'Clickable shows child',
     (WidgetTester tester) async {
-      const testText = 'Test Text';
-
-      await tester.pumpWidget(const Clickable(
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(testText),
-        ),
+      await tester.pumpWidget(Clickable(
+        child: TextFixture.widget(),
       ));
 
-      expect(find.text(testText), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
     },
   );
 

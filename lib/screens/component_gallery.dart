@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
+import 'package:intellicook_mobile/widgets/common/background.dart';
 import 'package:intellicook_mobile/widgets/common/button.dart';
+import 'package:intellicook_mobile/widgets/common/panel.dart';
 
 class ComponentGallery extends StatelessWidget {
   const ComponentGallery({super.key});
 
   static const title = 'Component Gallery';
   static final components = [
-    () => Button.primary(
-          child: const Center(
-            child: Text('Hello World'),
-          ),
-        ),
-    () => Button.secondary(
-          child: const Center(
-            child: Text('Hello World'),
-          ),
-        ),
+    Button.primary(
+      child: const Center(
+        child: Text('Hello World', style: TextStyle(color: Colors.black)),
+      ),
+    ),
+    Button.secondary(
+      child: const Center(
+        child: Text('Hello World'),
+      ),
+    ),
   ];
 
   @override
@@ -26,14 +28,19 @@ class ComponentGallery extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text(title),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(SpacingConsts.s),
-        child: ListView.separated(
-          itemCount: components.length,
-          separatorBuilder: (context, index) => const SizedBox(
-            height: SpacingConsts.s,
+      body: Background(
+        child: Padding(
+          padding: const EdgeInsets.all(SpacingConsts.m),
+          child: Panel(
+            child: ListView.separated(
+              clipBehavior: Clip.none,
+              itemCount: components.length,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: SpacingConsts.s,
+              ),
+              itemBuilder: (context, index) => components[index],
+            ),
           ),
-          itemBuilder: (context, index) => components[index](),
         ),
       ),
     );
