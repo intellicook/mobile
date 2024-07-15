@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/common/background.dart';
 import 'package:intellicook_mobile/widgets/common/button.dart';
+import 'package:intellicook_mobile/widgets/common/input_field.dart';
 import 'package:intellicook_mobile/widgets/common/panel.dart';
 
 class ComponentGallery extends StatelessWidget {
@@ -9,16 +10,23 @@ class ComponentGallery extends StatelessWidget {
 
   static const title = 'Component Gallery';
   static final components = [
-    Button.primary(
-      child: const Center(
-        child: Text('Hello World', style: TextStyle(color: Colors.black)),
-      ),
-    ),
-    Button.secondary(
-      child: const Center(
-        child: Text('Hello World'),
-      ),
-    ),
+    (BuildContext context) => Button.primary(
+          child: Center(
+            child: Text(
+              'Hello World',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        ),
+    (BuildContext context) => Button.secondary(
+          child: Center(
+            child: Text(
+              'Hello World',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        ),
+    (BuildContext context) => const InputField(),
   ];
 
   @override
@@ -38,7 +46,7 @@ class ComponentGallery extends StatelessWidget {
               separatorBuilder: (context, index) => const SizedBox(
                 height: SpacingConsts.s,
               ),
-              itemBuilder: (context, index) => components[index],
+              itemBuilder: (context, index) => components[index](context),
             ),
           ),
         ),

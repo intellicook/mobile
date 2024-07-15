@@ -32,6 +32,7 @@ void main() {
       const padding = EdgeInsets.all(10);
       const color = Colors.red;
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
+      const clipBehavior = Clip.none;
 
       await tester.pumpWidget(Elevated(
         border: border,
@@ -55,6 +56,7 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, padding);
+      expect(container.clipBehavior, clipBehavior);
     },
   );
 
@@ -72,6 +74,7 @@ void main() {
       const padding = EdgeInsets.all(10);
       const color = Colors.red;
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
+      const clipBehavior = Clip.none;
       const animatedElevatedArgs = AnimatedElevatedArgs(
         duration: Duration(seconds: 1),
         curve: Curves.easeInOut,
@@ -101,6 +104,7 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, padding);
+      expect(container.clipBehavior, clipBehavior);
       expect(container.duration, animatedElevatedArgs.duration);
       expect(container.curve, animatedElevatedArgs.curve);
     },
@@ -144,6 +148,7 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, Elevated.defaultPadding);
+      expect(container.clipBehavior, Elevated.defaultClipBehavior);
       expect(container.duration, animatedElevatedArgs.duration);
       expect(container.curve, animatedElevatedArgs.curve);
     },
@@ -175,6 +180,7 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, Elevated.defaultPadding);
+      expect(container.clipBehavior, Elevated.defaultClipBehavior);
     },
   );
 
@@ -221,6 +227,7 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, Elevated.defaultPadding);
+      expect(container.clipBehavior, Elevated.defaultClipBehavior);
     },
   );
 
