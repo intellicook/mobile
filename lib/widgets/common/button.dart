@@ -82,7 +82,10 @@ class Button extends StatefulWidget {
     vertical: SpacingConsts.s,
     horizontal: SpacingConsts.m,
   );
-  static const defaultAnimatedElevatedArgs = AnimatedElevatedArgs();
+  static const defaultAnimatedElevatedArgs = AnimatedElevatedArgs(
+    duration: Duration(milliseconds: 80),
+    curve: Curves.easeOut,
+  );
 
   final ClickableOnClickCallback? onClick;
   final ClickableOnPressCallback? onPress;

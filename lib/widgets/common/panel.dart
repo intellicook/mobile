@@ -6,11 +6,12 @@ class Panel extends StatelessWidget {
   const Panel({
     super.key,
     this.color,
-    this.padding = const EdgeInsets.all(SpacingConsts.m),
+    this.padding = defaultPadding,
     this.constraints,
     this.child,
   });
 
+  static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
   static const opacity = 0.5;
 
   final Color? color;
