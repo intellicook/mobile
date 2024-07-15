@@ -44,18 +44,18 @@ argument for a widget:
     - You may also want to define it as an optional parameter, then checking against whether or not
       the supplied argument is null before assigning it in the initializer, example as follows:
 
-    ```dart
-    class MyWidget extends StatelessWidget {
-      MyWidget({
-        super.key,
-        int? optParam,
-      })  : optField = optParam ?? defaultArg;
-      
-      static final defaultArg = optArgFactory();
-      
-      int optParam;
-    }
-    ```
+      ```dart
+      class MyWidget extends StatelessWidget {
+        MyWidget({
+          super.key,
+          int? optParam,
+        })  : optField = optParam ?? defaultArg;
+        
+        static final defaultArg = optArgFactory();
+        
+        int optParam;
+      }
+      ```
 
     - If the default argument is a method, it may be able to be defined as `static const` for the
       widget class but it still need to be called which is not a constant value, so the return value
