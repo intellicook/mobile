@@ -179,6 +179,23 @@ void main() {
   );
 
   testWidgets(
+    'High elevated shows child with inset shadow',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(Elevated.high(
+        insetShadow: true,
+        child: TextFixture.widget(),
+      ));
+
+      expect(find.text(TextFixture.text), findsOneWidget);
+
+      final container = tester.widget<Container>(find.byType(Container));
+
+      final decoration = container.decoration as BoxDecoration;
+      expect(decoration.boxShadow, Elevated.highShadows(inset: true));
+    },
+  );
+
+  testWidgets(
     'Low elevated shows child with arguments and defaults',
     (WidgetTester tester) async {
       final border = Border.all(color: Colors.black);
@@ -204,6 +221,23 @@ void main() {
 
       expect(container.constraints, constraints);
       expect(container.padding, Elevated.defaultPadding);
+    },
+  );
+
+  testWidgets(
+    'Low elevated shows child with inset shadow',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(Elevated.low(
+        insetShadow: true,
+        child: TextFixture.widget(),
+      ));
+
+      expect(find.text(TextFixture.text), findsOneWidget);
+
+      final container = tester.widget<Container>(find.byType(Container));
+
+      final decoration = container.decoration as BoxDecoration;
+      expect(decoration.boxShadow, Elevated.lowShadows(inset: true));
     },
   );
 }

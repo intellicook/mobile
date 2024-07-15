@@ -40,7 +40,7 @@ class Elevated extends StatelessWidget {
     this.animatedElevatedArgs,
     SmoothBorderRadius? borderRadius,
     List<BoxShadow>? shadows,
-    bool insetShadow = false,
+    bool insetShadow = defaultInsetShadow,
     this.child,
   })  : borderRadius = borderRadius ?? lowBorderRadius,
         shadows = shadows ?? lowShadows(inset: insetShadow);
@@ -54,12 +54,13 @@ class Elevated extends StatelessWidget {
     this.animatedElevatedArgs,
     SmoothBorderRadius? borderRadius,
     List<BoxShadow>? shadows,
-    bool insetShadow = false,
+    bool insetShadow = defaultInsetShadow,
     this.child,
   })  : borderRadius = borderRadius ?? highBorderRadius,
         shadows = shadows ?? highShadows(inset: insetShadow);
 
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
+  static const defaultInsetShadow = false;
   static const lowShadows = ShadowConsts.low;
   static const highShadows = ShadowConsts.high;
   static final lowBorderRadius = SmoothBorderRadiusConsts.s;
