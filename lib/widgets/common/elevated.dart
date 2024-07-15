@@ -11,8 +11,8 @@ class AnimatedElevatedArgs {
     this.curve = defaultCurve,
   });
 
-  static const defaultDuration = Duration(milliseconds: 80);
-  static const defaultCurve = Curves.easeOut;
+  static const defaultDuration = Duration(milliseconds: 100);
+  static const defaultCurve = Curves.easeInOut;
 
   final Duration duration;
   final Curve curve;
@@ -24,7 +24,7 @@ class Elevated extends StatelessWidget {
     this.border,
     this.borderRadius,
     this.shadows,
-    this.padding,
+    this.padding = defaultPadding,
     this.color,
     this.constraints,
     this.animatedElevatedArgs,
@@ -34,26 +34,36 @@ class Elevated extends StatelessWidget {
   Elevated.low({
     super.key,
     this.border,
-    this.padding,
+    this.padding = defaultPadding,
     this.color,
     this.constraints,
     this.animatedElevatedArgs,
-    insetShadow = false,
+    SmoothBorderRadius? borderRadius,
+    List<BoxShadow>? shadows,
+    bool insetShadow = false,
     this.child,
-  })  : borderRadius = SmoothBorderRadiusConsts.s,
-        shadows = ShadowConsts.low(inset: insetShadow);
+  })  : borderRadius = borderRadius ?? lowBorderRadius,
+        shadows = shadows ?? lowShadows(inset: insetShadow);
 
   Elevated.high({
     super.key,
     this.border,
-    this.padding,
+    this.padding = defaultPadding,
     this.color,
     this.constraints,
     this.animatedElevatedArgs,
-    insetShadow = false,
+    SmoothBorderRadius? borderRadius,
+    List<BoxShadow>? shadows,
+    bool insetShadow = false,
     this.child,
-  })  : borderRadius = SmoothBorderRadiusConsts.l,
-        shadows = ShadowConsts.high(inset: insetShadow);
+  })  : borderRadius = borderRadius ?? highBorderRadius,
+        shadows = shadows ?? highShadows(inset: insetShadow);
+
+  static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
+  static const lowShadows = ShadowConsts.low;
+  static const highShadows = ShadowConsts.high;
+  static final lowBorderRadius = SmoothBorderRadiusConsts.s;
+  static final highBorderRadius = SmoothBorderRadiusConsts.l;
 
   final BoxBorder? border;
   final SmoothBorderRadius? borderRadius;
@@ -67,9 +77,6 @@ class Elevated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final borderRadius = this.borderRadius ?? SmoothBorderRadiusConsts.l;
-    final shadows = this.shadows ?? ShadowConsts.high();
-    final padding = this.padding ?? const EdgeInsets.all(SpacingConsts.m);
     final color = this.color ?? theme.colorScheme.surfaceContainerLowest;
 
     final boxDecoration = BoxDecoration(
