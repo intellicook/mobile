@@ -40,12 +40,21 @@ void main() {
       const releasedColor = Colors.blue;
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
+      const constraints = BoxConstraints.tightFor(width: 100, height: 100);
+      const padding = EdgeInsets.all(10);
+      const animatedElevatedArgs = AnimatedElevatedArgs(
+        duration: Duration(milliseconds: 10),
+        curve: Curves.linear,
+      );
 
       await tester.pumpWidget(Button(
         pressedColor: pressedColor,
         releasedColor: releasedColor,
         pressedBorder: pressedBorder,
         releasedBorder: releasedBorder,
+        constraints: constraints,
+        padding: padding,
+        animatedElevatedArgs: animatedElevatedArgs,
         child: TextFixture.widget(),
       ));
 
@@ -54,6 +63,9 @@ void main() {
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(elevated.color, releasedColor);
       expect(elevated.border, releasedBorder);
+      expect(elevated.constraints, constraints);
+      expect(elevated.padding, padding);
+      expect(elevated.animatedElevatedArgs, animatedElevatedArgs);
     },
   );
 
@@ -64,12 +76,21 @@ void main() {
       const releasedColor = Colors.blue;
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
+      const constraints = BoxConstraints.tightFor(width: 100, height: 100);
+      const padding = EdgeInsets.all(10);
+      const animatedElevatedArgs = AnimatedElevatedArgs(
+        duration: Duration(milliseconds: 10),
+        curve: Curves.linear,
+      );
 
       await tester.pumpWidget(Button(
         pressedColor: pressedColor,
         releasedColor: releasedColor,
         pressedBorder: pressedBorder,
         releasedBorder: releasedBorder,
+        constraints: constraints,
+        padding: padding,
+        animatedElevatedArgs: animatedElevatedArgs,
         child: TextFixture.widget(),
       ));
 
@@ -81,11 +102,14 @@ void main() {
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(elevated.color, pressedColor);
       expect(elevated.border, pressedBorder);
+      expect(elevated.constraints, constraints);
+      expect(elevated.padding, padding);
+      expect(elevated.animatedElevatedArgs, animatedElevatedArgs);
     },
   );
 
   testWidgets(
-    'Primary button shows child with defaults when released',
+    'Primary button shows child with arguments and defaults when released',
     (WidgetTester tester) async {
       final context = MockBuildContext();
       final theme = IntelliCookTheme.theme(context, Brightness.light);
@@ -113,11 +137,14 @@ void main() {
         IntelliCookTheme.primaryPalette.getColor(Button.releasedPaletteTone),
       );
       expect(elevated.border, releasedBorder);
+      expect(elevated.constraints, Button.defaultConstraints);
+      expect(elevated.padding, Button.defaultPadding);
+      expect(elevated.animatedElevatedArgs, Button.defaultAnimatedElevatedArgs);
     },
   );
 
   testWidgets(
-    'Primary button shows child with defaults when pressed',
+    'Primary button shows child with arguments and defaults when pressed',
     (WidgetTester tester) async {
       final context = MockBuildContext();
       final theme = IntelliCookTheme.theme(context, Brightness.light);
@@ -148,11 +175,14 @@ void main() {
         IntelliCookTheme.primaryPalette.getColor(Button.pressedPaletteTone),
       );
       expect(elevated.border, pressedBorder);
+      expect(elevated.constraints, Button.defaultConstraints);
+      expect(elevated.padding, Button.defaultPadding);
+      expect(elevated.animatedElevatedArgs, Button.defaultAnimatedElevatedArgs);
     },
   );
 
   testWidgets(
-    'Secondary button shows child with defaults when released',
+    'Secondary button shows child with arguments and defaults when released',
     (WidgetTester tester) async {
       final context = MockBuildContext();
       final theme = IntelliCookTheme.theme(context, Brightness.light);
@@ -184,11 +214,14 @@ void main() {
           width: Button.secondaryBorderWidth,
         ),
       );
+      expect(elevated.constraints, Button.defaultConstraints);
+      expect(elevated.padding, Button.defaultPadding);
+      expect(elevated.animatedElevatedArgs, Button.defaultAnimatedElevatedArgs);
     },
   );
 
   testWidgets(
-    'Secondary button shows child with defaults when pressed',
+    'Secondary button shows child with arguments and defaults when pressed',
     (WidgetTester tester) async {
       final context = MockBuildContext();
       final theme = IntelliCookTheme.theme(context, Brightness.light);
@@ -223,6 +256,9 @@ void main() {
           width: Button.secondaryBorderWidth,
         ),
       );
+      expect(elevated.constraints, Button.defaultConstraints);
+      expect(elevated.padding, Button.defaultPadding);
+      expect(elevated.animatedElevatedArgs, Button.defaultAnimatedElevatedArgs);
     },
   );
 

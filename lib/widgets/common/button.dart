@@ -16,6 +16,9 @@ class Button extends StatefulWidget {
     this.releasedColor,
     this.pressedBorder,
     this.releasedBorder,
+    this.constraints = defaultConstraints,
+    this.padding = defaultPadding,
+    this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
     this.child,
   });
 
@@ -27,6 +30,9 @@ class Button extends StatefulWidget {
     this.onStateChange,
     this.pressedBorder,
     this.releasedBorder,
+    this.constraints = defaultConstraints,
+    this.padding = defaultPadding,
+    this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
     Color? pressedColor,
     Color? releasedColor,
     this.child,
@@ -43,6 +49,9 @@ class Button extends StatefulWidget {
     this.onStateChange,
     this.pressedColor,
     this.releasedColor,
+    this.constraints = defaultConstraints,
+    this.padding = defaultPadding,
+    this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
     BoxBorder? pressedBorder,
     BoxBorder? releasedBorder,
     this.child,
@@ -59,6 +68,22 @@ class Button extends StatefulWidget {
               width: secondaryBorderWidth,
             );
 
+  static const minHeight = 40.0;
+  static const minWidth = 50.0;
+  static const pressedPaletteTone = 70;
+  static const releasedPaletteTone = 80;
+  static const secondaryBorderWidth = 1.5;
+  static const secondaryOpacity = 0.5;
+  static const defaultConstraints = BoxConstraints(
+    minHeight: Button.minHeight,
+    minWidth: Button.minWidth,
+  );
+  static const defaultPadding = EdgeInsets.symmetric(
+    vertical: SpacingConsts.s,
+    horizontal: SpacingConsts.m,
+  );
+  static const defaultAnimatedElevatedArgs = AnimatedElevatedArgs();
+
   final ClickableOnClickCallback? onClick;
   final ClickableOnPressCallback? onPress;
   final ClickableOnReleaseCallback? onRelease;
@@ -67,14 +92,10 @@ class Button extends StatefulWidget {
   final Color? releasedColor;
   final BoxBorder? pressedBorder;
   final BoxBorder? releasedBorder;
+  final BoxConstraints? constraints;
+  final EdgeInsets? padding;
+  final AnimatedElevatedArgs? animatedElevatedArgs;
   final Widget? child;
-
-  static const minHeight = 40.0;
-  static const minWidth = 50.0;
-  static const pressedPaletteTone = 70;
-  static const releasedPaletteTone = 80;
-  static const secondaryBorderWidth = 1.5;
-  static const secondaryOpacity = 0.5;
 
   @override
   State<Button> createState() => _ButtonState();
@@ -104,17 +125,11 @@ class _ButtonState extends State<Button> {
         widget.onStateChange?.call(isPressed);
       },
       child: Elevated.low(
-        constraints: const BoxConstraints(
-          minHeight: Button.minHeight,
-          minWidth: Button.minWidth,
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: SpacingConsts.s,
-          horizontal: SpacingConsts.m,
-        ),
+        constraints: widget.constraints,
+        padding: widget.padding,
         color: isPressed ? pressedColor : releasedColor,
         border: isPressed ? widget.pressedBorder : widget.releasedBorder,
-        animatedElevatedArgs: const AnimatedElevatedArgs(),
+        animatedElevatedArgs: widget.animatedElevatedArgs,
         insetShadow: isPressed,
         child: widget.child,
       ),
