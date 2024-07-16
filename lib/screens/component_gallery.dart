@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/common/background.dart';
 import 'package:intellicook_mobile/widgets/common/button.dart';
+import 'package:intellicook_mobile/widgets/common/input_field.dart';
 import 'package:intellicook_mobile/widgets/common/panel.dart';
 
 class ComponentGallery extends StatelessWidget {
@@ -9,16 +10,30 @@ class ComponentGallery extends StatelessWidget {
 
   static const title = 'Component Gallery';
   static final components = [
-    Button.primary(
-      child: const Center(
-        child: Text('Hello World', style: TextStyle(color: Colors.black)),
-      ),
-    ),
-    Button.secondary(
-      child: const Center(
-        child: Text('Hello World'),
-      ),
-    ),
+    (BuildContext context) => Button.primary(
+          child: Center(
+            child: Text(
+              'Hello World',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.onInverseSurface,
+                  ),
+            ),
+          ),
+        ),
+    (BuildContext context) => Button.secondary(
+          child: Center(
+            child: Text(
+              'Hello World',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        ),
+    (BuildContext context) => const InputField(
+          label: 'Label text',
+          hint: 'Type something...',
+        ),
   ];
 
   @override
@@ -36,9 +51,9 @@ class ComponentGallery extends StatelessWidget {
               clipBehavior: Clip.none,
               itemCount: components.length,
               separatorBuilder: (context, index) => const SizedBox(
-                height: SpacingConsts.s,
+                height: SpacingConsts.m,
               ),
-              itemBuilder: (context, index) => components[index],
+              itemBuilder: (context, index) => components[index](context),
             ),
           ),
         ),

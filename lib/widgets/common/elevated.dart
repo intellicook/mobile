@@ -27,6 +27,7 @@ class Elevated extends StatelessWidget {
     this.padding = defaultPadding,
     this.color,
     this.constraints,
+    this.clipBehavior = defaultClipBehavior,
     this.animatedElevatedArgs,
     this.child,
   });
@@ -37,6 +38,7 @@ class Elevated extends StatelessWidget {
     this.padding = defaultPadding,
     this.color,
     this.constraints,
+    this.clipBehavior = defaultClipBehavior,
     this.animatedElevatedArgs,
     SmoothBorderRadius? borderRadius,
     List<BoxShadow>? shadows,
@@ -51,6 +53,7 @@ class Elevated extends StatelessWidget {
     this.padding = defaultPadding,
     this.color,
     this.constraints,
+    this.clipBehavior = defaultClipBehavior,
     this.animatedElevatedArgs,
     SmoothBorderRadius? borderRadius,
     List<BoxShadow>? shadows,
@@ -61,6 +64,7 @@ class Elevated extends StatelessWidget {
 
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
   static const defaultInsetShadow = false;
+  static const defaultClipBehavior = Clip.antiAlias;
   static const lowShadows = ShadowConsts.low;
   static const highShadows = ShadowConsts.high;
   static final lowBorderRadius = SmoothBorderRadiusConsts.s;
@@ -72,14 +76,12 @@ class Elevated extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? color;
   final BoxConstraints? constraints;
+  final Clip clipBehavior;
   final AnimatedElevatedArgs? animatedElevatedArgs;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = this.color ?? theme.colorScheme.surfaceContainerLowest;
-
     final boxDecoration = BoxDecoration(
       color: color,
       border: border,
@@ -89,7 +91,7 @@ class Elevated extends StatelessWidget {
 
     final container = switch (animatedElevatedArgs) {
       null => (Widget? child) => Container(
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: clipBehavior,
             decoration: boxDecoration,
             constraints: constraints,
             padding: padding,
@@ -98,7 +100,7 @@ class Elevated extends StatelessWidget {
       var args => (Widget? child) => AnimatedContainer(
             duration: args.duration,
             curve: args.curve,
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: clipBehavior,
             decoration: boxDecoration,
             constraints: constraints,
             padding: padding,

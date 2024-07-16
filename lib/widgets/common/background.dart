@@ -31,6 +31,9 @@ class Background extends StatelessWidget {
 class _BackgroundPainter extends CustomPainter {
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
+    final unit = size.width;
+    final heightUnit = unit * 2;
+
     final primaryPaint = Paint()
       ..color = IntelliCookTheme.primaryPalette.getColor(80)
       ..style = PaintingStyle.fill;
@@ -40,28 +43,28 @@ class _BackgroundPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
-      Offset(size.width, size.height * 0.2),
-      size.width * 0.3,
+      Offset(unit, heightUnit * 0.2),
+      unit * 0.3,
       primaryPaint,
     );
     canvas.drawCircle(
-      Offset(size.width * 0.8, size.height * 0.35),
-      size.width * 0.15,
+      Offset(unit * 0.8, heightUnit * 0.35),
+      unit * 0.15,
       secondaryPaint,
     );
     canvas.drawCircle(
-      Offset(size.width * 0.15, size.height * 0.6),
-      size.width * 0.4,
+      Offset(unit * 0.15, heightUnit * 0.6),
+      unit * 0.4,
       secondaryPaint,
     );
     canvas.drawCircle(
-      Offset(size.width * 0.1, size.height * 0.4),
-      size.width * 0.2,
+      Offset(unit * 0.1, heightUnit * 0.4),
+      unit * 0.2,
       primaryPaint,
     );
     canvas.drawCircle(
-      Offset(size.width * 1.05, size.height * 0.85),
-      size.width * 0.25,
+      Offset(unit * 1.05, heightUnit * 0.85),
+      unit * 0.25,
       primaryPaint,
     );
   }
