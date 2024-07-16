@@ -39,6 +39,7 @@ dependencies:
   figma_squircle: ^0.5.3
   material_color_utilities: ^0.8.0
   flutter_inset_shadow: ^2.0.3
+  control_style: ^0.1.0
 
 dev_dependencies:
   flutter_test:

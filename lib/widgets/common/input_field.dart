@@ -49,12 +49,18 @@ class _InputFieldState extends State<InputField> {
 
     // Colors
 
+    const filled = true;
     const colorOpacity = 0.5;
     final fillColor =
         theme.colorScheme.surfaceContainerLow.withOpacity(colorOpacity);
     final focusColor =
         theme.colorScheme.surfaceContainerLowest.withOpacity(colorOpacity);
     final labelBackgroundColor = theme.colorScheme.surfaceContainerLow;
+
+    // Animation
+
+    const animationDuration = Duration(milliseconds: 80);
+    const animationCurve = Curves.easeOut;
 
     // Borders
 
@@ -107,14 +113,14 @@ class _InputFieldState extends State<InputField> {
     ) as DecoratedInputBorder;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 80),
-      curve: Curves.easeOut,
+      duration: animationDuration,
+      curve: animationCurve,
       child: TextField(
         controller: widget.controller,
         focusNode: focusNode,
         enabled: widget.enabled,
         decoration: InputDecoration(
-          filled: true,
+          filled: filled,
           fillColor: focusNode.hasFocus ? focusColor : fillColor,
           enabledBorder: enabledBorder,
           focusedBorder: focusedBorder,
