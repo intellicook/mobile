@@ -41,6 +41,7 @@ void main() {
         padding: padding,
         color: color,
         constraints: constraints,
+        clipBehavior: clipBehavior,
         child: TextFixture.widget(),
       ));
 
@@ -87,6 +88,7 @@ void main() {
         padding: padding,
         color: color,
         constraints: constraints,
+        clipBehavior: clipBehavior,
         animatedElevatedArgs: animatedElevatedArgs,
         child: TextFixture.widget(),
       ));

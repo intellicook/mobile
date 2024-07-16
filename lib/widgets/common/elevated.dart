@@ -82,9 +82,6 @@ class Elevated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = this.color ?? theme.colorScheme.surfaceContainerLowest;
-
     final boxDecoration = BoxDecoration(
       color: color,
       border: border,

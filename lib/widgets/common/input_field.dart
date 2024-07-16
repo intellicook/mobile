@@ -1,3 +1,4 @@
+import 'package:control_style/control_style.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
@@ -6,7 +7,26 @@ import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dar
 import 'package:intellicook_mobile/widgets/common/elevated.dart';
 
 class InputField extends StatefulWidget {
-  const InputField({super.key});
+  const InputField({
+    super.key,
+    this.controller,
+    this.label,
+    this.hint,
+    this.help,
+    this.error,
+    this.counter,
+    this.enabled = defaultEnabled,
+  });
+
+  static const defaultEnabled = true;
+
+  final TextEditingController? controller;
+  final String? label;
+  final String? hint;
+  final String? help;
+  final String? error;
+  final String? counter;
+  final bool enabled;
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -34,6 +54,7 @@ class _InputFieldState extends State<InputField> {
         theme.colorScheme.surfaceContainerLow.withOpacity(colorOpacity);
     final focusColor =
         theme.colorScheme.surfaceContainerLowest.withOpacity(colorOpacity);
+    final labelBackgroundColor = theme.colorScheme.surfaceContainerLow;
 
     // Borders
 
@@ -48,41 +69,50 @@ class _InputFieldState extends State<InputField> {
       width: borderWidth,
       color: enabledBorderColor,
     );
-    final enabledBorder = OutlineInputBorder(
+    final outlineInputBorder = OutlineInputBorder(
       borderRadius: borderRadius,
       borderSide: borderSide,
     );
+    final enabledBorder = DecoratedInputBorder(
+      shadow: focusNode.hasFocus ? Elevated.lowShadows() : [],
+      child: outlineInputBorder,
+    );
     final focusedBorder = enabledBorder.copyWith(
-      borderSide: borderSide.copyWith(
-        color: focusedBorderColor,
+      child: outlineInputBorder.copyWith(
+        borderSide: borderSide.copyWith(
+          color: focusedBorderColor,
+        ),
       ),
-    );
+    ) as DecoratedInputBorder;
     final errorBorder = enabledBorder.copyWith(
-      borderSide: borderSide.copyWith(
-        color: theme.colorScheme.error,
+      child: outlineInputBorder.copyWith(
+        borderSide: borderSide.copyWith(
+          color: theme.colorScheme.error,
+        ),
       ),
-    );
+    ) as DecoratedInputBorder;
     final focusedErrorBorder = focusedBorder.copyWith(
-      borderSide: borderSide.copyWith(
-        color: theme.colorScheme.error,
+      child: outlineInputBorder.copyWith(
+        borderSide: borderSide.copyWith(
+          color: theme.colorScheme.error,
+        ),
       ),
-    );
+    ) as DecoratedInputBorder;
     final disabledBorder = enabledBorder.copyWith(
-      borderSide: borderSide.copyWith(
-        color: theme.disabledColor,
+      child: outlineInputBorder.copyWith(
+        borderSide: borderSide.copyWith(
+          color: theme.disabledColor,
+        ),
       ),
-    );
+    ) as DecoratedInputBorder;
 
-    return Elevated.low(
-      padding: EdgeInsets.zero,
-      shadows: focusNode.hasFocus ? Elevated.lowShadows() : null,
-      clipBehavior: Clip.none,
-      animatedElevatedArgs: const AnimatedElevatedArgs(
-        duration: Duration(milliseconds: 80),
-        curve: Curves.easeOut,
-      ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 80),
+      curve: Curves.easeOut,
       child: TextField(
+        controller: widget.controller,
         focusNode: focusNode,
+        enabled: widget.enabled,
         decoration: InputDecoration(
           filled: true,
           fillColor: focusNode.hasFocus ? focusColor : fillColor,
@@ -91,7 +121,14 @@ class _InputFieldState extends State<InputField> {
           errorBorder: errorBorder,
           focusedErrorBorder: focusedErrorBorder,
           disabledBorder: disabledBorder,
-          labelText: 'Enter your username',
+          floatingLabelStyle: TextStyle(
+            backgroundColor: labelBackgroundColor,
+          ),
+          labelText: widget.label,
+          hintText: widget.hint,
+          helperText: widget.help,
+          counterText: widget.counter,
+          errorText: widget.error,
         ),
       ),
     );

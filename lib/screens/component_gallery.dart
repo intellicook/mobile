@@ -14,7 +14,11 @@ class ComponentGallery extends StatelessWidget {
           child: Center(
             child: Text(
               'Hello World',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Theme.of(context).colorScheme.onSurface
+                        : Theme.of(context).colorScheme.onInverseSurface,
+                  ),
             ),
           ),
         ),
@@ -26,7 +30,10 @@ class ComponentGallery extends StatelessWidget {
             ),
           ),
         ),
-    (BuildContext context) => const InputField(),
+    (BuildContext context) => const InputField(
+          label: 'Label text',
+          hint: 'Type something...',
+        ),
   ];
 
   @override
@@ -44,7 +51,7 @@ class ComponentGallery extends StatelessWidget {
               clipBehavior: Clip.none,
               itemCount: components.length,
               separatorBuilder: (context, index) => const SizedBox(
-                height: SpacingConsts.s,
+                height: SpacingConsts.m,
               ),
               itemBuilder: (context, index) => components[index](context),
             ),
