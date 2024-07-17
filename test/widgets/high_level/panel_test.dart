@@ -52,9 +52,8 @@ void main() {
       const padding = EdgeInsets.all(10);
       const constraints = BoxConstraints.tightFor(width: 100, height: 100);
 
-      await tester.pumpWidget(MaterialApp(
-        theme: theme,
-        home: Panel(
+      await tester.pumpWidget(MockMaterialApp(
+        child: Panel(
           padding: padding,
           constraints: constraints,
           child: TextFixture.widget(),

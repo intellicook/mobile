@@ -111,15 +111,12 @@ void main() {
   testWidgets(
     'Primary button shows child with arguments and defaults when released',
     (WidgetTester tester) async {
-      final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
       const testText = 'Test Text';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: theme,
-        home: Button.primary(
+      await tester.pumpWidget(MockMaterialApp(
+        child: Button.primary(
           pressedBorder: pressedBorder,
           releasedBorder: releasedBorder,
           child: const Directionality(
@@ -146,15 +143,12 @@ void main() {
   testWidgets(
     'Primary button shows child with arguments and defaults when pressed',
     (WidgetTester tester) async {
-      final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
       final pressedBorder = Border.all(color: Colors.green);
       final releasedBorder = Border.all(color: Colors.orange);
       const testText = 'Test Text';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: theme,
-        home: Button.primary(
+      await tester.pumpWidget(MockMaterialApp(
+        child: Button.primary(
           pressedBorder: pressedBorder,
           releasedBorder: releasedBorder,
           child: const Directionality(
@@ -188,9 +182,8 @@ void main() {
       final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: theme,
-        home: Button.secondary(
+      await tester.pumpWidget(MockMaterialApp(
+        child: Button.secondary(
           child: const Directionality(
             textDirection: TextDirection.ltr,
             child: Text(testText),
@@ -227,9 +220,8 @@ void main() {
       final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
-      await tester.pumpWidget(MaterialApp(
-        theme: theme,
-        home: Button.secondary(
+      await tester.pumpWidget(MockMaterialApp(
+        child: Button.secondary(
           child: const Directionality(
             textDirection: TextDirection.ltr,
             child: Text(testText),
