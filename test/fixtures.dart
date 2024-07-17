@@ -15,17 +15,22 @@ class TextFixture {
 }
 
 class MockMaterialApp extends StatelessWidget {
+  /// For providing a MaterialApp with the IntelliCook theme.
   const MockMaterialApp({
     super.key,
+    this.brightness = defaultBrightness,
     this.child,
   });
 
+  static const defaultBrightness = Brightness.light;
+
+  final Brightness brightness;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     final context = MockBuildContext();
-    final theme = IntelliCookTheme.theme(context, Brightness.light);
+    final theme = IntelliCookTheme.theme(context, brightness);
 
     return MaterialApp(
       theme: theme,
