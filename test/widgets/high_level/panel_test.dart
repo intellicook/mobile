@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/widgets/common/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 
 import '../../fixtures.dart';
-import 'button_test.mocks.dart';
+import '../low_level/button_test.mocks.dart';
 
 void main() {
   testWidgets(

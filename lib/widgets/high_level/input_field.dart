@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
-import 'package:intellicook_mobile/widgets/common/elevated.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
 class InputField extends StatefulWidget {
   const InputField({
