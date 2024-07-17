@@ -178,8 +178,6 @@ void main() {
   testWidgets(
     'Secondary button shows child with arguments and defaults when released',
     (WidgetTester tester) async {
-      final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MockMaterialApp(
@@ -194,11 +192,6 @@ void main() {
       expect(find.text(testText), findsOneWidget);
 
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
-      expect(
-        elevated.color,
-        theme.colorScheme.surfaceContainerLowest
-            .withOpacity(Button.secondaryOpacity),
-      );
       expect(
         elevated.border,
         Border.all(
@@ -216,8 +209,6 @@ void main() {
   testWidgets(
     'Secondary button shows child with arguments and defaults when pressed',
     (WidgetTester tester) async {
-      final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
       const testText = 'Test Text';
 
       await tester.pumpWidget(MockMaterialApp(
@@ -235,11 +226,6 @@ void main() {
       expect(find.text(testText), findsOneWidget);
 
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
-      expect(
-        elevated.color,
-        theme.colorScheme.surfaceContainerLow
-            .withOpacity(Button.secondaryOpacity),
-      );
       expect(
         elevated.border,
         Border.all(

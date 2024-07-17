@@ -9,12 +9,12 @@ class Background extends StatelessWidget {
     this.child,
   });
 
-  static const blur = 64.0;
-
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
+    const blur = 64.0;
+
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: CustomPaint(
