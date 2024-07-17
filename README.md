@@ -63,3 +63,6 @@ argument for a widget:
 
 3. If the default argument does not satisfy any of the above condition, define it in the `build()`
    method.
+
+*Note*: default arguments are not constants, constants are non-configurable arguments to it's
+children, they are defined as `const` in `build()` method.

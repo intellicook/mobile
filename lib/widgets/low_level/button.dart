@@ -73,7 +73,6 @@ class Button extends StatefulWidget {
   static const pressedPaletteTone = 70;
   static const releasedPaletteTone = 80;
   static const secondaryBorderWidth = 1.5;
-  static const secondaryOpacity = 0.5;
   static const defaultConstraints = BoxConstraints(
     minHeight: Button.minHeight,
     minWidth: Button.minWidth,
@@ -110,12 +109,11 @@ class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const opacity = 0.5;
     final pressedColor = widget.pressedColor ??
-        theme.colorScheme.surfaceContainerLow
-            .withOpacity(Button.secondaryOpacity);
+        theme.colorScheme.surfaceContainerLow.withOpacity(opacity);
     final releasedColor = widget.releasedColor ??
-        theme.colorScheme.surfaceContainerLowest
-            .withOpacity(Button.secondaryOpacity);
+        theme.colorScheme.surfaceContainerLowest.withOpacity(opacity);
 
     return Clickable(
       onClick: widget.onClick,
