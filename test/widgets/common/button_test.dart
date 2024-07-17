@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
-import 'package:intellicook_mobile/widgets/common/button.dart';
-import 'package:intellicook_mobile/widgets/common/elevated.dart';
+import 'package:intellicook_mobile/widgets/low_level/button.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

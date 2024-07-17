@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
-import 'package:intellicook_mobile/widgets/common/background.dart';
-import 'package:intellicook_mobile/widgets/common/button.dart';
-import 'package:intellicook_mobile/widgets/common/input_field.dart';
-import 'package:intellicook_mobile/widgets/common/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/background.dart';
+import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
+import 'package:intellicook_mobile/widgets/high_level/panel.dart';
+import 'package:intellicook_mobile/widgets/low_level/button.dart';
 
 class ComponentGallery extends StatelessWidget {
   const ComponentGallery({super.key});

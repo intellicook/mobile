@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intellicook_mobile/widgets/common/background.dart';
+import 'package:intellicook_mobile/widgets/high_level/background.dart';
 
 import '../../fixtures.dart';
 

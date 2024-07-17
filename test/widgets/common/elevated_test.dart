@@ -2,7 +2,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intellicook_mobile/widgets/common/elevated.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
 import '../../fixtures.dart';
 

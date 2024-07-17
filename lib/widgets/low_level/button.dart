@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
-import 'package:intellicook_mobile/widgets/common/clickable.dart';
-import 'package:intellicook_mobile/widgets/common/elevated.dart';
+import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
 class Button extends StatefulWidget {
   const Button({

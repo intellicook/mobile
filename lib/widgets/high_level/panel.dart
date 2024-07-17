@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
-import 'package:intellicook_mobile/widgets/common/elevated.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
 class Panel extends StatelessWidget {
   const Panel({
