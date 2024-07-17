@@ -2,36 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/high_level/background.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
+import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
-import 'package:intellicook_mobile/widgets/low_level/button.dart';
 
 class ComponentGallery extends StatelessWidget {
   const ComponentGallery({super.key});
 
   static const title = 'Component Gallery';
   static final components = [
-    (BuildContext context) => Button.primary(
-          child: Center(
-            child: Text(
-              'Hello World',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).brightness == Brightness.light
-                        ? Theme.of(context).colorScheme.onSurface
-                        : Theme.of(context).colorScheme.onInverseSurface,
-                  ),
-            ),
-          ),
+    (BuildContext context) => const LabelButton(
+          label: 'Primary Button',
+          type: LabelButtonType.primary,
         ),
-    (BuildContext context) => Button.secondary(
-          child: Center(
-            child: Text(
-              'Hello World',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
+    (BuildContext context) => const LabelButton(
+          label: 'Secondary Button',
+          type: LabelButtonType.secondary,
         ),
     (BuildContext context) => const InputField(
-          label: 'Label text',
+          label: 'Input Field',
           hint: 'Type something...',
         ),
   ];
