@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intellicook_mobile/utils/extensions/theme_data_extensions.dart';
 import 'package:intellicook_mobile/widgets/low_level/button.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 
@@ -38,9 +39,7 @@ class LabelButton extends StatelessWidget {
 
     final textStyle = switch (type) {
       LabelButtonType.primary => theme.textTheme.bodyLarge?.copyWith(
-          color: theme.brightness == Brightness.light
-              ? theme.colorScheme.onSurface
-              : theme.colorScheme.onInverseSurface,
+          color: theme.onMain,
         ),
       LabelButtonType.secondary => theme.textTheme.bodyLarge,
     };

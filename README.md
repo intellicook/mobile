@@ -53,7 +53,7 @@ argument for a widget:
         
         static final defaultArg = optArgFactory();
         
-        int optParam;
+        int optField;
       }
       ```
 
