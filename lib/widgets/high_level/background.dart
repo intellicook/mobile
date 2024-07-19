@@ -1,7 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 
 class Background extends StatelessWidget {
   const Background({
@@ -35,11 +34,11 @@ class _BackgroundPainter extends CustomPainter {
     final heightUnit = unit * 2;
 
     final primaryPaint = Paint()
-      ..color = IntelliCookTheme.primaryPalette.getColor(80)
+      ..color = IntelliCookTheme.primaryColor
       ..style = PaintingStyle.fill;
 
     final secondaryPaint = Paint()
-      ..color = IntelliCookTheme.secondaryPalette.getColor(70)
+      ..color = IntelliCookTheme.secondaryColorDark
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(

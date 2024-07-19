@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 class IntelliCookTheme {
   static ThemeData theme(BuildContext context, Brightness brightness) {
     var textTheme = createTextTheme(context, bodyFont, displayFont);
     var colorScheme = ColorScheme.fromSeed(
-      seedColor: primaryColor,
+      seedColor: primaryColorSeed,
       brightness: brightness,
     );
 
@@ -22,11 +23,21 @@ class IntelliCookTheme {
 
   static const displayFont = 'Figtree';
   static const bodyFont = 'Roboto';
-  static const primaryColor = Color(0xffffa07a);
-  static const secondaryColor = Color(0xff7b68ee);
+  static const primaryColorSeed = Color(0xffffa07a);
+  static const secondaryColorSeed = Color(0xff7b68ee);
+  static const colorDarkTone = 70;
+  static const colorTone = 80;
+  static const colorLightTone = 90;
 
-  static final primaryPalette = createTonalPalette(primaryColor.value);
-  static final secondaryPalette = createTonalPalette(secondaryColor.value);
+  static final primaryPalette = createTonalPalette(primaryColorSeed.value);
+  static final primaryColorDark = primaryPalette.getColor(colorDarkTone);
+  static final primaryColor = primaryPalette.getColor(colorTone);
+  static final primaryColorLight = primaryPalette.getColor(colorLightTone);
+
+  static final secondaryPalette = createTonalPalette(secondaryColorSeed.value);
+  static final secondaryColorDark = secondaryPalette.getColor(colorDarkTone);
+  static final secondaryColor = secondaryPalette.getColor(colorTone);
+  static final secondaryColorLight = secondaryPalette.getColor(colorLightTone);
 }
 
 TextTheme createTextTheme(

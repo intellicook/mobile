@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Switch;
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.dart';
 
 class ToggleSwitch extends StatefulWidget {
@@ -43,7 +42,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
       }
 
       if (states.contains(WidgetState.selected)) {
-        return IntelliCookTheme.primaryPalette.getColor(80);
+        return IntelliCookTheme.primaryColor;
       }
 
       return null;

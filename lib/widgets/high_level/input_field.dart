@@ -3,7 +3,6 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
 class InputField extends StatefulWidget {
@@ -65,7 +64,7 @@ class _InputFieldState extends State<InputField> {
     // Borders
 
     final enabledBorderColor = theme.colorScheme.outline;
-    final focusedBorderColor = IntelliCookTheme.primaryPalette.getColor(70);
+    final focusedBorderColor = IntelliCookTheme.primaryColor;
     final borderRadius = SmoothBorderRadius(
       cornerRadius: SmoothBorderRadiusConsts.sCornerRadius,
       cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing,
