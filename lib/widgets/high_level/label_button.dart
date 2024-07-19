@@ -13,20 +13,20 @@ class LabelButton extends StatelessWidget {
     super.key,
     required this.label,
     this.type = defaultType,
-    this.onClick,
-    this.onPress,
-    this.onRelease,
-    this.onStateChange,
+    this.onClicked,
+    this.onPressed,
+    this.onReleased,
+    this.onStateChanged,
   });
 
   static const defaultType = LabelButtonType.primary;
 
   final String label;
   final LabelButtonType type;
-  final ClickableOnClickCallback? onClick;
-  final ClickableOnPressCallback? onPress;
-  final ClickableOnReleaseCallback? onRelease;
-  final ClickableOnStateChangeCallback? onStateChange;
+  final ClickableOnClickedCallback? onClicked;
+  final ClickableOnPressedCallback? onPressed;
+  final ClickableOnReleasedCallback? onReleased;
+  final ClickableOnStateChangedCallback? onStateChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +45,10 @@ class LabelButton extends StatelessWidget {
     };
 
     return buttonFactory(
-      onClick: onClick,
-      onPress: onPress,
-      onRelease: onRelease,
-      onStateChange: onStateChange,
+      onClicked: onClicked,
+      onPressed: onPressed,
+      onReleased: onReleased,
+      onStateChanged: onStateChanged,
       child: Center(
         child: Text(
           label,

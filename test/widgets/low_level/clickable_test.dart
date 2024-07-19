@@ -9,13 +9,13 @@ import '../../fixtures.dart';
 import 'clickable_test.mocks.dart';
 
 abstract class ClickableCallbacks {
-  void onClick();
+  void onClicked();
 
-  void onPress();
+  void onPressed();
 
-  void onRelease();
+  void onReleased();
 
-  void onStateChange(bool isPressed);
+  void onStateChanged(bool isPressed);
 }
 
 void main() {
@@ -31,12 +31,12 @@ void main() {
   );
 
   testWidgets(
-    'Clickable calls onClick when clicked',
+    'Clickable calls onClicked when clicked',
     (WidgetTester tester) async {
-      final onClick = MockClickableCallbacks().onClick;
+      final onClicked = MockClickableCallbacks().onClicked;
 
       await tester.pumpWidget(Clickable(
-        onClick: onClick,
+        onClicked: onClicked,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -45,17 +45,17 @@ void main() {
 
       await tester.tap(find.byType(Clickable));
 
-      verify(onClick()).called(1);
+      verify(onClicked()).called(1);
     },
   );
 
   testWidgets(
-    'Clickable calls onPress when pressed',
+    'Clickable calls onPressed when pressed',
     (WidgetTester tester) async {
-      final onPress = MockClickableCallbacks().onPress;
+      final onPressed = MockClickableCallbacks().onPressed;
 
       await tester.pumpWidget(Clickable(
-        onPress: onPress,
+        onPressed: onPressed,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -64,17 +64,17 @@ void main() {
 
       await tester.press(find.byType(Clickable));
 
-      verify(onPress()).called(1);
+      verify(onPressed()).called(1);
     },
   );
 
   testWidgets(
-    'Clickable calls onRelease when released',
+    'Clickable calls onReleased when released',
     (WidgetTester tester) async {
-      final onRelease = MockClickableCallbacks().onRelease;
+      final onReleased = MockClickableCallbacks().onReleased;
 
       await tester.pumpWidget(Clickable(
-        onRelease: onRelease,
+        onReleased: onReleased,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -83,17 +83,17 @@ void main() {
 
       await tester.tap(find.byType(Clickable));
 
-      verify(onRelease()).called(1);
+      verify(onReleased()).called(1);
     },
   );
 
   testWidgets(
-    'Clickable calls onStateChange when pressed',
+    'Clickable calls onStateChanged when pressed',
     (WidgetTester tester) async {
-      final onStateChange = MockClickableCallbacks().onStateChange;
+      final onStateChanged = MockClickableCallbacks().onStateChanged;
 
       await tester.pumpWidget(Clickable(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -102,17 +102,17 @@ void main() {
 
       await tester.press(find.byType(Clickable));
 
-      verify(onStateChange(true)).called(1);
+      verify(onStateChanged(true)).called(1);
     },
   );
 
   testWidgets(
-    'Clickable calls onStateChange when released',
+    'Clickable calls onStateChanged when released',
     (WidgetTester tester) async {
-      final onStateChange = MockClickableCallbacks().onStateChange;
+      final onStateChanged = MockClickableCallbacks().onStateChanged;
 
       await tester.pumpWidget(Clickable(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -121,17 +121,17 @@ void main() {
 
       await tester.tap(find.byType(Clickable));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 
   testWidgets(
-    'Clickable calls onStateChange when cancelled',
+    'Clickable calls onStateChanged when cancelled',
     (WidgetTester tester) async {
-      final onStateChange = MockClickableCallbacks().onStateChange;
+      final onStateChanged = MockClickableCallbacks().onStateChanged;
 
       await tester.pumpWidget(Clickable(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -140,7 +140,7 @@ void main() {
 
       await tester.drag(find.byType(Clickable), const Offset(0.0, 100.0));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 }

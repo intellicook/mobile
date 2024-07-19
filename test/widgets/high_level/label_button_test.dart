@@ -8,13 +8,13 @@ import '../../fixtures.dart';
 import 'label_button_test.mocks.dart';
 
 abstract class LabelButtonCallbacks {
-  void onClick();
+  void onClicked();
 
-  void onPress();
+  void onPressed();
 
-  void onRelease();
+  void onReleased();
 
-  void onStateChange(bool isPressed);
+  void onStateChanged(bool isPressed);
 }
 
 const label = 'Label';
@@ -40,110 +40,110 @@ void main() {
   }
 
   testWidgets(
-    'Label button calls onClick when clicked',
+    'Label button calls onClicked when clicked',
     (WidgetTester tester) async {
-      final onClick = MockLabelButtonCallbacks().onClick;
+      final onClicked = MockLabelButtonCallbacks().onClicked;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onClick: onClick,
+          onClicked: onClicked,
         ),
       ));
 
       await tester.tap(find.text(label));
 
-      verify(onClick()).called(1);
+      verify(onClicked()).called(1);
     },
   );
 
   testWidgets(
-    'Label button calls onPress when pressed',
+    'Label button calls onPressed when pressed',
     (WidgetTester tester) async {
-      final onPress = MockLabelButtonCallbacks().onPress;
+      final onPressed = MockLabelButtonCallbacks().onPressed;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onPress: onPress,
+          onPressed: onPressed,
         ),
       ));
 
       await tester.press(find.text(label));
 
-      verify(onPress()).called(1);
+      verify(onPressed()).called(1);
     },
   );
 
   testWidgets(
-    'Label button calls onRelease when released',
+    'Label button calls onReleased when released',
     (WidgetTester tester) async {
-      final onRelease = MockLabelButtonCallbacks().onRelease;
+      final onReleased = MockLabelButtonCallbacks().onReleased;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onRelease: onRelease,
+          onReleased: onReleased,
         ),
       ));
 
       await tester.tap(find.text(label));
 
-      verify(onRelease()).called(1);
+      verify(onReleased()).called(1);
     },
   );
 
   testWidgets(
-    'Label button calls onStateChange when pressed',
+    'Label button calls onStateChanged when pressed',
     (WidgetTester tester) async {
-      final onStateChange = MockLabelButtonCallbacks().onStateChange;
+      final onStateChanged = MockLabelButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onStateChange: onStateChange,
+          onStateChanged: onStateChanged,
         ),
       ));
 
       await tester.press(find.text(label));
 
-      verify(onStateChange(true)).called(1);
+      verify(onStateChanged(true)).called(1);
     },
   );
 
   testWidgets(
-    'Label button calls onStateChange when released',
+    'Label button calls onStateChanged when released',
     (WidgetTester tester) async {
-      final onStateChange = MockLabelButtonCallbacks().onStateChange;
+      final onStateChanged = MockLabelButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onStateChange: onStateChange,
+          onStateChanged: onStateChanged,
         ),
       ));
 
       await tester.tap(find.text(label));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 
   testWidgets(
-    'Label button calls onStateChange when cancelled',
+    'Label button calls onStateChanged when cancelled',
     (WidgetTester tester) async {
-      final onStateChange = MockLabelButtonCallbacks().onStateChange;
+      final onStateChanged = MockLabelButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(MockMaterialApp(
         child: LabelButton(
           label: label,
-          onStateChange: onStateChange,
+          onStateChanged: onStateChanged,
         ),
       ));
 
       await tester.drag(find.text(label), const Offset(0.0, 100.0));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 }

@@ -26,36 +26,36 @@ import 'clickable_test.dart' as _i2;
 class MockClickableCallbacks extends _i1.Mock
     implements _i2.ClickableCallbacks {
   @override
-  void onClick() => super.noSuchMethod(
+  void onClicked() => super.noSuchMethod(
         Invocation.method(
-          #onClick,
+          #onClicked,
           [],
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  void onPress() => super.noSuchMethod(
+  void onPressed() => super.noSuchMethod(
         Invocation.method(
-          #onPress,
+          #onPressed,
           [],
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  void onRelease() => super.noSuchMethod(
+  void onReleased() => super.noSuchMethod(
         Invocation.method(
-          #onRelease,
+          #onReleased,
           [],
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  void onStateChange(bool? isPressed) => super.noSuchMethod(
+  void onStateChanged(bool? isPressed) => super.noSuchMethod(
         Invocation.method(
-          #onStateChange,
+          #onStateChanged,
           [isPressed],
         ),
         returnValueForMissingStub: null,

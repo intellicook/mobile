@@ -11,13 +11,13 @@ import '../../fixtures.dart';
 import 'button_test.mocks.dart';
 
 abstract class ButtonCallbacks {
-  void onClick();
+  void onClicked();
 
-  void onPress();
+  void onPressed();
 
-  void onRelease();
+  void onReleased();
 
-  void onStateChange(bool isPressed);
+  void onStateChanged(bool isPressed);
 }
 
 void main() {
@@ -238,12 +238,12 @@ void main() {
   );
 
   testWidgets(
-    'Button calls onClick when clicked',
+    'Button calls onClicked when clicked',
     (WidgetTester tester) async {
-      final onClick = MockButtonCallbacks().onClick;
+      final onClicked = MockButtonCallbacks().onClicked;
 
       await tester.pumpWidget(Button(
-        onClick: onClick,
+        onClicked: onClicked,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -252,17 +252,17 @@ void main() {
 
       await tester.tap(find.byType(Button));
 
-      verify(onClick()).called(1);
+      verify(onClicked()).called(1);
     },
   );
 
   testWidgets(
-    'Button calls onPress when pressed',
+    'Button calls onPressed when pressed',
     (WidgetTester tester) async {
-      final onPress = MockButtonCallbacks().onPress;
+      final onPressed = MockButtonCallbacks().onPressed;
 
       await tester.pumpWidget(Button(
-        onPress: onPress,
+        onPressed: onPressed,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -271,17 +271,17 @@ void main() {
 
       await tester.press(find.byType(Button));
 
-      verify(onPress()).called(1);
+      verify(onPressed()).called(1);
     },
   );
 
   testWidgets(
-    'Button calls onRelease when released',
+    'Button calls onReleased when released',
     (WidgetTester tester) async {
-      final onRelease = MockButtonCallbacks().onRelease;
+      final onReleased = MockButtonCallbacks().onReleased;
 
       await tester.pumpWidget(Button(
-        onRelease: onRelease,
+        onReleased: onReleased,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -290,17 +290,17 @@ void main() {
 
       await tester.tap(find.byType(Button));
 
-      verify(onRelease()).called(1);
+      verify(onReleased()).called(1);
     },
   );
 
   testWidgets(
-    'Button calls onStateChange when pressed',
+    'Button calls onStateChanged when pressed',
     (WidgetTester tester) async {
-      final onStateChange = MockButtonCallbacks().onStateChange;
+      final onStateChanged = MockButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(Button(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -309,17 +309,17 @@ void main() {
 
       await tester.press(find.byType(Button));
 
-      verify(onStateChange(true)).called(1);
+      verify(onStateChanged(true)).called(1);
     },
   );
 
   testWidgets(
-    'Button calls onStateChange when released',
+    'Button calls onStateChanged when released',
     (WidgetTester tester) async {
-      final onStateChange = MockButtonCallbacks().onStateChange;
+      final onStateChanged = MockButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(Button(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -328,17 +328,17 @@ void main() {
 
       await tester.tap(find.byType(Button));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 
   testWidgets(
-    'Button calls onStateChange when cancelled',
+    'Button calls onStateChanged when cancelled',
     (WidgetTester tester) async {
-      final onStateChange = MockButtonCallbacks().onStateChange;
+      final onStateChanged = MockButtonCallbacks().onStateChanged;
 
       await tester.pumpWidget(Button(
-        onStateChange: onStateChange,
+        onStateChanged: onStateChanged,
         child: const ColoredBox(
           color: Colors.red,
           child: SizedBox.square(dimension: 100.0),
@@ -347,7 +347,7 @@ void main() {
 
       await tester.drag(find.byType(Button), const Offset(0.0, 100.0));
 
-      verify(onStateChange(false)).called(1);
+      verify(onStateChanged(false)).called(1);
     },
   );
 }

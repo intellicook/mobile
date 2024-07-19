@@ -7,10 +7,10 @@ import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 class Button extends StatefulWidget {
   const Button({
     super.key,
-    this.onClick,
-    this.onPress,
-    this.onRelease,
-    this.onStateChange,
+    this.onClicked,
+    this.onPressed,
+    this.onReleased,
+    this.onStateChanged,
     this.pressedColor,
     this.releasedColor,
     this.pressedBorder,
@@ -23,10 +23,10 @@ class Button extends StatefulWidget {
 
   Button.primary({
     super.key,
-    this.onClick,
-    this.onPress,
-    this.onRelease,
-    this.onStateChange,
+    this.onClicked,
+    this.onPressed,
+    this.onReleased,
+    this.onStateChanged,
     this.pressedBorder,
     this.releasedBorder,
     this.constraints = defaultConstraints,
@@ -40,10 +40,10 @@ class Button extends StatefulWidget {
 
   Button.secondary({
     super.key,
-    this.onClick,
-    this.onPress,
-    this.onRelease,
-    this.onStateChange,
+    this.onClicked,
+    this.onPressed,
+    this.onReleased,
+    this.onStateChanged,
     this.pressedColor,
     this.releasedColor,
     this.constraints = defaultConstraints,
@@ -79,10 +79,10 @@ class Button extends StatefulWidget {
     curve: Curves.easeOut,
   );
 
-  final ClickableOnClickCallback? onClick;
-  final ClickableOnPressCallback? onPress;
-  final ClickableOnReleaseCallback? onRelease;
-  final ClickableOnStateChangeCallback? onStateChange;
+  final ClickableOnClickedCallback? onClicked;
+  final ClickableOnPressedCallback? onPressed;
+  final ClickableOnReleasedCallback? onReleased;
+  final ClickableOnStateChangedCallback? onStateChanged;
   final Color? pressedColor;
   final Color? releasedColor;
   final BoxBorder? pressedBorder;
@@ -109,14 +109,14 @@ class _ButtonState extends State<Button> {
         theme.colorScheme.surfaceContainerLowest.withOpacity(opacity);
 
     return Clickable(
-      onClick: widget.onClick,
-      onPress: widget.onPress,
-      onRelease: widget.onRelease,
-      onStateChange: (bool isPressed) {
+      onClicked: widget.onClicked,
+      onPressed: widget.onPressed,
+      onReleased: widget.onReleased,
+      onStateChanged: (bool isPressed) {
         setState(() {
           this.isPressed = isPressed;
         });
-        widget.onStateChange?.call(isPressed);
+        widget.onStateChanged?.call(isPressed);
       },
       child: Elevated.low(
         constraints: widget.constraints,

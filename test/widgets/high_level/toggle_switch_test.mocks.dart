@@ -26,10 +26,10 @@ import 'toggle_switch_test.dart' as _i2;
 class MockToggleSwitchCallbacks extends _i1.Mock
     implements _i2.ToggleSwitchCallbacks {
   @override
-  void onChanged(dynamic bool) => super.noSuchMethod(
+  void onChanged(bool? value) => super.noSuchMethod(
         Invocation.method(
           #onChanged,
-          [bool],
+          [value],
         ),
         returnValueForMissingStub: null,
       );
