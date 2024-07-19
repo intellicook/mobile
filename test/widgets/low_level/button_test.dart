@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 import 'package:intellicook_mobile/widgets/low_level/button.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 import 'package:mockito/annotations.dart';
@@ -131,7 +130,7 @@ void main() {
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
-        IntelliCookTheme.primaryPalette.getColor(Button.releasedPaletteTone),
+        IntelliCookTheme.primaryColor,
       );
       expect(elevated.border, releasedBorder);
       expect(elevated.constraints, Button.defaultConstraints);
@@ -166,7 +165,7 @@ void main() {
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
       expect(
         elevated.color,
-        IntelliCookTheme.primaryPalette.getColor(Button.pressedPaletteTone),
+        IntelliCookTheme.primaryColorDark,
       );
       expect(elevated.border, pressedBorder);
       expect(elevated.constraints, Button.defaultConstraints);
@@ -195,8 +194,7 @@ void main() {
       expect(
         elevated.border,
         Border.all(
-          color: IntelliCookTheme.primaryPalette
-              .getColor(Button.releasedPaletteTone),
+          color: IntelliCookTheme.primaryColor,
           width: Button.secondaryBorderWidth,
         ),
       );
@@ -229,8 +227,7 @@ void main() {
       expect(
         elevated.border,
         Border.all(
-          color: IntelliCookTheme.primaryPalette
-              .getColor(Button.pressedPaletteTone),
+          color: IntelliCookTheme.primaryColorDark,
           width: Button.secondaryBorderWidth,
         ),
       );

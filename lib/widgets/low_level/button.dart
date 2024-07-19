@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/theme.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
@@ -36,10 +35,8 @@ class Button extends StatefulWidget {
     Color? pressedColor,
     Color? releasedColor,
     this.child,
-  })  : pressedColor = pressedColor ??
-            IntelliCookTheme.primaryPalette.getColor(pressedPaletteTone),
-        releasedColor = releasedColor ??
-            IntelliCookTheme.primaryPalette.getColor(releasedPaletteTone);
+  })  : pressedColor = pressedColor ?? IntelliCookTheme.primaryColorDark,
+        releasedColor = releasedColor ?? IntelliCookTheme.primaryColor;
 
   Button.secondary({
     super.key,
@@ -57,21 +54,17 @@ class Button extends StatefulWidget {
     this.child,
   })  : pressedBorder = pressedBorder ??
             Border.all(
-              color:
-                  IntelliCookTheme.primaryPalette.getColor(pressedPaletteTone),
+              color: IntelliCookTheme.primaryColorDark,
               width: secondaryBorderWidth,
             ),
         releasedBorder = releasedBorder ??
             Border.all(
-              color:
-                  IntelliCookTheme.primaryPalette.getColor(releasedPaletteTone),
+              color: IntelliCookTheme.primaryColor,
               width: secondaryBorderWidth,
             );
 
   static const minHeight = 40.0;
   static const minWidth = 50.0;
-  static const pressedPaletteTone = 70;
-  static const releasedPaletteTone = 80;
   static const secondaryBorderWidth = 1.5;
   static const defaultConstraints = BoxConstraints(
     minHeight: Button.minHeight,
