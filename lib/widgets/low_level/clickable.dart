@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 
-typedef ClickableOnClickCallback = void Function();
+typedef ClickableOnClickedCallback = VoidCallback;
 
-typedef ClickableOnPressCallback = void Function();
+typedef ClickableOnPressedCallback = VoidCallback;
 
-typedef ClickableOnReleaseCallback = void Function();
+typedef ClickableOnReleasedCallback = VoidCallback;
 
-typedef ClickableOnStateChangeCallback = void Function(bool);
+typedef ClickableOnStateChangedCallback = ValueChanged<bool>;
 
 class Clickable extends StatefulWidget {
   const Clickable({
     super.key,
-    this.onClick,
-    this.onPress,
-    this.onRelease,
-    this.onStateChange,
+    this.onClicked,
+    this.onPressed,
+    this.onReleased,
+    this.onStateChanged,
     this.child,
   });
 
-  final ClickableOnClickCallback? onClick;
-  final ClickableOnPressCallback? onPress;
-  final ClickableOnReleaseCallback? onRelease;
-  final ClickableOnStateChangeCallback? onStateChange;
+  final ClickableOnClickedCallback? onClicked;
+  final ClickableOnPressedCallback? onPressed;
+  final ClickableOnReleasedCallback? onReleased;
+  final ClickableOnStateChangedCallback? onStateChanged;
   final Widget? child;
 
   @override
@@ -43,8 +43,8 @@ class _ClickableState extends State<Clickable> {
           isPressed = true;
         });
 
-        widget.onStateChange?.call(true);
-        widget.onPress?.call();
+        widget.onStateChanged?.call(true);
+        widget.onPressed?.call();
       },
       onPointerUp: (PointerUpEvent event) {
         if (!isPressed) {
@@ -55,9 +55,9 @@ class _ClickableState extends State<Clickable> {
           isPressed = false;
         });
 
-        widget.onStateChange?.call(false);
-        widget.onRelease?.call();
-        widget.onClick?.call();
+        widget.onStateChanged?.call(false);
+        widget.onReleased?.call();
+        widget.onClicked?.call();
       },
       onPointerCancel: (PointerCancelEvent event) {
         if (!isPressed) {
@@ -68,7 +68,7 @@ class _ClickableState extends State<Clickable> {
           isPressed = false;
         });
 
-        widget.onStateChange?.call(false);
+        widget.onStateChanged?.call(false);
       },
       child: widget.child,
     );
