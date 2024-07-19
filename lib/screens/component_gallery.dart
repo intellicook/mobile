@@ -4,28 +4,55 @@ import 'package:intellicook_mobile/widgets/high_level/background.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/toggle_switch.dart';
 
-class ComponentGallery extends StatelessWidget {
+class ComponentGallery extends StatefulWidget {
   const ComponentGallery({super.key});
 
-  static const title = 'Component Gallery';
-  static final components = [
-    (BuildContext context) => const LabelButton(
-          label: 'Primary Button',
-          type: LabelButtonType.primary,
-        ),
-    (BuildContext context) => const LabelButton(
-          label: 'Secondary Button',
-          type: LabelButtonType.secondary,
-        ),
-    (BuildContext context) => const InputField(
-          label: 'Input Field',
-          hint: 'Type something...',
-        ),
-  ];
+  @override
+  State<ComponentGallery> createState() => _ComponentGalleryState();
+}
+
+class _ComponentGalleryState extends State<ComponentGallery> {
+  bool inputsEnabled = true;
 
   @override
   Widget build(BuildContext context) {
+    const title = 'Component Gallery';
+    final components = [
+      (BuildContext context) =>
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+            const Text('Inputs Enabled'),
+            ToggleSwitch(
+              value: inputsEnabled,
+              onChanged: (value) {
+                setState(() {
+                  inputsEnabled = value;
+                });
+              },
+            )
+          ]),
+      (BuildContext context) => const LabelButton(
+            label: 'Primary Button',
+            type: LabelButtonType.primary,
+          ),
+      (BuildContext context) => const LabelButton(
+            label: 'Secondary Button',
+            type: LabelButtonType.secondary,
+          ),
+      (BuildContext context) => InputField(
+            label: 'Input Field',
+            hint: 'Type something...',
+            enabled: inputsEnabled,
+          ),
+      (BuildContext context) => Align(
+            alignment: Alignment.topRight,
+            child: ToggleSwitch(
+              enabled: inputsEnabled,
+            ),
+          ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
