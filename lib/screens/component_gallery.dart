@@ -3,8 +3,8 @@ import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/high_level/background.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
+import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
-import 'package:intellicook_mobile/widgets/high_level/toggle_switch.dart';
 
 class ComponentGallery extends StatefulWidget {
   const ComponentGallery({super.key});
@@ -20,18 +20,11 @@ class _ComponentGalleryState extends State<ComponentGallery> {
   Widget build(BuildContext context) {
     const title = 'Component Gallery';
     final components = [
-      (BuildContext context) =>
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-            const Text('Inputs Enabled'),
-            ToggleSwitch(
-              value: inputsEnabled,
-              onChanged: (value) {
-                setState(() {
-                  inputsEnabled = value;
-                });
-              },
-            )
-          ]),
+      (BuildContext context) => LabelToggleSwitch(
+            label: 'Inputs Enabled',
+            value: inputsEnabled,
+            onChanged: (value) => setState(() => inputsEnabled = value),
+          ),
       (BuildContext context) => LabelButton(
             label: 'Primary Button',
             type: LabelButtonType.primary,
@@ -49,7 +42,8 @@ class _ComponentGalleryState extends State<ComponentGallery> {
           ),
       (BuildContext context) => Align(
             alignment: Alignment.topRight,
-            child: ToggleSwitch(
+            child: LabelToggleSwitch(
+              label: 'Toggle Switch',
               enabled: inputsEnabled,
             ),
           ),

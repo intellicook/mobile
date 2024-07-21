@@ -1,4 +1,3 @@
-import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:intellicook_mobile/constants/shadow.dart';
@@ -40,7 +39,7 @@ class Elevated extends StatelessWidget {
     this.constraints,
     this.clipBehavior = defaultClipBehavior,
     this.animatedElevatedArgs,
-    SmoothBorderRadius? borderRadius,
+    BorderRadius? borderRadius,
     List<BoxShadow>? shadows,
     bool insetShadow = defaultInsetShadow,
     this.child,
@@ -55,7 +54,7 @@ class Elevated extends StatelessWidget {
     this.constraints,
     this.clipBehavior = defaultClipBehavior,
     this.animatedElevatedArgs,
-    SmoothBorderRadius? borderRadius,
+    BorderRadius? borderRadius,
     List<BoxShadow>? shadows,
     bool insetShadow = defaultInsetShadow,
     this.child,
@@ -71,7 +70,7 @@ class Elevated extends StatelessWidget {
   static final highBorderRadius = SmoothBorderRadiusConsts.l;
 
   final BoxBorder? border;
-  final SmoothBorderRadius? borderRadius;
+  final BorderRadius? borderRadius;
   final List<BoxShadow>? shadows;
   final EdgeInsets? padding;
   final Color? color;
