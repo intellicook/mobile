@@ -11,10 +11,13 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.onReleased,
     this.onStateChanged,
+    this.enabled = defaultEnabled,
     this.pressedColor,
     this.releasedColor,
+    this.disabledColor,
     this.pressedBorder,
     this.releasedBorder,
+    this.disabledBorder,
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
@@ -27,13 +30,16 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.onReleased,
     this.onStateChanged,
+    this.enabled = defaultEnabled,
     this.pressedBorder,
     this.releasedBorder,
+    this.disabledBorder,
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
     Color? pressedColor,
     Color? releasedColor,
+    this.disabledColor,
     this.child,
   })  : pressedColor = pressedColor ?? IntelliCookTheme.primaryColorDark,
         releasedColor = releasedColor ?? IntelliCookTheme.primaryColor;
@@ -44,13 +50,16 @@ class Button extends StatefulWidget {
     this.onPressed,
     this.onReleased,
     this.onStateChanged,
+    this.enabled = defaultEnabled,
     this.pressedColor,
     this.releasedColor,
+    this.disabledColor = secondaryDisabledColor,
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
     BoxBorder? pressedBorder,
     BoxBorder? releasedBorder,
+    this.disabledBorder,
     this.child,
   })  : pressedBorder = pressedBorder ??
             Border.all(
@@ -63,8 +72,10 @@ class Button extends StatefulWidget {
               width: secondaryBorderWidth,
             );
 
+  static const defaultEnabled = true;
   static const minHeight = 40.0;
   static const minWidth = 50.0;
+  static const secondaryDisabledColor = Colors.transparent;
   static const secondaryBorderWidth = 1.5;
   static const defaultConstraints = BoxConstraints(
     minHeight: Button.minHeight,
@@ -83,10 +94,13 @@ class Button extends StatefulWidget {
   final ClickableOnPressedCallback? onPressed;
   final ClickableOnReleasedCallback? onReleased;
   final ClickableOnStateChangedCallback? onStateChanged;
+  final bool enabled;
   final Color? pressedColor;
   final Color? releasedColor;
+  final Color? disabledColor;
   final BoxBorder? pressedBorder;
   final BoxBorder? releasedBorder;
+  final BoxBorder? disabledBorder;
   final BoxConstraints? constraints;
   final EdgeInsets? padding;
   final AnimatedElevatedArgs? animatedElevatedArgs;
@@ -107,24 +121,42 @@ class _ButtonState extends State<Button> {
         theme.colorScheme.surfaceContainerLow.withOpacity(opacity);
     final releasedColor = widget.releasedColor ??
         theme.colorScheme.surfaceContainerLowest.withOpacity(opacity);
+    final disabledColor = widget.disabledColor ?? theme.disabledColor;
+    final disabledBorder = widget.disabledBorder ??
+        (widget.releasedBorder == null
+            ? null
+            : Border.all(
+                color: theme.disabledColor,
+                width: Button.secondaryBorderWidth,
+              ));
 
     return Clickable(
-      onClicked: widget.onClicked,
-      onPressed: widget.onPressed,
-      onReleased: widget.onReleased,
-      onStateChanged: (bool isPressed) {
-        setState(() {
-          this.isPressed = isPressed;
-        });
-        widget.onStateChanged?.call(isPressed);
-      },
+      onClicked: widget.enabled ? widget.onClicked : null,
+      onPressed: widget.enabled ? widget.onPressed : null,
+      onReleased: widget.enabled ? widget.onReleased : null,
+      onStateChanged: widget.enabled
+          ? (bool isPressed) {
+              setState(() {
+                this.isPressed = isPressed;
+              });
+              widget.onStateChanged?.call(isPressed);
+            }
+          : null,
       child: Elevated.low(
         constraints: widget.constraints,
         padding: widget.padding,
-        color: isPressed ? pressedColor : releasedColor,
-        border: isPressed ? widget.pressedBorder : widget.releasedBorder,
+        color: widget.enabled
+            ? isPressed
+                ? pressedColor
+                : releasedColor
+            : disabledColor,
+        border: widget.enabled
+            ? isPressed
+                ? widget.pressedBorder
+                : widget.releasedBorder
+            : disabledBorder,
         animatedElevatedArgs: widget.animatedElevatedArgs,
-        insetShadow: isPressed,
+        insetShadow: widget.enabled && isPressed,
         child: widget.child,
       ),
     );

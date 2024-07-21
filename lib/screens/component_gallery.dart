@@ -32,13 +32,15 @@ class _ComponentGalleryState extends State<ComponentGallery> {
               },
             )
           ]),
-      (BuildContext context) => const LabelButton(
+      (BuildContext context) => LabelButton(
             label: 'Primary Button',
             type: LabelButtonType.primary,
+            enabled: inputsEnabled,
           ),
-      (BuildContext context) => const LabelButton(
+      (BuildContext context) => LabelButton(
             label: 'Secondary Button',
             type: LabelButtonType.secondary,
+            enabled: inputsEnabled,
           ),
       (BuildContext context) => InputField(
             label: 'Input Field',

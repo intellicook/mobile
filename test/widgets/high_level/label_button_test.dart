@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
+import 'package:intellicook_mobile/widgets/low_level/button.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -35,6 +36,38 @@ void main() {
         ));
 
         expect(find.text(label), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Label button shows label with $type type and arguments',
+      (WidgetTester tester) async {
+        const enabled = false;
+        final onClicked = MockLabelButtonCallbacks().onClicked;
+        final onPressed = MockLabelButtonCallbacks().onPressed;
+        final onReleased = MockLabelButtonCallbacks().onReleased;
+        final onStateChanged = MockLabelButtonCallbacks().onStateChanged;
+
+        await tester.pumpWidget(MockMaterialApp(
+          child: LabelButton(
+            label: label,
+            type: type,
+            enabled: enabled,
+            onClicked: onClicked,
+            onPressed: onPressed,
+            onReleased: onReleased,
+            onStateChanged: onStateChanged,
+          ),
+        ));
+
+        expect(find.text(label), findsOneWidget);
+
+        final button = tester.widget<Button>(find.byType(Button));
+        expect(button.enabled, enabled);
+        expect(button.onClicked, onClicked);
+        expect(button.onPressed, onPressed);
+        expect(button.onReleased, onReleased);
+        expect(button.onStateChanged, onStateChanged);
       },
     );
   }
