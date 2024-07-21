@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Switch;
 import 'package:intellicook_mobile/theme.dart';
+import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.dart';
 
 class ToggleSwitch extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
         return IntelliCookTheme.primaryColor;
       }
 
-      return null;
+      return theme.colorScheme.surfaceContainerLowest.withOpacity(0.5);
     });
     final trackOutlineWidth = WidgetStateProperty.all(1.5);
 
@@ -75,13 +76,31 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
       false => null,
     };
 
-    return Switch(
-      value: value,
-      onChanged: onChanged,
-      trackColor: trackColor,
-      trackOutlineWidth: trackOutlineWidth,
-      thumbColor: thumbColor,
-      splashRadius: 0,
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+          child: Elevated.low(
+            padding: EdgeInsets.zero,
+            shadows: widget.enabled ? null : [],
+            animatedElevatedArgs: const AnimatedElevatedArgs(
+              duration: Duration(milliseconds: 80),
+              curve: Curves.easeOut,
+            ),
+            borderRadius: BorderRadius.circular(16.0),
+            // Dimensions from switch material 3 default config
+            child: const SizedBox(height: 32.0, width: 52.0),
+          ),
+        ),
+        Switch(
+          value: value,
+          onChanged: onChanged,
+          trackColor: trackColor,
+          trackOutlineWidth: trackOutlineWidth,
+          thumbColor: thumbColor,
+          splashRadius: 0,
+        )
+      ],
     );
   }
 }
