@@ -196,9 +196,6 @@ void main() {
   testWidgets(
     'Primary button shows child with defaults when disabled',
     (WidgetTester tester) async {
-      final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
-
       await tester.pumpWidget(MockMaterialApp(
         child: Button.primary(
           enabled: false,
@@ -209,7 +206,7 @@ void main() {
       expect(find.text(TextFixture.text), findsOneWidget);
 
       final elevated = tester.widget<Elevated>(find.byType(Elevated));
-      expect(elevated.color, theme.disabledColor);
+      expect(elevated.color, Colors.black12);
       expect(elevated.border, null);
       expect(elevated.constraints, Button.defaultConstraints);
       expect(elevated.padding, Button.defaultPadding);

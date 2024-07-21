@@ -121,7 +121,10 @@ class _ButtonState extends State<Button> {
         theme.colorScheme.surfaceContainerLow.withOpacity(opacity);
     final releasedColor = widget.releasedColor ??
         theme.colorScheme.surfaceContainerLowest.withOpacity(opacity);
-    final disabledColor = widget.disabledColor ?? theme.disabledColor;
+    final disabledColor = widget.disabledColor ??
+        (theme.brightness == Brightness.light
+            ? Colors.black12
+            : Colors.white10);
     final disabledBorder = widget.disabledBorder ??
         (widget.releasedBorder == null
             ? null
@@ -157,6 +160,7 @@ class _ButtonState extends State<Button> {
             : disabledBorder,
         animatedElevatedArgs: widget.animatedElevatedArgs,
         insetShadow: widget.enabled && isPressed,
+        shadows: widget.enabled ? null : [],
         child: widget.child,
       ),
     );
