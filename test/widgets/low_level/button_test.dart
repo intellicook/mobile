@@ -271,7 +271,10 @@ void main() {
     'Secondary button shows child with defaults when disabled',
     (WidgetTester tester) async {
       final context = MockBuildContext();
-      final theme = IntelliCookTheme.theme(context, Brightness.light);
+      final theme = IntelliCookTheme.theme(
+        context,
+        MockMaterialApp.defaultBrightness,
+      );
 
       await tester.pumpWidget(MockMaterialApp(
         child: Button.secondary(

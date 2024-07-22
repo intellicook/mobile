@@ -40,6 +40,8 @@ dependencies:
   material_color_utilities: ^0.8.0
   flutter_inset_shadow: ^2.0.3
   control_style: ^0.1.0
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,9 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   build_runner: ^2.4.11
   mockito: ^5.4.4
+  riverpod_generator: ^2.4.0
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
