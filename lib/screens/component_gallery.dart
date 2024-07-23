@@ -5,6 +5,7 @@ import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/selection.dart';
 
 class ComponentGallery extends StatefulWidget {
   const ComponentGallery({super.key});
@@ -47,6 +48,13 @@ class _ComponentGalleryState extends State<ComponentGallery> {
               enabled: inputsEnabled,
             ),
           ),
+      (BuildContext context) => Selection(
+            buttons: ['Selection 1', 'Selection 2', 'Last Selection']
+                .map<SelectionButton<String>>((label) {
+              return SelectionButton(value: label, label: Text(label));
+            }).toList(),
+            selected: const {'Selection 1'},
+          )
     ];
 
     return Scaffold(
