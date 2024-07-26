@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/high_level/background.dart';
+import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
-import 'package:intellicook_mobile/widgets/high_level/selection.dart';
 
 class ComponentGallery extends StatefulWidget {
   const ComponentGallery({super.key});
@@ -48,13 +48,23 @@ class _ComponentGalleryState extends State<ComponentGallery> {
               enabled: inputsEnabled,
             ),
           ),
-      (BuildContext context) => Selection(
-            buttons: ['Selection 1', 'Selection 2', 'Last Selection']
-                .map<SelectionButton<String>>((label) {
-              return SelectionButton(value: label, label: Text(label));
-            }).toList(),
-            selected: const {'Selection 1'},
-          )
+      (BuildContext context) => const Dropdown(
+            label: 'Dropdown',
+            entries: [
+              DropdownEntry<int>(
+                value: 1,
+                label: 'Option 1',
+              ),
+              DropdownEntry<int>(
+                value: 2,
+                label: 'Option 2',
+              ),
+              DropdownEntry<int>(
+                value: 3,
+                label: 'Option 3',
+              ),
+            ],
+          ),
     ];
 
     return Scaffold(

@@ -88,8 +88,8 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
               curve: Curves.easeOut,
             ),
             borderRadius: BorderRadius.circular(16.0),
-            // Dimensions from switch material 3 default config
             child: const SizedBox(height: 32.0, width: 52.0),
+            // Dimensions from switch material 3 default config
           ),
         ),
         Switch(
