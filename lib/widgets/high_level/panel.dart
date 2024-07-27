@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
 
@@ -21,8 +22,9 @@ class Panel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final color =
-        this.color ?? theme.colorScheme.surfaceContainerLowest.withOpacity(0.5);
+    final color = this.color ??
+        theme.colorScheme.surfaceContainerLowest
+            .withOpacity(OpacityConsts.high);
 
     return Elevated.high(
       color: color,

@@ -1,6 +1,7 @@
 import 'package:control_style/control_style.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
+import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
@@ -49,7 +50,7 @@ class _InputFieldState extends State<InputField> {
     // Colors
 
     const filled = true;
-    const colorOpacity = 0.5;
+    const colorOpacity = OpacityConsts.low;
     final fillColor =
         theme.colorScheme.surfaceContainerLow.withOpacity(colorOpacity);
     final focusColor =

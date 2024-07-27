@@ -48,22 +48,27 @@ class _ComponentGalleryState extends State<ComponentGallery> {
               enabled: inputsEnabled,
             ),
           ),
-      (BuildContext context) => const Dropdown(
-            label: 'Dropdown',
-            entries: [
-              DropdownEntry<int>(
-                value: 1,
-                label: 'Option 1',
-              ),
-              DropdownEntry<int>(
-                value: 2,
-                label: 'Option 2',
-              ),
-              DropdownEntry<int>(
-                value: 3,
-                label: 'Option 3',
-              ),
-            ],
+      (BuildContext context) => Align(
+            alignment: Alignment.topRight,
+            child: Dropdown(
+              width: 160,
+              label: 'Dropdown',
+              enabled: inputsEnabled,
+              entries: const [
+                DropdownEntry<int>(
+                  value: 1,
+                  label: 'Option 1',
+                ),
+                DropdownEntry<int>(
+                  value: 2,
+                  label: 'Option 2',
+                ),
+                DropdownEntry<int>(
+                  value: 3,
+                  label: 'Option 3',
+                ),
+              ],
+            ),
           ),
     ];
 

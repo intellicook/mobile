@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
@@ -116,7 +117,7 @@ class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const opacity = 0.5;
+    const opacity = OpacityConsts.low;
     final pressedColor = widget.pressedColor ??
         theme.colorScheme.surfaceContainerLow.withOpacity(opacity);
     final releasedColor = widget.releasedColor ??

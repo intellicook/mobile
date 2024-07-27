@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide Switch;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/toggle_switch.dart';
-import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.dart';
+import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.flutter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

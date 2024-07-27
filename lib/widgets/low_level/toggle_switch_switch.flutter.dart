@@ -2,10 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// Ignore all warnings
-// ignore_for_file: type=lint
-// ignore_for_file: deprecated_member_use
-
 // Copied from Flutter 3.22.2.
 // Modified for:
 // - `  double get pressedThumbRadius => 29.0 / 2;`
