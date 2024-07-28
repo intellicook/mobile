@@ -117,7 +117,7 @@ class _ButtonState extends State<Button> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const opacity = OpacityConsts.low;
+    final opacity = OpacityConsts.low(context);
     final pressedColor = widget.pressedColor ??
         theme.colorScheme.surfaceContainerLow.withOpacity(opacity);
     final releasedColor = widget.releasedColor ??

@@ -24,7 +24,7 @@ class Panel extends StatelessWidget {
     final theme = Theme.of(context);
     final color = this.color ??
         theme.colorScheme.surfaceContainerLowest
-            .withOpacity(OpacityConsts.high);
+            .withOpacity(OpacityConsts.high(context));
 
     return Elevated.high(
       color: color,

@@ -3498,12 +3498,13 @@ class _MenuPanelState extends State<_MenuPanel> {
       child: Elevated.low(
         padding: EdgeInsets.zero,
         color: Theme.of(context).colorScheme.surfaceContainerLowest.withOpacity(
-              OpacityConsts.low,
+              OpacityConsts.low(context),
             ),
         border: Border.all(
           color: IntelliCookTheme.primaryColor,
           width: 1.5,
         ),
+        backgroundBlurred: true,
         child: Padding(
           padding: resolvedPadding,
           child: ScrollConfiguration(
