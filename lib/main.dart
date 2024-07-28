@@ -21,10 +21,7 @@ class IntelliCookApp extends ConsumerWidget {
       title: 'IntelliCook',
       theme: IntelliCookTheme.theme(context, Brightness.light),
       darkTheme: IntelliCookTheme.theme(context, Brightness.dark),
-      themeMode: switch (theme) {
-        AsyncData(:final value) => value.mode,
-        _ => ThemeMode.system,
-      },
+      themeMode: theme.value?.mode ?? ThemeMode.system,
       home: const ComponentGallery(),
     );
   }

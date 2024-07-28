@@ -2,7 +2,7 @@ import 'package:control_style/control_style.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart' hide DropdownMenu, DropdownMenuEntry;
 import 'package:intellicook_mobile/constants/opacity.dart';
-import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
+import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
 import 'package:intellicook_mobile/widgets/low_level/dropdown_dropdown_menu.flutter.dart';
 
 typedef DropdownEntry<T> = DropdownMenuEntry<T>;
@@ -45,8 +45,8 @@ class Dropdown<T> extends StatelessWidget {
     // Colors
 
     const filled = true;
-    final fillColor =
-        theme.colorScheme.surfaceContainerLow.withOpacity(OpacityConsts.low);
+    final fillColor = theme.colorScheme.surfaceContainerLow
+        .withOpacity(OpacityConsts.low(context));
     final labelBackgroundColor = theme.colorScheme.surfaceContainerLow;
 
     // Borders

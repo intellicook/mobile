@@ -48,7 +48,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
       }
 
       return theme.colorScheme.surfaceContainerLowest
-          .withOpacity(OpacityConsts.low);
+          .withOpacity(OpacityConsts.low(context));
     });
     final trackOutlineWidth = WidgetStateProperty.all(1.5);
 

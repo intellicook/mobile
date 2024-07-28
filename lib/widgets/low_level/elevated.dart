@@ -1,7 +1,9 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:intellicook_mobile/constants/shadow.dart';
-import 'package:intellicook_mobile/constants/smooth_border_radius_consts.dart';
+import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 
 class AnimatedElevatedArgs {
@@ -27,6 +29,7 @@ class Elevated extends StatelessWidget {
     this.color,
     this.constraints,
     this.clipBehavior = defaultClipBehavior,
+    this.backgroundBlurred = defaultBackgroundBlurred,
     this.animatedElevatedArgs,
     this.child,
   });
@@ -38,6 +41,7 @@ class Elevated extends StatelessWidget {
     this.color,
     this.constraints,
     this.clipBehavior = defaultClipBehavior,
+    this.backgroundBlurred = defaultBackgroundBlurred,
     this.animatedElevatedArgs,
     BorderRadius? borderRadius,
     List<BoxShadow>? shadows,
@@ -53,6 +57,7 @@ class Elevated extends StatelessWidget {
     this.color,
     this.constraints,
     this.clipBehavior = defaultClipBehavior,
+    this.backgroundBlurred = defaultBackgroundBlurred,
     this.animatedElevatedArgs,
     BorderRadius? borderRadius,
     List<BoxShadow>? shadows,
@@ -64,6 +69,7 @@ class Elevated extends StatelessWidget {
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
   static const defaultInsetShadow = false;
   static const defaultClipBehavior = Clip.antiAlias;
+  static const defaultBackgroundBlurred = false;
   static const lowShadows = ShadowConsts.low;
   static const highShadows = ShadowConsts.high;
   static final lowBorderRadius = SmoothBorderRadiusConsts.s;
@@ -76,16 +82,18 @@ class Elevated extends StatelessWidget {
   final Color? color;
   final BoxConstraints? constraints;
   final Clip clipBehavior;
+  final bool backgroundBlurred;
   final AnimatedElevatedArgs? animatedElevatedArgs;
   final Widget? child;
 
   @override
   Widget build(BuildContext context) {
+    const blur = 16.0;
     final boxDecoration = BoxDecoration(
       color: color,
       border: border,
       borderRadius: borderRadius,
-      boxShadow: shadows,
+      boxShadow: backgroundBlurred ? [] : shadows,
     );
 
     final container = switch (animatedElevatedArgs) {
@@ -107,6 +115,25 @@ class Elevated extends StatelessWidget {
           ),
     };
 
-    return container(child);
+    final backdropFilter = switch (backgroundBlurred) {
+      false => (Widget child) => child,
+      true => (Widget child) => Container(
+            clipBehavior: clipBehavior,
+            decoration: BoxDecoration(
+              borderRadius: borderRadius,
+              boxShadow: shadows,
+            ),
+            constraints: constraints,
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(
+                sigmaX: blur,
+                sigmaY: blur,
+              ),
+              child: child,
+            ),
+          ),
+    };
+
+    return backdropFilter(container(child));
   }
 }
