@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class OpacityConsts {
   static const highLight = 0.5;
   static const lowLight = 0.75;
-  static const highDark = 0.65;
+  static const highDark = 0.85;
   static const lowDark = 0.9;
 
   static double high(BuildContext context) {
