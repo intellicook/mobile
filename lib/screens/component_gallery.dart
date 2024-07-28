@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/widgets/high_level/background.dart';
+import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
@@ -45,6 +46,28 @@ class _ComponentGalleryState extends State<ComponentGallery> {
             child: LabelToggleSwitch(
               label: 'Toggle Switch',
               enabled: inputsEnabled,
+            ),
+          ),
+      (BuildContext context) => Align(
+            alignment: Alignment.topRight,
+            child: Dropdown(
+              width: 160,
+              label: 'Dropdown',
+              enabled: inputsEnabled,
+              entries: const [
+                DropdownEntry<int>(
+                  value: 1,
+                  label: 'Option 1',
+                ),
+                DropdownEntry<int>(
+                  value: 2,
+                  label: 'Option 2',
+                ),
+                DropdownEntry<int>(
+                  value: 3,
+                  label: 'Option 3',
+                ),
+              ],
             ),
           ),
     ];

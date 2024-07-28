@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart' hide Switch;
+import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
-import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.dart';
+import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.flutter.dart';
 
 class ToggleSwitch extends StatefulWidget {
   const ToggleSwitch({
@@ -46,7 +47,8 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
         return IntelliCookTheme.primaryColor;
       }
 
-      return theme.colorScheme.surfaceContainerLowest.withOpacity(0.5);
+      return theme.colorScheme.surfaceContainerLowest
+          .withOpacity(OpacityConsts.low);
     });
     final trackOutlineWidth = WidgetStateProperty.all(1.5);
 
@@ -88,8 +90,8 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
               curve: Curves.easeOut,
             ),
             borderRadius: BorderRadius.circular(16.0),
-            // Dimensions from switch material 3 default config
             child: const SizedBox(height: 32.0, width: 52.0),
+            // Dimensions from switch material 3 default config
           ),
         ),
         Switch(
