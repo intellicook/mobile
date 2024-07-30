@@ -18,6 +18,16 @@ provide more instructions for setting up the project in Android Studio.
 3. Run the [install_hooks.sh](./install_hooks.sh) shell script to install a pre-commit hook which
    can help check if your code will pass the GitHub workflows before you commit.
 
+4. Copy the [.env.development](./.env.development) file or the [.env.example](./.env.example) file
+   to a new file named `.env` and fill in the required values if needed.
+
+5. Run the [build_runner](https://pub.dev/packages/build_runner) to generate the config files (which
+   use the `.env` file) for the app:
+
+    ```bash
+    dart run build_runner build --delete-conflicting-outputs
+    ```
+
 ## Making Code Changes
 
 Important things to note when making code changes:
