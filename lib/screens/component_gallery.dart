@@ -51,7 +51,7 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
           ),
       (BuildContext context) => LabelToggleSwitch(
             label: 'Inputs Enabled',
-            value: inputsEnabled,
+            initialValue: inputsEnabled,
             onChanged: (value) => setState(() => inputsEnabled = value),
           ),
       (BuildContext context) => const Divider(),
