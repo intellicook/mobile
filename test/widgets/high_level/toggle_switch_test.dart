@@ -27,7 +27,7 @@ void main() {
         await tester.pumpWidget(MockMaterialApp(
           child: Material(
             child: ToggleSwitch(
-              value: value,
+              initialValue: value,
               enabled: enabled,
             ),
           ),

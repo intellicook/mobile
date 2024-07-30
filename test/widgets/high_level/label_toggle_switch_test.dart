@@ -46,7 +46,7 @@ void main() {
           child: Material(
             child: LabelToggleSwitch(
               label: label,
-              value: value,
+              initialValue: value,
               enabled: enabled,
             ),
           ),
@@ -54,7 +54,7 @@ void main() {
 
         final toggleSwitch =
             tester.widget<ToggleSwitch>(find.byType(ToggleSwitch));
-        expect(toggleSwitch.value, value);
+        expect(toggleSwitch.initialValue, value);
         expect(toggleSwitch.enabled, enabled);
       },
     );

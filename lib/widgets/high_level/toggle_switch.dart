@@ -7,15 +7,15 @@ import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.flutte
 class ToggleSwitch extends StatefulWidget {
   const ToggleSwitch({
     super.key,
-    this.value = defaultValue,
+    this.initialValue = defaultInitialValue,
     this.onChanged,
     this.enabled = defaultEnabled,
   });
 
-  static const defaultValue = false;
+  static const defaultInitialValue = false;
   static const defaultEnabled = true;
 
-  final bool value;
+  final bool initialValue;
   final ValueChanged<bool>? onChanged;
   final bool enabled;
 
@@ -29,7 +29,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
   @override
   void initState() {
     super.initState();
-    value = widget.value;
+    value = widget.initialValue;
   }
 
   @override

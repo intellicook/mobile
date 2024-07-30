@@ -6,16 +6,16 @@ class LabelToggleSwitch extends StatelessWidget {
   const LabelToggleSwitch({
     super.key,
     required this.label,
-    this.value = defaultValue,
+    this.initialValue = defaultInitialValue,
     this.onChanged,
     this.enabled = defaultEnabled,
   });
 
-  static const defaultValue = false;
+  static const defaultInitialValue = false;
   static const defaultEnabled = true;
 
   final String label;
-  final bool value;
+  final bool initialValue;
   final ValueChanged<bool>? onChanged;
   final bool enabled;
 
@@ -33,7 +33,7 @@ class LabelToggleSwitch extends StatelessWidget {
                     ?.copyWith(color: theme.disabledColor)),
         const SizedBox(width: SpacingConsts.s),
         ToggleSwitch(
-          value: value,
+          initialValue: initialValue,
           onChanged: onChanged,
           enabled: enabled,
         )
