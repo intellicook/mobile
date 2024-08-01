@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/providers/theme.dart';
-import 'package:intellicook_mobile/screens/component_gallery.dart';
+import 'package:intellicook_mobile/screens/app_controller_health.dart';
 import 'package:intellicook_mobile/theme.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class IntelliCookApp extends ConsumerWidget {
       theme: IntelliCookTheme.theme(context, Brightness.light),
       darkTheme: IntelliCookTheme.theme(context, Brightness.dark),
       themeMode: theme.value?.mode ?? ThemeMode.system,
-      home: const ComponentGallery(),
+      home: const AppControllerHealth(),
     );
   }
 }

@@ -1,0 +1,1 @@
+Copy-Item -Path './.hook/pre-commit' -Destination './.git/hooks/pre-commit'
