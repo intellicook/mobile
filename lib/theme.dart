@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
+import 'package:intellicook_mobile/utils/indication.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 class IntelliCookTheme {
@@ -29,6 +30,25 @@ class IntelliCookTheme {
   static const colorTone = 80;
   static const colorLightTone = 90;
 
+  static final indicationColors = BrightnessDependent(
+    light: {
+      Indication.error: Colors.red.shade500,
+      Indication.warning: Colors.orange.shade500,
+      Indication.info: Colors.blue.shade500,
+      Indication.debug: Colors.green.shade500,
+      Indication.success: Colors.green.shade500,
+      Indication.unknown: Colors.grey.shade500,
+    },
+    dark: {
+      Indication.error: Colors.red.shade500,
+      Indication.warning: Colors.orange.shade500,
+      Indication.info: Colors.blue.shade500,
+      Indication.debug: Colors.green.shade500,
+      Indication.success: Colors.green.shade500,
+      Indication.unknown: Colors.grey.shade500,
+    },
+  );
+
   static final primaryPalette = createTonalPalette(primaryColorSeed.value);
   static final primaryColorDark = primaryPalette.getColor(colorDarkTone);
   static final primaryColor = primaryPalette.getColor(colorTone);
@@ -38,6 +58,20 @@ class IntelliCookTheme {
   static final secondaryColorDark = secondaryPalette.getColor(colorDarkTone);
   static final secondaryColor = secondaryPalette.getColor(colorTone);
   static final secondaryColorLight = secondaryPalette.getColor(colorLightTone);
+}
+
+class BrightnessDependent<T> {
+  const BrightnessDependent({
+    required this.light,
+    required this.dark,
+  });
+
+  final T light;
+  final T dark;
+
+  T of(Brightness brightness) {
+    return brightness == Brightness.light ? light : dark;
+  }
 }
 
 TextTheme createTextTheme(
