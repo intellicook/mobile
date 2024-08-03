@@ -1,7 +1,10 @@
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intellicook_mobile/utils/extensions/health_status_model_extensions.dart';
+import 'package:intellicook_mobile/theme.dart';
+import 'package:intellicook_mobile/utils/indication.dart';
+import 'package:intellicook_mobile/widgets/high_level/shimmer.dart';
+import 'package:intellicook_mobile/widgets/high_level/shimmer_text.dart';
 
 class AppControllerHealth extends StatelessWidget {
   const AppControllerHealth({
@@ -13,7 +16,8 @@ class AppControllerHealth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     Widget healthStatusIcon(HealthStatusModel? status) {
       return Icon(
@@ -23,7 +27,16 @@ class AppControllerHealth extends StatelessWidget {
           HealthStatusModel.unhealthy => Icons.error,
           _ => Icons.help,
         },
-        color: status.color(context),
+        color: switch (status) {
+          HealthStatusModel.healthy => IntelliCookTheme.indicationColors
+              .of(theme.brightness)[Indication.success]!,
+          HealthStatusModel.degraded => IntelliCookTheme.indicationColors
+              .of(theme.brightness)[Indication.warning]!,
+          HealthStatusModel.unhealthy => IntelliCookTheme.indicationColors
+              .of(theme.brightness)[Indication.error]!,
+          _ => IntelliCookTheme.indicationColors
+              .of(theme.brightness)[Indication.unknown]!,
+        },
       );
     }
 
@@ -31,32 +44,20 @@ class AppControllerHealth extends StatelessWidget {
       AsyncData(:final value) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RichText(
-              text: TextSpan(
-                style: textTheme.titleLarge,
-                children: switch (value.status) {
-                  HealthStatusModel.healthy => [
-                      WidgetSpan(child: healthStatusIcon(value.status)),
-                      const TextSpan(text: ' App Controller is healthy'),
-                    ],
-                  HealthStatusModel.degraded => [
-                      WidgetSpan(child: healthStatusIcon(value.status)),
-                      const TextSpan(text: ' App Controller is degraded'),
-                    ],
-                  HealthStatusModel.unhealthy => [
-                      WidgetSpan(child: healthStatusIcon(value.status)),
-                      const TextSpan(text: ' App Controller is unhealthy'),
-                    ],
-                  _ => [
-                      WidgetSpan(child: healthStatusIcon(value.status)),
-                      const TextSpan(text: ' App Controller status is unknown'),
-                    ],
+            ListTile(
+              leading: healthStatusIcon(value.status),
+              title: Text(
+                switch (value.status) {
+                  HealthStatusModel.healthy => 'App Controller is healthy',
+                  HealthStatusModel.degraded => 'App Controller is degraded',
+                  HealthStatusModel.unhealthy => 'App Controller is unhealthy',
+                  _ => 'App Controller status is unknown',
                 },
+                style: textTheme.titleLarge,
               ),
             ),
             const Divider(),
             ListView.separated(
-              padding: EdgeInsets.zero,
               shrinkWrap: true,
               itemCount: value.checks?.length ?? 0,
               itemBuilder: (context, index) {
@@ -76,23 +77,60 @@ class AppControllerHealth extends StatelessWidget {
             ),
           ],
         ),
-      AsyncError(:final error) =>
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          RichText(
-            text: TextSpan(
-              style: textTheme.titleLarge,
-              children: [
-                WidgetSpan(
-                  child: healthStatusIcon(HealthStatusModel.unhealthy),
-                ),
-                const TextSpan(text: ' App Controller is unreachable '),
-              ],
+      AsyncError(:final error) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: healthStatusIcon(HealthStatusModel.unhealthy),
+              title: Text(
+                'App Controller is unreachable',
+                style: textTheme.titleLarge,
+              ),
             ),
+            const Divider(),
+            Text('$error'),
+          ],
+        ),
+      _ => Shimmer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.circle),
+                title: Align(
+                  alignment: Alignment.centerLeft,
+                  child: ShimmerText(
+                    'App Controller is healthy',
+                    style: textTheme.titleLarge,
+                  ),
+                ),
+              ),
+              const Divider(),
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: 2,
+                itemBuilder: (context, index) {
+                  return const ListTile(
+                    leading: Icon(Icons.circle),
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ShimmerText(
+                        'Service Placeholder',
+                      ),
+                    ),
+                    subtitle: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ShimmerText(
+                        'Healthy',
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const Divider(),
+              ),
+            ],
           ),
-          const Divider(),
-          Text('$error'),
-        ]),
-      _ => const LinearProgressIndicator(),
+        ),
     };
   }
 }
