@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intellicook_mobile/utils/extensions/tonal_palette_extensions.dart';
+import 'package:intellicook_mobile/utils/extensions/tonal_palette.dart';
 import 'package:intellicook_mobile/utils/indication.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intellicook_mobile/utils/extensions/theme_data_extensions.dart';
+import 'package:intellicook_mobile/utils/extensions/theme_data.dart';
 import 'package:intellicook_mobile/widgets/low_level/button.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 
