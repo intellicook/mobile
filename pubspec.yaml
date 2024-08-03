@@ -50,6 +50,8 @@ dependencies:
   envied: ^0.5.4+1
   dio: ^5.5.0+1
   shimmer: ^3.0.0
+  built_value: ^8.9.2
+  built_collection: ^5.1.1
 
 dev_dependencies:
   flutter_test:
