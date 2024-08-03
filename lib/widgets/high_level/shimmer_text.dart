@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intellicook_mobile/utils/extensions/text_span_extensions.dart';
+import 'package:intellicook_mobile/utils/extensions/text_span.dart';
 import 'package:intellicook_mobile/widgets/high_level/shimmer_content.dart';
 
 class ShimmerText extends StatelessWidget {
