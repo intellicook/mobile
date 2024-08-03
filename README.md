@@ -15,7 +15,8 @@ provide more instructions for setting up the project in Android Studio.
     flutter pub get
     ```
 
-3. Run the [install_hooks.sh](./install_hooks.sh) shell script to install a pre-commit hook which
+3. Run the [install_hooks.sh](./install_hooks.sh) shell script or
+   the [install_hooks.ps1](./install_hooks.ps1) PowerShell script to install a pre-commit hook which
    can help check if your code will pass the GitHub workflows before you commit.
 
 4. Copy the [.env.development](./.env.development) file or the [.env.example](./.env.example) file
@@ -25,6 +26,10 @@ provide more instructions for setting up the project in Android Studio.
    use the `.env` file) for the app:
 
     ```bash
+    # You may want to run this only if you have generated configs before
+    dart run build_runner clean
+   
+    # Generate the configs
     dart run build_runner build --delete-conflicting-outputs
     ```
 

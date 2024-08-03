@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/theme.dart' as theme_provider;
-import 'package:intellicook_mobile/widgets/high_level/background.dart';
+import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -101,24 +101,16 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
           ),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text(title),
-      ),
-      body: Background(
-        child: Padding(
-          padding: const EdgeInsets.all(SpacingConsts.m),
-          child: Panel(
-            child: ListView.separated(
-              clipBehavior: Clip.none,
-              itemCount: components.length,
-              separatorBuilder: (context, index) => const SizedBox(
-                height: SpacingConsts.m,
-              ),
-              itemBuilder: (context, index) => components[index](context),
-            ),
+    return BackgroundScaffold(
+      title: title,
+      child: Panel(
+        child: ListView.separated(
+          clipBehavior: Clip.none,
+          itemCount: components.length,
+          separatorBuilder: (context, index) => const SizedBox(
+            height: SpacingConsts.m,
           ),
+          itemBuilder: (context, index) => components[index](context),
         ),
       ),
     );
