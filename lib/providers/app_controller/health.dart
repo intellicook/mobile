@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:dio/dio.dart';
 import 'package:intellicook_mobile/utils/app_controller_client.dart';
+import 'package:intellicook_mobile/utils/fake_load_time.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'health.g.dart';
@@ -14,7 +15,7 @@ class Health extends _$Health {
     final api = appControllerClient.getHealthApi();
 
     try {
-      final response = await api.healthGet();
+      final response = await fakeLoadTime(() => api.healthGet());
       return response.data!;
     } on DioException catch (e) {
       if (e.response?.statusCode == HttpStatus.serviceUnavailable) {
