@@ -21,18 +21,20 @@ class DragDropdown extends StatefulWidget {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey();
 
   @override
-  State<DragDropdown> createState() => _DragDropdownState();
+  State<DragDropdown> createState() => DragDropdownState();
 }
 
-class _DragDropdownState extends State<DragDropdown> {
+class DragDropdownState extends State<DragDropdown> {
   late int index;
   late bool isDragging;
+  late bool isAnimating;
 
   @override
   void initState() {
     super.initState();
     index = widget.values.indexOf(widget.initialValue);
     isDragging = false;
+    isAnimating = false;
   }
 
   @override
@@ -57,6 +59,10 @@ class _DragDropdownState extends State<DragDropdown> {
     // Functions
 
     void setNewValue(Offset position) {
+      if (isAnimating) {
+        return;
+      }
+
       final columnRenderObject =
           widget._listKey.currentContext?.findRenderObject() as RenderBox?;
       if (widget._listKey.currentContext?.size == null ||
@@ -119,6 +125,16 @@ class _DragDropdownState extends State<DragDropdown> {
 
       setState(() {
         isDragging = value;
+        isAnimating = true;
+      });
+
+      Future.delayed(animationDuration, () {
+        setState(() {
+          isAnimating = false;
+        });
+        if (value) {
+          setNewValue(Offset.zero);
+        }
       });
 
       if (!value) {
@@ -169,7 +185,6 @@ class _DragDropdownState extends State<DragDropdown> {
             },
             onPointerDown: (event) {
               setIsDragging(true);
-              setNewValue(Offset.zero);
             },
             child: AnimatedList(
               key: widget._listKey,
