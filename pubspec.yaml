@@ -42,7 +42,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   google_fonts: ^6.2.1
   figma_squircle: ^0.5.3
-  material_color_utilities: ^0.8.0
+  material_color_utilities: any
   flutter_inset_shadow: ^2.0.3
   control_style: ^0.1.0
   flutter_riverpod: ^2.5.1

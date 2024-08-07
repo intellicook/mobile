@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/theme.dart' as theme_provider;
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
+import 'package:intellicook_mobile/widgets/high_level/drag_dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -99,6 +100,17 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
               ],
             ),
           ),
+      (BuildContext context) => Align(
+            alignment: Alignment.topRight,
+            child: DragDropdown(
+              initialValue: 'Option 1',
+              values: const [
+                'Option 1',
+                'Option 2',
+                'Option 3',
+              ],
+            ),
+          ),
     ];
 
     return BackgroundScaffold(
@@ -106,6 +118,7 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
       child: Panel(
         child: ListView.separated(
           clipBehavior: Clip.none,
+          // physics: const NeverScrollableScrollPhysics(),
           itemCount: components.length,
           separatorBuilder: (context, index) => const SizedBox(
             height: SpacingConsts.m,
