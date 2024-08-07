@@ -88,6 +88,25 @@ void main() {
   );
 
   testWidgets(
+    'Clickable does not call onReleased when cancelled',
+    (WidgetTester tester) async {
+      final onReleased = MockClickableCallbacks().onReleased;
+
+      await tester.pumpWidget(Clickable(
+        onReleased: onReleased,
+        child: const ColoredBox(
+          color: Colors.red,
+          child: SizedBox.square(dimension: 100.0),
+        ),
+      ));
+
+      await tester.drag(find.byType(Clickable), const Offset(0.0, 500.0));
+
+      verifyNever(onReleased());
+    },
+  );
+
+  testWidgets(
     'Clickable calls onStateChanged when pressed',
     (WidgetTester tester) async {
       final onStateChanged = MockClickableCallbacks().onStateChanged;

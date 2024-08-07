@@ -58,19 +58,18 @@ class DragDropdownState extends State<DragDropdown> {
 
     // Functions
 
-    void setNewValue(Offset position) {
+    void setNewValue(Offset localPosition) {
       if (isAnimating) {
         return;
       }
 
       final columnRenderObject =
           widget._listKey.currentContext?.findRenderObject() as RenderBox?;
-      if (widget._listKey.currentContext?.size == null ||
-          columnRenderObject == null) {
+      if (columnRenderObject == null) {
         return;
       }
 
-      final normY = position.dy / columnRenderObject.size.height;
+      final normY = localPosition.dy / columnRenderObject.size.height;
       final newIndex = (normY * widget.values.length)
           .clamp(0, widget.values.length - 1)
           .floor();
