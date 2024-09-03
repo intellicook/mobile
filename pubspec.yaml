@@ -52,6 +52,7 @@ dependencies:
   shimmer: ^3.0.0
   built_value: ^8.9.2
   built_collection: ^5.1.1
+  change_case: ^2.1.0
 
 dev_dependencies:
   flutter_test:
