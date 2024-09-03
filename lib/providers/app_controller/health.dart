@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:app_controller_client/app_controller_client.dart';
@@ -11,15 +12,15 @@ part 'health.g.dart';
 @riverpod
 class Health extends _$Health {
   @override
-  Future<HealthGetResponseModel> build() async {
+  Future<UnmodifiableListView<HealthGetResponseModel>> build() async {
     final api = appControllerClient.getHealthApi();
 
     try {
       final response = await fakeLoadTime(() => api.healthGet());
-      return response.data!;
+      return UnmodifiableListView(response.data!);
     } on DioException catch (e) {
       if (e.response?.statusCode == HttpStatus.serviceUnavailable) {
-        return e.response?.data as HealthGetResponseModel;
+        return UnmodifiableListView(e.response?.data);
       }
 
       rethrow;
