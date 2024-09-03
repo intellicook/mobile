@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
@@ -13,15 +15,18 @@ void main() {
   testWidgets(
     'AppControllerHealth shows health status when status is healthy',
     (WidgetTester tester) async {
-      final health = AsyncValue.data((HealthGetResponseModelBuilder()
-            ..status = HealthStatusModel.healthy
-            ..checks = ListBuilder([
-              (HealthCheckModelBuilder()
-                    ..name = 'check1'
-                    ..status = HealthStatusModel.healthy)
-                  .build(),
-            ]))
-          .build());
+      final health = AsyncValue.data(UnmodifiableListView([
+        (HealthGetResponseModelBuilder()
+              ..service = HealthServiceModel.appController
+              ..status = HealthStatusModel.healthy
+              ..checks = ListBuilder([
+                (HealthCheckModelBuilder()
+                      ..name = 'check1'
+                      ..status = HealthStatusModel.healthy)
+                    .build(),
+              ]))
+            .build()
+      ]));
 
       await tester.pumpWidget(MockMaterialApp(
         child: Material(
@@ -38,15 +43,18 @@ void main() {
   testWidgets(
     'AppControllerHealth shows health status when status is degraded',
     (WidgetTester tester) async {
-      final health = AsyncValue.data((HealthGetResponseModelBuilder()
-            ..status = HealthStatusModel.degraded
-            ..checks = ListBuilder([
-              (HealthCheckModelBuilder()
-                    ..name = 'check1'
-                    ..status = HealthStatusModel.degraded)
-                  .build(),
-            ]))
-          .build());
+      final health = AsyncValue.data(UnmodifiableListView([
+        (HealthGetResponseModelBuilder()
+              ..service = HealthServiceModel.appController
+              ..status = HealthStatusModel.degraded
+              ..checks = ListBuilder([
+                (HealthCheckModelBuilder()
+                      ..name = 'check1'
+                      ..status = HealthStatusModel.degraded)
+                    .build(),
+              ]))
+            .build()
+      ]));
 
       await tester.pumpWidget(MockMaterialApp(
         child: Material(
@@ -63,15 +71,18 @@ void main() {
   testWidgets(
     'AppControllerHealth shows health status when status is unhealthy',
     (WidgetTester tester) async {
-      final health = AsyncValue.data((HealthGetResponseModelBuilder()
-            ..status = HealthStatusModel.unhealthy
-            ..checks = ListBuilder([
-              (HealthCheckModelBuilder()
-                    ..name = 'check1'
-                    ..status = HealthStatusModel.unhealthy)
-                  .build(),
-            ]))
-          .build());
+      final health = AsyncValue.data(UnmodifiableListView([
+        (HealthGetResponseModelBuilder()
+              ..service = HealthServiceModel.appController
+              ..status = HealthStatusModel.unhealthy
+              ..checks = ListBuilder([
+                (HealthCheckModelBuilder()
+                      ..name = 'check1'
+                      ..status = HealthStatusModel.unhealthy)
+                    .build(),
+              ]))
+            .build()
+      ]));
 
       await tester.pumpWidget(MockMaterialApp(
         child: Material(
@@ -89,7 +100,8 @@ void main() {
     'AppControllerHealth shows errors when status is unreachable',
     (WidgetTester tester) async {
       const errorReason = 'any error reason';
-      final health = AsyncValue<HealthGetResponseModel>.error(
+      final health =
+          AsyncValue<UnmodifiableListView<HealthGetResponseModel>>.error(
         DioException.connectionError(
           requestOptions: RequestOptions(),
           reason: errorReason,
@@ -112,7 +124,8 @@ void main() {
   testWidgets(
     'AppControllerHealth shows shimmers when status is loading',
     (WidgetTester tester) async {
-      const health = AsyncValue<HealthGetResponseModel>.loading();
+      const health =
+          AsyncValue<UnmodifiableListView<HealthGetResponseModel>>.loading();
 
       await tester.pumpWidget(const MockMaterialApp(
         child: Material(
