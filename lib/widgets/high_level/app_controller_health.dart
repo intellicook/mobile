@@ -200,6 +200,7 @@ class AppControllerHealth extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) => const Divider(),
               ),
+              const Divider(),
             ],
           ),
         ),
