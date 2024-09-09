@@ -16,9 +16,11 @@ class InputField extends StatefulWidget {
     this.error,
     this.counter,
     this.enabled = defaultEnabled,
+    this.obscureText = defaultObscureText,
   });
 
   static const defaultEnabled = true;
+  static const defaultObscureText = false;
 
   final TextEditingController? controller;
   final String? label;
@@ -27,6 +29,7 @@ class InputField extends StatefulWidget {
   final String? error;
   final String? counter;
   final bool enabled;
+  final bool obscureText;
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -119,6 +122,7 @@ class _InputFieldState extends State<InputField> {
         controller: widget.controller,
         focusNode: focusNode,
         enabled: widget.enabled,
+        obscureText: widget.obscureText,
         decoration: InputDecoration(
           filled: filled,
           fillColor: focusNode.hasFocus ? focusColor : fillColor,

@@ -23,4 +23,22 @@ void main() {
       expect(find.text(TextFixture.text), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'Background scaffold shows title and child with arguments',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(MockMaterialApp(
+        child: Material(
+          child: BackgroundScaffold(
+            title: title,
+            padding: EdgeInsets.zero,
+            child: TextFixture.widget(),
+          ),
+        ),
+      ));
+
+      expect(find.text(title), findsOneWidget);
+      expect(find.text(TextFixture.text), findsOneWidget);
+    },
+  );
 }
