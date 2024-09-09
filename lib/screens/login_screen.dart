@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/login.dart';
+import 'package:intellicook_mobile/screens/placeholder_screen.dart';
+import 'package:intellicook_mobile/utils/extensions/dio_exception.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -17,6 +20,8 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String? usernameError;
+  String? passwordError;
 
   @override
   void dispose() {
@@ -32,7 +37,45 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
+    ref.listen(loginProvider, (_, state) {
+      if (state is AsyncData) {
+        if (state.value?.response != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PlaceholderScreen(),
+            ),
+          );
+        }
+      }
+    });
+
     void onLoginClicked() {
+      setState(() {
+        usernameError = null;
+        passwordError = null;
+      });
+
+      var validationFailed = false;
+
+      if (usernameController.text.isEmpty) {
+        setState(() {
+          usernameError = 'Username cannot be empty';
+        });
+        validationFailed = true;
+      }
+
+      if (passwordController.text.isEmpty) {
+        setState(() {
+          passwordError = 'Password cannot be empty';
+        });
+        validationFailed = true;
+      }
+
+      if (validationFailed) {
+        return;
+      }
+
       ref.read(loginProvider.notifier).login(
             usernameController.text,
             passwordController.text,
@@ -59,16 +102,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   InputField(
                     label: 'Username',
                     controller: usernameController,
+                    error: usernameError,
                   ),
                   const SizedBox(height: SpacingConsts.s),
-                  const InputField(
+                  InputField(
                     label: 'Password',
                     obscureText: true,
+                    controller: passwordController,
+                    error: passwordError,
                   ),
                   switch (login) {
                     AsyncData(:final value) => switch (value.hasResponse) {
                         false => const SizedBox(),
-                        true => const SizedBox(height: SpacingConsts.s),
+                        true => switch (value.invalidCredentials) {
+                            false => const SizedBox(),
+                            true => const SizedBox(height: SpacingConsts.s),
+                          },
                       },
                     AsyncError() => const SizedBox(height: SpacingConsts.s),
                     AsyncLoading() => const SizedBox(height: SpacingConsts.s),
@@ -78,7 +127,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     AsyncData(:final value) => switch (value.hasResponse) {
                         false => const SizedBox(),
                         true => switch (value.invalidCredentials) {
-                            false => const Text('Login successful'),
+                            false => const SizedBox(),
                             true => const Text(
                                 'Invalid username or password',
                                 style: TextStyle(color: Colors.red),
@@ -86,7 +135,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           }
                       },
                     AsyncError(:final error) => Text(
-                        '$error',
+                        switch (error) {
+                          DioException e => e.toDisplayString(),
+                          _ => 'An unknown error occurred',
+                        },
                         style: const TextStyle(color: Colors.red),
                       ),
                     AsyncLoading() => const LinearProgressIndicator(),
