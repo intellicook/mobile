@@ -8,14 +8,17 @@ class Panel extends StatelessWidget {
     super.key,
     this.color,
     this.padding = defaultPadding,
+    this.scrollable = defaultScrollable,
     this.constraints,
     this.child,
   });
 
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
+  static const defaultScrollable = false;
 
   final Color? color;
   final EdgeInsets? padding;
+  final bool scrollable;
   final BoxConstraints? constraints;
   final Widget? child;
 
@@ -26,11 +29,19 @@ class Panel extends StatelessWidget {
         theme.colorScheme.surfaceContainerLowest
             .withOpacity(OpacityConsts.high(context));
 
+    final elevatedChild = switch (scrollable) {
+      true => SingleChildScrollView(
+          padding: padding,
+          child: child,
+        ),
+      false => child,
+    };
+
     return Elevated.high(
       color: color,
-      padding: padding,
+      padding: scrollable ? EdgeInsets.zero : padding,
       constraints: constraints,
-      child: child,
+      child: elevatedChild,
     );
   }
 }

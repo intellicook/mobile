@@ -91,6 +91,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           SizedBox(
             width: double.infinity,
             child: Panel(
+              scrollable: true,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
