@@ -1,9 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/register.dart';
-import 'package:intellicook_mobile/utils/extensions/dio_exception.dart';
+import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -41,6 +40,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final register = ref.watch(registerProvider);
+
+    ref.listen(registerProvider, handleErrorAsSnackBar(context));
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -178,18 +179,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 error: confirmPasswordError,
               ),
               switch (register) {
-                AsyncError() => const SizedBox(height: SpacingConsts.s),
                 AsyncLoading() => const SizedBox(height: SpacingConsts.s),
                 _ => const SizedBox(),
               },
               switch (register) {
-                AsyncError(:final error) => Text(
-                    switch (error) {
-                      DioException e => e.toDisplayString(),
-                      _ => 'An unknown error occurred',
-                    },
-                    style: const TextStyle(color: Colors.red),
-                  ),
                 AsyncLoading() => const LinearProgressIndicator(),
                 _ => const SizedBox(),
               },
