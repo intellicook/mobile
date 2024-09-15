@@ -139,6 +139,7 @@ class _InputFieldState extends State<InputField> {
           helperText: widget.help,
           counterText: widget.counter,
           errorText: widget.error,
+          errorMaxLines: 50,
         ),
       ),
     );

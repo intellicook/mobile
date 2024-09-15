@@ -3,6 +3,7 @@ import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/screens/app_controller_health_screen.dart';
 import 'package:intellicook_mobile/screens/component_gallery.dart';
 import 'package:intellicook_mobile/screens/login_screen.dart';
+import 'package:intellicook_mobile/screens/register_screen.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
@@ -38,6 +39,19 @@ class DevTools extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const LoginScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: SpacingConsts.m),
+            LabelButton(
+              label: 'Register Screen',
+              type: LabelButtonType.secondary,
+              onClicked: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterScreen(),
                   ),
                 );
               },
