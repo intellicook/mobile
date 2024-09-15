@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/login.dart';
 import 'package:intellicook_mobile/screens/placeholder_screen.dart';
-import 'package:intellicook_mobile/utils/extensions/dio_exception.dart';
+import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -33,6 +32,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final login = ref.watch(loginProvider);
+
+    ref.listen(loginProvider, handleErrorAsSnackBar(context));
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -120,7 +121,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             true => const SizedBox(height: SpacingConsts.s),
                           },
                       },
-                    AsyncError() => const SizedBox(height: SpacingConsts.s),
                     AsyncLoading() => const SizedBox(height: SpacingConsts.s),
                     _ => const SizedBox(),
                   },
@@ -135,13 +135,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                           }
                       },
-                    AsyncError(:final error) => Text(
-                        switch (error) {
-                          DioException e => e.toDisplayString(),
-                          _ => 'An unknown error occurred',
-                        },
-                        style: const TextStyle(color: Colors.red),
-                      ),
                     AsyncLoading() => const LinearProgressIndicator(),
                     _ => const SizedBox(),
                   },
