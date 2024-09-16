@@ -11,65 +11,41 @@ import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 class DevTools extends StatelessWidget {
   const DevTools({super.key});
 
+  static const screens = [
+    ('App Controller Health Screen', AppControllerHealthScreen()),
+    ('Login Screen', LoginScreen()),
+    ('Register Screen', RegisterScreen()),
+    ('Component Gallery', ComponentGallery()),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BackgroundScaffold(
       title: 'Dev Tools',
       child: Panel(
-        child: ListView(
-          children: [
-            LabelButton(
-              label: 'App Controller Health Screen',
+        child: ListView.separated(
+          itemBuilder: (context, index) {
+            final screen = screens[index];
+
+            return LabelButton(
+              label: screen.$1,
               type: LabelButtonType.secondary,
-              onClicked: () {
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AppControllerHealthScreen(),
+                    builder: (context) => Scaffold(
+                      body: screen.$2,
+                    ),
                   ),
                 );
               },
-            ),
-            const SizedBox(height: SpacingConsts.m),
-            LabelButton(
-              label: 'Login Screen',
-              type: LabelButtonType.secondary,
-              onClicked: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: SpacingConsts.m),
-            LabelButton(
-              label: 'Register Screen',
-              type: LabelButtonType.secondary,
-              onClicked: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterScreen(),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: SpacingConsts.m),
-            LabelButton(
-              label: 'Component Gallery',
-              type: LabelButtonType.secondary,
-              onClicked: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ComponentGallery(),
-                  ),
-                );
-              },
-            ),
-          ],
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(
+            height: SpacingConsts.m,
+          ),
+          itemCount: screens.length,
         ),
       ),
     );
