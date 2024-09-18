@@ -6,7 +6,7 @@ part of 'screen_route.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$screenRouteHash() => r'f2af871637a1ca501abc6ba025c821c909d400cb';
+String _$screenRouteHash() => r'49a1311a210990aa5aaf3188c93dd687f2957432';
 
 /// See also [ScreenRoute].
 @ProviderFor(ScreenRoute)
