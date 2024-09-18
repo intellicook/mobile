@@ -21,6 +21,7 @@ class DevTools extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BackgroundScaffold(
+      background: false,
       title: 'Dev Tools',
       child: Panel(
         child: ListView.separated(

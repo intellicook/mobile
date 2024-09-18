@@ -5,13 +5,16 @@ import 'package:intellicook_mobile/widgets/high_level/background.dart';
 class BackgroundScaffold extends StatelessWidget {
   const BackgroundScaffold({
     super.key,
+    this.background = defaultBackground,
     this.padding = defaultPadding,
     this.child,
     this.title,
   });
 
+  static const defaultBackground = true;
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
 
+  final bool background;
   final EdgeInsetsGeometry padding;
   final String? title;
   final Widget? child;
@@ -21,8 +24,12 @@ class BackgroundScaffold extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    return Background(
-      child: SafeArea(
+    Widget backgroundWidget(Widget child) {
+      return background ? Background(child: child) : child;
+    }
+
+    return backgroundWidget(
+      SafeArea(
         child: Padding(
           padding: padding,
           child: Column(
@@ -30,7 +37,9 @@ class BackgroundScaffold extends StatelessWidget {
               switch (title) {
                 null => const SizedBox(),
                 String title => Padding(
-                    padding: const EdgeInsets.only(bottom: SpacingConsts.s),
+                    padding: const EdgeInsets.only(
+                      bottom: SpacingConsts.s,
+                    ),
                     child: Text(
                       title,
                       style: textTheme.titleLarge,

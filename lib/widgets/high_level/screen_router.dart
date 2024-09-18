@@ -7,28 +7,50 @@ import 'package:intellicook_mobile/screens/nested/placeholder_screen.dart';
 class ScreenRouter extends ConsumerStatefulWidget {
   const ScreenRouter({super.key});
 
-  static const screens = {
-    ScreenRouteState.home: PlaceholderScreen(),
-    ScreenRouteState.account: PlaceholderScreen(),
-    ScreenRouteState.settings: PlaceholderScreen(),
-    ScreenRouteState.devTools: DevTools(),
-  };
+  static const screens = [
+    PlaceholderScreen(title: 'Home', background: false),
+    PlaceholderScreen(title: 'Account', background: false),
+    PlaceholderScreen(title: 'Settings', background: false),
+    DevTools(),
+  ];
 
   @override
   ConsumerState createState() => _ScreenRouterState();
 }
 
 class _ScreenRouterState extends ConsumerState<ScreenRouter> {
+  late PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenRoute = ref.watch(screenRouteProvider);
+    ref.listen(screenRouteProvider, (previous, current) {
+      pageController.jumpToPage(
+        current.index,
+      );
+    });
 
-    final screen = ScreenRouter.screens[screenRoute];
-
-    if (screen == null) {
-      ref.read(screenRouteProvider.notifier).set(ScreenRouteState.home);
+    void onPageChanged(int index) {
+      ref
+          .read(screenRouteProvider.notifier)
+          .set(ScreenRouteState.values[index]);
     }
 
-    return screen ?? const PlaceholderScreen();
+    return PageView(
+      controller: pageController,
+      onPageChanged: onPageChanged,
+      children: ScreenRouter.screens,
+    );
   }
 }
