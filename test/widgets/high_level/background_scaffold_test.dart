@@ -22,7 +22,6 @@ void main() {
       expect(find.text(title), findsOneWidget);
       expect(find.text(TextFixture.text), findsOneWidget);
     },
-    skip: true, // TODO: Implement title
   );
 
   testWidgets(
@@ -41,6 +40,5 @@ void main() {
       expect(find.text(title), findsOneWidget);
       expect(find.text(TextFixture.text), findsOneWidget);
     },
-    skip: true, // TODO: Implement title
   );
 }

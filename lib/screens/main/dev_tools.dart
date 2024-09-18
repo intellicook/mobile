@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
-import 'package:intellicook_mobile/screens/app_controller_health_screen.dart';
-import 'package:intellicook_mobile/screens/component_gallery.dart';
-import 'package:intellicook_mobile/screens/login_screen.dart';
-import 'package:intellicook_mobile/screens/register_screen.dart';
+import 'package:intellicook_mobile/screens/nested/app_controller_health_screen.dart';
+import 'package:intellicook_mobile/screens/nested/component_gallery.dart';
+import 'package:intellicook_mobile/screens/nested/login_screen.dart';
+import 'package:intellicook_mobile/screens/nested/register_screen.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';

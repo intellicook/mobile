@@ -7,7 +7,6 @@ class PlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const BackgroundScaffold(
-      title: 'Placeholder Screen',
       child: Center(
         child: Text('Placeholder Screen'),
       ),

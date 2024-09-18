@@ -18,10 +18,34 @@ class BackgroundScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Background(
-      child: Padding(
-        padding: padding,
-        child: child,
+      child: SafeArea(
+        child: Padding(
+          padding: padding,
+          child: Column(
+            children: [
+              switch (title) {
+                null => const SizedBox(),
+                String title => Padding(
+                    padding: const EdgeInsets.only(bottom: SpacingConsts.s),
+                    child: Text(
+                      title,
+                      style: textTheme.titleLarge,
+                    ),
+                  ),
+              },
+              switch (child) {
+                null => const SizedBox(),
+                Widget child => Expanded(
+                    child: child,
+                  ),
+              },
+            ],
+          ),
+        ),
       ),
     );
   }

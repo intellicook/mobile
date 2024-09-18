@@ -114,7 +114,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     }
 
     return BackgroundScaffold(
-      title: 'Register',
       padding: const EdgeInsets.all(SpacingConsts.l),
       child: Center(
         child: Panel(
