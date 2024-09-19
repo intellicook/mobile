@@ -16,7 +16,7 @@ class ScreenRoute extends _$ScreenRoute {
 
 enum ScreenRouteState {
   home,
-  account,
+  profile,
   settings,
   devTools,
 }

@@ -30,7 +30,7 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
             alignment: Alignment.topRight,
             child: Dropdown(
               label: 'Theme',
-              initialValue: theme.value?.mode ?? ThemeMode.system,
+              initialValue: theme.mode,
               onChanged: (value) => ref
                   .read(theme_provider.themeProvider.notifier)
                   .set(value ?? ThemeMode.system),
