@@ -6,12 +6,12 @@ part 'theme.g.dart';
 @riverpod
 class Theme extends _$Theme {
   @override
-  Future<ThemeState> build() async {
+  ThemeState build() {
     return const ThemeState(ThemeMode.system);
   }
 
-  Future<void> set(ThemeMode mode) async {
-    state = AsyncData(ThemeState(mode));
+  void set(ThemeMode mode) {
+    state = ThemeState(mode);
   }
 }
 

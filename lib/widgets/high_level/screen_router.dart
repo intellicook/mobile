@@ -9,7 +9,7 @@ class ScreenRouter extends ConsumerStatefulWidget {
 
   static const screens = [
     PlaceholderScreen(title: 'Home', background: false),
-    PlaceholderScreen(title: 'Account', background: false),
+    PlaceholderScreen(title: 'Profile', background: false),
     PlaceholderScreen(title: 'Settings', background: false),
     DevTools(),
   ];
