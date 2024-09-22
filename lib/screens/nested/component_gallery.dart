@@ -9,6 +9,8 @@ import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/rive_button.dart';
+import 'package:rive/rive.dart';
 
 class ComponentGallery extends ConsumerStatefulWidget {
   const ComponentGallery({super.key});
@@ -111,6 +113,17 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
               ],
             ),
           ),
+      (BuildContext context) => RiveButton(
+            rive: const RiveAnimation.asset(
+              'assets/ingredient_recognition.riv',
+              artboard: 'ingredient_recognition',
+              fit: BoxFit.cover,
+              behavior: RiveHitTestBehavior.transparent,
+              useArtboardSize: true,
+            ),
+            height: 200,
+            enabled: inputsEnabled,
+          )
     ];
 
     return BackgroundScaffold(

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/providers/screen_route.dart';
 import 'package:intellicook_mobile/screens/main/dev_tools.dart';
+import 'package:intellicook_mobile/screens/main/home_screen.dart';
 import 'package:intellicook_mobile/screens/nested/placeholder_screen.dart';
 
 class ScreenRouter extends ConsumerStatefulWidget {
   const ScreenRouter({super.key});
 
   static const screens = [
-    PlaceholderScreen(title: 'Home', background: false),
+    HomeScreen(),
     PlaceholderScreen(title: 'Profile', background: false),
     PlaceholderScreen(title: 'Settings', background: false),
     DevTools(),
