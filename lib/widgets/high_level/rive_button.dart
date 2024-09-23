@@ -7,21 +7,25 @@ import 'package:rive/rive.dart';
 class RiveButton extends StatelessWidget {
   const RiveButton({
     super.key,
-    required this.rive,
+    this.rive,
+    this.riveBuilder,
     this.height,
     this.width,
+    this.underlay,
     this.enabled = defaultEnabled,
     this.onClicked,
     this.onPressed,
     this.onReleased,
     this.onStateChanged,
-  });
+  }) : assert((rive != null) != (riveBuilder != null));
 
   static const defaultEnabled = true;
 
-  final RiveAnimation rive;
+  final RiveAnimation? rive;
+  final Widget? Function(BuildContext context)? riveBuilder;
   final double? height;
   final double? width;
+  final Widget? underlay;
   final bool enabled;
   final ClickableOnClickedCallback? onClicked;
   final ClickableOnPressedCallback? onPressed;
@@ -40,16 +44,22 @@ class RiveButton extends StatelessWidget {
             onStateChanged: onStateChanged,
             enabled: enabled,
             padding: EdgeInsets.zero,
-            child: const ColoredBox(color: Colors.transparent),
+            child: underlay ??
+                const SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
           ),
         ),
-        ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: SmoothBorderRadiusConsts.s,
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: rive,
+        SizedBox(
+          height: height,
+          width: width,
+          child: ClipRRect(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: SmoothBorderRadiusConsts.s,
+            child: IgnorePointer(
+              child: rive ?? riveBuilder!(context),
+            ),
           ),
         ),
       ],

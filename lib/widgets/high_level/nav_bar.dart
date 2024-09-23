@@ -37,16 +37,12 @@ class _NavBarState extends ConsumerState<NavBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final appBarTheme = theme.appBarTheme;
-    final textTheme = theme.textTheme;
+    final iconTheme = theme.iconTheme;
 
     final screenRoute = ref.watch(screenRouteProvider);
 
-    final iconColor = textTheme.titleLarge?.color ??
-        appBarTheme.foregroundColor ??
-        (theme.brightness == Brightness.light ? Colors.black : Colors.white);
     for (final icon in icons.values) {
-      icon.setColor(iconColor);
+      icon.setColor(iconTheme.color!);
     }
 
     const states = [

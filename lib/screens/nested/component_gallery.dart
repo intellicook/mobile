@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
@@ -114,16 +116,35 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
             ),
           ),
       (BuildContext context) => RiveButton(
-            rive: const RiveAnimation.asset(
-              'assets/ingredient_recognition.riv',
-              artboard: 'ingredient_recognition',
-              fit: BoxFit.cover,
-              behavior: RiveHitTestBehavior.transparent,
-              useArtboardSize: true,
+            riveBuilder: (context) => SizedBox(
+              height: min(
+                (MediaQuery.of(context).size.width - SpacingConsts.m * 2) /
+                    16 *
+                    9,
+                250,
+              ),
+              width: double.infinity,
+              child: RiveAnimation.asset(
+                'assets/ingredient_recognition.riv',
+                artboard: 'ingredient_recognition',
+                alignment: Alignment.center,
+                fit: BoxFit.scaleDown,
+                useArtboardSize: true,
+                onInit: (artboard) {
+                  final theme = Theme.of(context);
+                  final textTheme = theme.textTheme;
+                  artboard
+                      .component<TextValueRun>('label_run')
+                      ?.style
+                      ?.fills
+                      .first
+                      .paint
+                      .color = textTheme.headlineLarge!.color!;
+                },
+              ),
             ),
-            height: 200,
             enabled: inputsEnabled,
-          )
+          ),
     ];
 
     return BackgroundScaffold(
