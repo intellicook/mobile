@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/screen_route.dart';
 import 'package:intellicook_mobile/theme.dart';
+import 'package:intellicook_mobile/utils/rive_model.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 import 'package:rive/rive.dart';
@@ -36,16 +37,12 @@ class _NavBarState extends ConsumerState<NavBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final appBarTheme = theme.appBarTheme;
-    final textTheme = theme.textTheme;
+    final iconTheme = theme.iconTheme;
 
     final screenRoute = ref.watch(screenRouteProvider);
 
-    final iconColor = textTheme.titleLarge?.color ??
-        appBarTheme.foregroundColor ??
-        (theme.brightness == Brightness.light ? Colors.black : Colors.white);
     for (final icon in icons.values) {
-      icon.setColor(iconColor);
+      icon.setColor(iconTheme.color!);
     }
 
     const states = [
@@ -127,7 +124,7 @@ class _NavBarIcon {
         _artboard = artboard;
         _controller = StateMachineController.fromArtboard(
           artboard,
-          model.stateMachine,
+          model.stateMachine!,
         );
 
         if (_controller == null) {
@@ -168,35 +165,23 @@ class _NavBarIcon {
   }
 }
 
-class _RiveModel {
-  const _RiveModel({
-    required this.src,
-    required this.artboard,
-    required this.stateMachine,
-  });
-
-  final String src;
-  final String artboard;
-  final String stateMachine;
-}
-
 const navBarIconRiveModels = {
-  ScreenRouteState.home: _RiveModel(
+  ScreenRouteState.home: RiveModel(
     src: 'assets/nav_bar_icons.riv',
     artboard: 'home',
     stateMachine: 'home_state_machine',
   ),
-  ScreenRouteState.profile: _RiveModel(
+  ScreenRouteState.profile: RiveModel(
     src: 'assets/nav_bar_icons.riv',
     artboard: 'profile',
     stateMachine: 'profile_state_machine',
   ),
-  ScreenRouteState.settings: _RiveModel(
+  ScreenRouteState.settings: RiveModel(
     src: 'assets/nav_bar_icons.riv',
     artboard: 'settings',
     stateMachine: 'settings_state_machine',
   ),
-  ScreenRouteState.devTools: _RiveModel(
+  ScreenRouteState.devTools: RiveModel(
     src: 'assets/nav_bar_icons.riv',
     artboard: 'dev_tools',
     stateMachine: 'dev_tools_state_machine',
