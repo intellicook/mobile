@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/theme.dart' as theme_provider;
+import 'package:intellicook_mobile/widgets/animations/ingredient_recognition_animation.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/drag_dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
@@ -12,7 +13,6 @@ import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 import 'package:intellicook_mobile/widgets/high_level/rive_button.dart';
-import 'package:rive/rive.dart';
 
 class ComponentGallery extends ConsumerStatefulWidget {
   const ComponentGallery({super.key});
@@ -124,24 +124,7 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
                 250,
               ),
               width: double.infinity,
-              child: RiveAnimation.asset(
-                'assets/ingredient_recognition.riv',
-                artboard: 'ingredient_recognition',
-                alignment: Alignment.center,
-                fit: BoxFit.scaleDown,
-                useArtboardSize: true,
-                onInit: (artboard) {
-                  final theme = Theme.of(context);
-                  final textTheme = theme.textTheme;
-                  artboard
-                      .component<TextValueRun>('label_run')
-                      ?.style
-                      ?.fills
-                      .first
-                      .paint
-                      .color = textTheme.headlineLarge!.color!;
-                },
-              ),
+              child: const IngredientRecognitionAnimation(),
             ),
             enabled: inputsEnabled,
           ),
