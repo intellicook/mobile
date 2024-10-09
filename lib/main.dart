@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/app.dart';
+import 'package:intellicook_mobile/globals/camera.dart';
 import 'package:intellicook_mobile/providers/theme.dart';
 import 'package:intellicook_mobile/theme.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initCameras();
+
   runApp(const ProviderScope(
     child: IntelliCookApp(),
   ));

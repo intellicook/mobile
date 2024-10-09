@@ -6,14 +6,19 @@ import 'package:intellicook_mobile/screens/main/home_screen.dart';
 import 'package:intellicook_mobile/screens/nested/placeholder_screen.dart';
 
 class ScreenRouter extends ConsumerStatefulWidget {
-  const ScreenRouter({super.key});
+  const ScreenRouter({
+    super.key,
+    this.screens = ScreenRouter.defaultScreens,
+  });
 
-  static const screens = [
+  static const defaultScreens = [
     HomeScreen(),
     PlaceholderScreen(title: 'Profile', background: false),
     PlaceholderScreen(title: 'Settings', background: false),
     DevTools(),
   ];
+
+  final List<Widget> screens;
 
   @override
   ConsumerState createState() => _ScreenRouterState();
@@ -25,7 +30,8 @@ class _ScreenRouterState extends ConsumerState<ScreenRouter> {
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
+    final screenRoute = ref.read(screenRouteProvider);
+    pageController = PageController(initialPage: screenRoute.index);
   }
 
   @override
@@ -51,7 +57,7 @@ class _ScreenRouterState extends ConsumerState<ScreenRouter> {
     return PageView(
       controller: pageController,
       onPageChanged: onPageChanged,
-      children: ScreenRouter.screens,
+      children: widget.screens,
     );
   }
 }

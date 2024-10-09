@@ -6,6 +6,7 @@ import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/theme.dart' as theme_provider;
 import 'package:intellicook_mobile/widgets/animations/ingredient_recognition_animation.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
+import 'package:intellicook_mobile/widgets/high_level/circle_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/drag_dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
@@ -127,6 +128,22 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
               child: const IngredientRecognitionAnimation(),
             ),
             enabled: inputsEnabled,
+          ),
+      (BuildContext context) => Align(
+            alignment: Alignment.topRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Circle Button',
+                  style: Theme.of(context).textTheme.bodyLarge!,
+                ),
+                const SizedBox(width: SpacingConsts.m),
+                CircleButton(
+                  enabled: inputsEnabled,
+                ),
+              ],
+            ),
           ),
     ];
 
