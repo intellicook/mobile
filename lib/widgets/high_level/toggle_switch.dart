@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart' hide Switch;
+import 'package:flutter/material.dart';
 import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:intellicook_mobile/widgets/low_level/elevated.dart';
-import 'package:intellicook_mobile/widgets/low_level/toggle_switch_switch.flutter.dart';
 
 class ToggleSwitch extends StatefulWidget {
   const ToggleSwitch({

@@ -22,6 +22,7 @@ class Button extends StatefulWidget {
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
+    this.borderRadius,
     this.child,
   });
 
@@ -38,6 +39,7 @@ class Button extends StatefulWidget {
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
+    this.borderRadius,
     Color? pressedColor,
     Color? releasedColor,
     this.disabledColor,
@@ -58,6 +60,7 @@ class Button extends StatefulWidget {
     this.constraints = defaultConstraints,
     this.padding = defaultPadding,
     this.animatedElevatedArgs = defaultAnimatedElevatedArgs,
+    this.borderRadius,
     BoxBorder? pressedBorder,
     BoxBorder? releasedBorder,
     this.disabledBorder,
@@ -105,6 +108,7 @@ class Button extends StatefulWidget {
   final BoxConstraints? constraints;
   final EdgeInsets? padding;
   final AnimatedElevatedArgs? animatedElevatedArgs;
+  final BorderRadius? borderRadius;
   final Widget? child;
 
   @override
@@ -159,6 +163,7 @@ class _ButtonState extends State<Button> {
                 ? widget.pressedBorder
                 : widget.releasedBorder
             : disabledBorder,
+        borderRadius: widget.borderRadius,
         animatedElevatedArgs: widget.animatedElevatedArgs,
         insetShadow: widget.enabled && isPressed,
         shadows: widget.enabled ? null : [],
