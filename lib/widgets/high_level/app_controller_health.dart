@@ -85,35 +85,35 @@ class AppControllerHealth extends StatelessWidget {
           ),
         ),
         const Divider(),
-        ListView.separated(
-          shrinkWrap: true,
-          itemCount: value.checks.length,
-          itemBuilder: (context, index) {
-            final check = value.checks[index];
-            return ListTile(
+        ...value.checks.expand((check) {
+          return [
+            ListTile(
               leading: healthStatusIcon(check.status),
               title: Text(check.name),
-              subtitle: Text(switch (value.status) {
-                HealthStatusModel.healthy => 'Healthy',
-                HealthStatusModel.degraded => 'Degraded',
-                HealthStatusModel.unhealthy => 'Unhealthy',
-                _ => 'Unknown',
-              }),
-            );
-          },
-          separatorBuilder: (context, index) => const Divider(),
-        ),
-        const Divider(),
+              subtitle: Text(
+                switch (check.status) {
+                  HealthStatusModel.healthy => 'Healthy',
+                  HealthStatusModel.degraded => 'Degraded',
+                  HealthStatusModel.unhealthy => 'Unhealthy',
+                  _ => 'Unknown',
+                },
+              ),
+            ),
+            const Divider(),
+          ];
+        }),
       ];
     }
 
     return switch (health) {
       AsyncData(:final value) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: value.expand(healthStatus).toList(),
         ),
       AsyncError(:final error) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: healthStatusIcon(
@@ -132,76 +132,38 @@ class AppControllerHealth extends StatelessWidget {
       _ => Shimmer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: healthStatusIcon(null, large: true),
-                title: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ShimmerText(
-                    'App Controller is healthy',
-                    style: textTheme.titleLarge,
-                  ),
-                ),
-              ),
-              const Divider(),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: healthStatusIcon(null),
-                    title: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: ShimmerText(
-                        'Service Placeholder',
+            mainAxisSize: MainAxisSize.min,
+            children: ['App Controller', 'Auth', 'Recipe Search']
+                .expand((service) => [
+                      ListTile(
+                        leading: healthStatusIcon(null, large: true),
+                        title: Align(
+                          alignment: Alignment.centerLeft,
+                          child: ShimmerText(
+                            '$service is healthy',
+                            style: textTheme.titleLarge,
+                          ),
+                        ),
                       ),
-                    ),
-                    subtitle: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: ShimmerText(
-                        'Healthy',
+                      const Divider(),
+                      ListTile(
+                        leading: healthStatusIcon(null),
+                        title: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: ShimmerText(
+                            'Service Placeholder',
+                          ),
+                        ),
+                        subtitle: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: ShimmerText(
+                            'Healthy',
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-              ),
-              const Divider(),
-              ListTile(
-                leading: healthStatusIcon(null, large: true),
-                title: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ShimmerText(
-                    'App Controller is healthy',
-                    style: textTheme.titleLarge,
-                  ),
-                ),
-              ),
-              const Divider(),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: healthStatusIcon(null),
-                    title: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: ShimmerText(
-                        'Service Placeholder',
-                      ),
-                    ),
-                    subtitle: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: ShimmerText(
-                        'Healthy',
-                      ),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-              ),
-              const Divider(),
-            ],
+                      const Divider(),
+                    ])
+                .toList(),
           ),
         ),
     };

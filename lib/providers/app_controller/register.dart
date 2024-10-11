@@ -1,6 +1,6 @@
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:dio/dio.dart';
-import 'package:intellicook_mobile/utils/app_controller_client.dart';
+import 'package:intellicook_mobile/globals/app_controller_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'register.g.dart';

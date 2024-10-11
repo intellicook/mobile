@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/health.dart';
 import 'package:intellicook_mobile/widgets/high_level/app_controller_health.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
@@ -26,12 +27,14 @@ class AppControllerHealthScreen extends ConsumerWidget {
     return BackgroundScaffold(
       title: title,
       child: Panel(
+        scrollable: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            healthStatuses,
-            const Spacer(),
             reloadButton,
+            const SizedBox(height: SpacingConsts.m),
+            healthStatuses,
           ],
         ),
       ),
