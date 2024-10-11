@@ -55,6 +55,7 @@ dependencies:
   change_case: ^2.1.0
   rive: ^0.13.13
   camera: ^0.11.0+1
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:

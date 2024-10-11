@@ -43,6 +43,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     ref.listen(registerProvider, handleErrorAsSnackBar(context));
 
+    ref.listen(registerProvider, (_, state) {
+      if (state is AsyncData) {
+        if (state.value!.success) {
+          Navigator.pop(context);
+        }
+      }
+    });
+
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
