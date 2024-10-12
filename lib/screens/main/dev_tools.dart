@@ -22,7 +22,7 @@ class DevTools extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final accessToken = ref.watch(appControllerProvider).accessToken;
+    final isAuthenticated = ref.watch(appControllerProvider).isAuthenticated;
 
     return BackgroundScaffold(
       background: false,
@@ -49,8 +49,8 @@ class DevTools extends ConsumerWidget {
                 const SizedBox(height: SpacingConsts.m),
               ],
             ),
-            ...switch (accessToken) {
-              null => [],
+            ...switch (isAuthenticated) {
+              false => [],
               _ => [
                   const Divider(),
                   const SizedBox(height: SpacingConsts.m),

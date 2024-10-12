@@ -8,6 +8,6 @@ extension TextSpanExtensions on TextSpan {
       textDirection: TextDirection.ltr,
     )..layout(minWidth: 0, maxWidth: MediaQuery.of(context).size.width);
 
-    return textPainter.size;
+    return Size(textPainter.width, textPainter.height);
   }
 }
