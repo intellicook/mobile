@@ -56,12 +56,14 @@ class _ClickableState extends State<Clickable> {
       key: widget._listenerKey,
       onPointerDown: (event) {
         if (isPressed) {
-          false;
+          return;
         }
 
-        setState(() {
-          isPressed = true;
-        });
+        if (mounted) {
+          setState(() {
+            isPressed = true;
+          });
+        }
 
         widget.onStateChanged?.call(true);
         widget.onPressed?.call();
@@ -71,9 +73,11 @@ class _ClickableState extends State<Clickable> {
           return;
         }
 
-        setState(() {
-          isPressed = false;
-        });
+        if (mounted) {
+          setState(() {
+            isPressed = false;
+          });
+        }
 
         widget.onStateChanged?.call(false);
 
@@ -93,9 +97,11 @@ class _ClickableState extends State<Clickable> {
           return;
         }
 
-        setState(() {
-          isPressed = false;
-        });
+        if (mounted) {
+          setState(() {
+            isPressed = false;
+          });
+        }
 
         widget.onStateChanged?.call(false);
       },

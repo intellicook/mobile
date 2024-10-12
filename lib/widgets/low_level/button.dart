@@ -144,9 +144,11 @@ class _ButtonState extends State<Button> {
       onReleased: widget.enabled ? widget.onReleased : null,
       onStateChanged: widget.enabled
           ? (bool isPressed) {
-              setState(() {
-                this.isPressed = isPressed;
-              });
+              if (mounted) {
+                setState(() {
+                  this.isPressed = isPressed;
+                });
+              }
               widget.onStateChanged?.call(isPressed);
             }
           : null,

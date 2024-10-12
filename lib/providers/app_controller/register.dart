@@ -1,6 +1,6 @@
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:dio/dio.dart';
-import 'package:intellicook_mobile/globals/app_controller_client.dart';
+import 'package:intellicook_mobile/providers/app_controller/app_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'register.g.dart';
@@ -18,7 +18,8 @@ class Register extends _$Register {
     String username,
     String password,
   ) async {
-    final api = appControllerClient.getAuthApi();
+    final client = ref.read(appControllerProvider).client;
+    final api = client.getAuthApi();
     state = const AsyncLoading();
 
     try {
