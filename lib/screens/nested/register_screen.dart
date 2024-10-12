@@ -55,6 +55,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final textTheme = theme.textTheme;
 
     void onConfirmClicked() {
+      if (!mounted) {
+        return;
+      }
+
       setState(() {
         nameError = null;
         emailError = null;

@@ -42,6 +42,9 @@ class _InputFieldState extends State<InputField> {
   void initState() {
     super.initState();
     focusNode.addListener(() {
+      if (!mounted) {
+        return;
+      }
       setState(() {});
     });
   }

@@ -41,6 +41,9 @@ class _IngredientRecognitionScreenState extends ConsumerState
       }
       setState(() {});
     }).catchError((Object e) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         error = switch (e) {
           CameraException e => switch (e.code) {

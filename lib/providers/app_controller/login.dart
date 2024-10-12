@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app_controller_client/app_controller_client.dart';
 import 'package:dio/dio.dart';
-import 'package:intellicook_mobile/globals/app_controller_client.dart';
+import 'package:intellicook_mobile/providers/app_controller/app_controller.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login.g.dart';
@@ -15,7 +15,8 @@ class Login extends _$Login {
   }
 
   Future<void> login(String username, String password) async {
-    final api = appControllerClient.getAuthApi();
+    final client = ref.read(appControllerProvider).client;
+    final api = client.getAuthApi();
     state = const AsyncLoading();
 
     try {
@@ -27,7 +28,10 @@ class Login extends _$Login {
         loginPostRequestModel: requestBuilder.build(),
       );
 
-      state = AsyncData(LoginState.response(response.data));
+      state = AsyncData(LoginState.response(response.data!));
+      ref
+          .read(appControllerProvider.notifier)
+          .setAccessToken(response.data!.accessToken);
     } on DioException catch (e) {
       if (e.response?.statusCode == HttpStatus.unauthorized) {
         state = const AsyncData(LoginState.invalidCredentials());
@@ -41,7 +45,8 @@ class Login extends _$Login {
 }
 
 class LoginState {
-  const LoginState.response(this.response) : invalidCredentials = false;
+  const LoginState.response(LoginPostResponseModel this.response)
+      : invalidCredentials = false;
 
   const LoginState.invalidCredentials()
       : response = null,

@@ -7,7 +7,7 @@ part of 'ingredient_recognition_frames.dart';
 // **************************************************************************
 
 String _$ingredientRecognitionFramesHash() =>
-    r'f9580d10d4a9fda2ae86b526bd1e62e4c2a3bf10';
+    r'c8af566b2987ff5fcdb0dbd66f6cb9d57edbc249';
 
 /// See also [IngredientRecognitionFrames].
 @ProviderFor(IngredientRecognitionFrames)

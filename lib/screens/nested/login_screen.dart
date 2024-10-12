@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/login.dart';
-import 'package:intellicook_mobile/screens/nested/placeholder_screen.dart';
 import 'package:intellicook_mobile/screens/nested/register_screen.dart';
 import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
@@ -40,19 +39,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final textTheme = theme.textTheme;
 
     ref.listen(loginProvider, (_, state) {
-      if (state is AsyncData) {
-        if (state.value?.response != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PlaceholderScreen(),
-            ),
-          );
-        }
+      if (state is AsyncData && state.value?.response != null) {
+        Navigator.of(context).pop();
       }
     });
 
     void onLoginClicked() {
+      if (!mounted) {
+        return;
+      }
+
       setState(() {
         usernameError = null;
         passwordError = null;
