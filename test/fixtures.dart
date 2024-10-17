@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/theme.dart';
 import 'package:mockito/annotations.dart';
 
-@GenerateNiceMocks([MockSpec<BuildContext>()])
+@GenerateNiceMocks([MockSpec<NavigatorObserver>(), MockSpec<BuildContext>()])
 import 'fixtures.mocks.dart';
 
 class TextFixture {
@@ -19,22 +20,32 @@ class MockMaterialApp extends StatelessWidget {
   const MockMaterialApp({
     super.key,
     this.brightness = defaultBrightness,
-    this.child,
+    this.navigatorObservers = defaultNavigatorObservers,
+    this.providerOverrides = defaultProviderOverrides,
+    required this.child,
   });
 
   static const defaultBrightness = Brightness.light;
+  static const defaultNavigatorObservers = <NavigatorObserver>[];
+  static const defaultProviderOverrides = <Override>[];
 
   final Brightness brightness;
-  final Widget? child;
+  final List<NavigatorObserver> navigatorObservers;
+  final List<Override> providerOverrides;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final context = MockBuildContext();
     final theme = IntelliCookTheme.theme(context, brightness);
 
-    return MaterialApp(
-      theme: theme,
-      home: child,
+    return ProviderScope(
+      overrides: providerOverrides,
+      child: MaterialApp(
+        navigatorObservers: navigatorObservers,
+        theme: theme,
+        home: child,
+      ),
     );
   }
 }

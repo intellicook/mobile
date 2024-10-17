@@ -25,7 +25,7 @@ class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
     final appController = ref.watch(appControllerProvider);
-    if (appController.accessToken == null && !initialLoginShown) {
+    if (!appController.isAuthenticated && !initialLoginShown) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           initialLoginShown = true;

@@ -48,4 +48,6 @@ class AppControllerState {
 
   late final AppControllerClient client;
   final String? accessToken;
+
+  bool get isAuthenticated => accessToken != null;
 }

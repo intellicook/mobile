@@ -5,7 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:flutter/foundation.dart' as _i3;
 import 'package:flutter/src/widgets/framework.dart' as _i2;
-import 'package:flutter/src/widgets/notification_listener.dart' as _i4;
+import 'package:flutter/src/widgets/navigator.dart' as _i4;
+import 'package:flutter/src/widgets/notification_listener.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -66,6 +67,101 @@ class _FakeDiagnosticsNode_2 extends _i1.SmartFake
     _i3.DiagnosticLevel? minLevel = _i3.DiagnosticLevel.info,
   }) =>
       super.toString();
+}
+
+/// A class which mocks [NavigatorObserver].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNavigatorObserver extends _i1.Mock implements _i4.NavigatorObserver {
+  @override
+  void didPush(
+    _i4.Route<dynamic>? route,
+    _i4.Route<dynamic>? previousRoute,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #didPush,
+          [
+            route,
+            previousRoute,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void didPop(
+    _i4.Route<dynamic>? route,
+    _i4.Route<dynamic>? previousRoute,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #didPop,
+          [
+            route,
+            previousRoute,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void didRemove(
+    _i4.Route<dynamic>? route,
+    _i4.Route<dynamic>? previousRoute,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #didRemove,
+          [
+            route,
+            previousRoute,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void didReplace({
+    _i4.Route<dynamic>? newRoute,
+    _i4.Route<dynamic>? oldRoute,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #didReplace,
+          [],
+          {
+            #newRoute: newRoute,
+            #oldRoute: oldRoute,
+          },
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void didStartUserGesture(
+    _i4.Route<dynamic>? route,
+    _i4.Route<dynamic>? previousRoute,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #didStartUserGesture,
+          [
+            route,
+            previousRoute,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void didStopUserGesture() => super.noSuchMethod(
+        Invocation.method(
+          #didStopUserGesture,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [BuildContext].
@@ -148,7 +244,7 @@ class MockBuildContext extends _i1.Mock implements _i2.BuildContext {
       );
 
   @override
-  void dispatchNotification(_i4.Notification? notification) =>
+  void dispatchNotification(_i5.Notification? notification) =>
       super.noSuchMethod(
         Invocation.method(
           #dispatchNotification,
