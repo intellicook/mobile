@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/me.dart';
+import 'package:intellicook_mobile/screens/nested/edit_account_screen.dart';
 import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
@@ -23,6 +24,16 @@ class ProfileAccountPanel extends ConsumerWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
+    void onEditAccountClicked() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const Scaffold(
+            body: EditAccountScreen(),
+          ),
+        ),
+      );
+    }
+
     return Panel(
       child: switch (me) {
         AsyncData(:final value) => Column(
@@ -36,9 +47,10 @@ class ProfileAccountPanel extends ConsumerWidget {
               Text('Username: ${value.username}'),
               Text('Email: ${value.email}'),
               const SizedBox(height: SpacingConsts.m),
-              const LabelButton(
+              LabelButton(
                 type: LabelButtonType.secondary,
                 label: 'Edit Account',
+                onClicked: onEditAccountClicked,
               ),
             ],
           ),

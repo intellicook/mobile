@@ -15,7 +15,7 @@ class Login extends _$Login {
   }
 
   Future<void> login(String username, String password) async {
-    final client = ref.read(appControllerProvider).client;
+    final client = ref.watch(appControllerProvider).client;
     final api = client.getAuthApi();
     state = const AsyncLoading();
 
