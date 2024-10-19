@@ -33,6 +33,14 @@ provide more instructions for setting up the project in Android Studio.
     dart run build_runner build --delete-conflicting-outputs
     ```
 
+## Updating App Controller Version
+
+To update the app controller version, you will run the following command:
+
+```bash
+flutter pub upgrade app_controller_client
+```
+
 ## Making Code Changes
 
 Important things to note when making code changes:

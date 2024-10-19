@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
+import 'package:intellicook_mobile/providers/app_controller/app_controller.dart';
 import 'package:intellicook_mobile/providers/app_controller/me.dart';
 import 'package:intellicook_mobile/providers/app_controller/me_put.dart';
 import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
@@ -18,6 +19,7 @@ class EditAccountScreen extends ConsumerStatefulWidget {
 
 class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   late bool controllerInitialized;
+  late bool meUpdated;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -29,6 +31,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   void initState() {
     super.initState();
     controllerInitialized = false;
+    meUpdated = false;
   }
 
   @override
@@ -54,6 +57,13 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       handleErrorAsSnackBar(context),
     );
 
+    ref.listen(appControllerProvider, (_, __) {
+      if (meUpdated) {
+        ref.read(meProvider.notifier).reload();
+        Navigator.pop(context);
+      }
+    });
+
     if (me is AsyncData && !controllerInitialized) {
       nameController.text = me.value!.name;
       emailController.text = me.value!.email;
@@ -61,10 +71,14 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       controllerInitialized = true;
     }
 
-    if (mePut is AsyncData && mePut.value!.success) {
+    if (mePut is AsyncData && mePut.value!.response != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(meProvider.notifier).reload();
-        Navigator.pop(context);
+        ref
+            .read(appControllerProvider.notifier)
+            .setAccessToken(mePut.value!.response!.accessToken);
+      });
+      setState(() {
+        meUpdated = true;
       });
     }
 
@@ -169,6 +183,17 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                           _ => null,
                         },
                   ),
+                  ...switch (mePut) {
+                    AsyncData(:final value) when value.hasResponse => const [
+                        SizedBox(height: SpacingConsts.s),
+                        LinearProgressIndicator(),
+                      ],
+                    AsyncLoading() => const [
+                        SizedBox(height: SpacingConsts.s),
+                        LinearProgressIndicator(),
+                      ],
+                    _ => const [],
+                  },
                   const SizedBox(height: SpacingConsts.m),
                   LabelButton(
                     label: 'Confirm',

@@ -117,30 +117,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: passwordController,
                     error: passwordError,
                   ),
-                  switch (login) {
+                  ...switch (login) {
                     AsyncData(:final value) => switch (value.hasResponse) {
-                        false => const SizedBox(),
+                        false => const [],
                         true => switch (value.invalidCredentials) {
-                            false => const SizedBox(),
-                            true => const SizedBox(height: SpacingConsts.s),
-                          },
-                      },
-                    AsyncLoading() => const SizedBox(height: SpacingConsts.s),
-                    _ => const SizedBox(),
-                  },
-                  switch (login) {
-                    AsyncData(:final value) => switch (value.hasResponse) {
-                        false => const SizedBox(),
-                        true => switch (value.invalidCredentials) {
-                            false => const SizedBox(),
-                            true => const Text(
-                                'Invalid username or password',
-                                style: TextStyle(color: Colors.red),
-                              ),
+                            false => const [],
+                            true => const [
+                                SizedBox(height: SpacingConsts.s),
+                                Text(
+                                  'Invalid username or password',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
                           }
                       },
-                    AsyncLoading() => const LinearProgressIndicator(),
-                    _ => const SizedBox(),
+                    AsyncLoading() => const [
+                        SizedBox(height: SpacingConsts.s),
+                        LinearProgressIndicator(),
+                      ],
+                    _ => const [],
                   },
                   const SizedBox(height: SpacingConsts.m),
                   LabelButton(

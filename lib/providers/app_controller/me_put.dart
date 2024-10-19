@@ -14,9 +14,9 @@ class MePut extends _$MePut {
   }
 
   Future<void> put(String name, String email, String username) async {
-    final client = ref.watch(appControllerProvider).client;
+    final appController = ref.watch(appControllerProvider);
     final me = ref.watch(meProvider);
-    final api = client.getUserApi();
+    final api = appController.client.getUserApi();
     state = const AsyncLoading();
 
     if (me is! AsyncData) {
@@ -29,7 +29,9 @@ class MePut extends _$MePut {
       if (me.value!.name == name &&
           me.value!.email == email &&
           me.value!.username == username) {
-        state = const AsyncData(MePutState.success());
+        final response = UserPutResponseModelBuilder()
+          ..accessToken = appController.accessToken;
+        state = AsyncData(MePutState.response(response.build()));
         return;
       }
 
@@ -38,11 +40,11 @@ class MePut extends _$MePut {
         ..email = email
         ..username = username;
 
-      await api.userMePut(
+      final response = await api.userMePut(
         userPutRequestModel: requestBuilder.build(),
       );
 
-      state = const AsyncData(MePutState.success());
+      state = AsyncData(MePutState.response(response.data!));
     } on DioException catch (e) {
       if (e.response?.data is Map<String, dynamic>) {
         final problemDetails = e.response!.data as Map<String, dynamic>;
@@ -78,20 +80,18 @@ enum MePutStateErrorKey {
 }
 
 class MePutState {
-  const MePutState.errors(this.errors) : success = false;
+  const MePutState.errors(this.errors) : response = null;
 
-  const MePutState.success()
-      : success = true,
-        errors = null;
+  const MePutState.response(UserPutResponseModel this.response) : errors = null;
 
   const MePutState.none()
-      : success = false,
+      : response = null,
         errors = null;
 
-  final bool success;
+  final UserPutResponseModel? response;
   final Map<MePutStateErrorKey, List<String>>? errors;
 
-  bool get hasResponse => success || errors != null;
+  bool get hasResponse => response != null || errors != null;
 
   String? firstErrorOrNull(MePutStateErrorKey key) {
     return errors?[key]?.firstOrNull;
