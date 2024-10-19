@@ -9,10 +9,13 @@ extension DioExceptionExtensions on DioException {
         'An error occurred when connecting to server (status ${statusCode ?? 'unknown'})';
 
     return switch (response?.data) {
-      MapBase error => 'An error occurred when connecting to server:\n'
-          '${MapBase.mapToString(error)}\n'
-          'If you are seeing this message, '
-          'please report the issue to the developers.',
+      MapBase error => switch (error['detail']) {
+          String detail => detail,
+          _ => 'An error occurred when connecting to server:\n'
+              '${MapBase.mapToString(error)}\n'
+              'If you are seeing this message, '
+              'please report the issue to the developers.',
+        },
       _ => defaultError,
     };
   }

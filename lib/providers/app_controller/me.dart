@@ -14,4 +14,9 @@ class Me extends _$Me {
     final response = await api.userMeGet();
     return response.data!;
   }
+
+  Future<void> reload() async {
+    state = const AsyncLoading();
+    ref.invalidateSelf();
+  }
 }

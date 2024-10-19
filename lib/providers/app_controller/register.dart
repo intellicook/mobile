@@ -18,7 +18,7 @@ class Register extends _$Register {
     String username,
     String password,
   ) async {
-    final client = ref.read(appControllerProvider).client;
+    final client = ref.watch(appControllerProvider).client;
     final api = client.getAuthApi();
     state = const AsyncLoading();
 
