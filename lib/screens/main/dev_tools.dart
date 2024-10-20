@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/app_controller.dart';
 import 'package:intellicook_mobile/screens/nested/app_controller_health_screen.dart';
+import 'package:intellicook_mobile/screens/nested/change_password_screen.dart';
 import 'package:intellicook_mobile/screens/nested/component_gallery.dart';
 import 'package:intellicook_mobile/screens/nested/edit_account_screen.dart';
 import 'package:intellicook_mobile/screens/nested/login_screen.dart';
@@ -19,6 +20,7 @@ class DevTools extends ConsumerWidget {
     ('Login Screen', LoginScreen()),
     ('Register Screen', RegisterScreen()),
     ('Edit Account Screen', EditAccountScreen()),
+    ('Change Password Screen', ChangePasswordScreen()),
     ('Component Gallery', ComponentGallery()),
   ];
 

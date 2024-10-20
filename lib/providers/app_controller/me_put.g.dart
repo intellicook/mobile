@@ -6,7 +6,7 @@ part of 'me_put.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mePutHash() => r'cc04d95132db4e50150139600a4860e344bb563d';
+String _$mePutHash() => r'9fbe39619e2bb9475c415d9cd2c865f1a01cd309';
 
 /// See also [MePut].
 @ProviderFor(MePut)
