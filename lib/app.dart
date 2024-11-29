@@ -14,30 +14,24 @@ class App extends ConsumerStatefulWidget {
 }
 
 class _AppState extends ConsumerState<App> {
-  late bool initialLoginShown;
-
   @override
   void initState() {
     super.initState();
-    initialLoginShown = false;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final appController = ref.watch(appControllerProvider);
-    if (!appController.isAuthenticated && !initialLoginShown) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          initialLoginShown = true;
-        });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final appController = ref.read(appControllerProvider);
+      if (!appController.isAuthenticated) {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const Scaffold(
             body: LoginScreen(),
           ),
         ));
-      });
-    }
+      }
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return const Scaffold(
       body: Background(child: ScreenRouter()),
       bottomNavigationBar: NavBar(),

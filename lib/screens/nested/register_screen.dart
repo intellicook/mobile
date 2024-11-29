@@ -43,14 +43,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     ref.listen(registerProvider, handleErrorAsSnackBar(context));
 
-    if (register is AsyncData && register.value!.success) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pop(context);
-      });
-    }
+    ref.listen(
+      registerProvider,
+      (_, state) {
+        if (state is AsyncData && state.value!.success) {
+          Navigator.pop(context);
+        }
+      },
+    );
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     void onConfirmClicked() {
       if (!mounted) {
@@ -187,13 +191,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 controller: confirmPasswordController,
                 error: confirmPasswordError,
               ),
-              switch (register) {
-                AsyncLoading() => const SizedBox(height: SpacingConsts.s),
-                _ => const SizedBox(),
-              },
-              switch (register) {
-                AsyncLoading() => const LinearProgressIndicator(),
-                _ => const SizedBox(),
+              ...switch (register) {
+                AsyncLoading() => const [
+                    SizedBox(height: SpacingConsts.s),
+                    LinearProgressIndicator(),
+                  ],
+                AsyncData(:final value) => switch (value.firstErrorOrNull(
+                    RegisterStateErrorKey.unspecified,
+                  )) {
+                    null => const [],
+                    String error => [
+                        const SizedBox(height: SpacingConsts.s),
+                        Text(
+                          error,
+                          style: textTheme.bodySmall!
+                              .copyWith(color: colorScheme.error),
+                        ),
+                      ],
+                  },
+                _ => const [],
               },
               const SizedBox(height: SpacingConsts.m),
               LabelButton(

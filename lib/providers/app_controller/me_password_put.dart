@@ -40,14 +40,23 @@ class MePasswordPut extends _$MePasswordPut {
         final problemDetails = e.response!.data as Map<String, dynamic>;
         if (problemDetails['errors'] is Map<String, dynamic>) {
           final errors = problemDetails['errors'] as Map<String, dynamic>;
-          final errorMap = <MePasswordPutStateErrorKey, List<String>>{};
 
-          errorMap[MePasswordPutStateErrorKey.oldPassword] =
-              List<String>.from(errors['OldPassword'] ?? []);
-          errorMap[MePasswordPutStateErrorKey.newPassword] =
-              List<String>.from(errors['NewPassword'] ?? []);
-          errorMap[MePasswordPutStateErrorKey.unspecified] =
-              List<String>.from(errors[''] ?? []);
+          final keyToErrorKey = <String, MePasswordPutStateErrorKey>{
+            'OldPassword': MePasswordPutStateErrorKey.oldPassword,
+            'NewPassword': MePasswordPutStateErrorKey.newPassword,
+          };
+
+          final errorMap = {
+            for (final e in keyToErrorKey.entries)
+              e.value: (List<String>.from(errors[e.key] ?? []))
+          };
+          errorMap[MePasswordPutStateErrorKey.unspecified] = List<String>.from(
+            errors.entries
+                .where((e) => !keyToErrorKey.containsKey(e.key))
+                .map((e) => e.value)
+                .expand((e) => e)
+                .toList(),
+          );
 
           state = AsyncData(MePasswordPutState.errors(errorMap));
           return;

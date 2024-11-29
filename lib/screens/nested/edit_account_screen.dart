@@ -19,7 +19,6 @@ class EditAccountScreen extends ConsumerStatefulWidget {
 
 class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   late bool controllerInitialized;
-  late bool meUpdated;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -31,7 +30,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   void initState() {
     super.initState();
     controllerInitialized = false;
-    meUpdated = false;
   }
 
   @override
@@ -57,13 +55,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       handleErrorAsSnackBar(context),
     );
 
-    ref.listen(appControllerProvider, (_, __) {
-      if (meUpdated) {
-        ref.read(meProvider.notifier).reload();
-        Navigator.pop(context);
-      }
-    });
-
     if (me is AsyncData && !controllerInitialized) {
       nameController.text = me.value!.name;
       emailController.text = me.value!.email;
@@ -71,19 +62,19 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       controllerInitialized = true;
     }
 
-    if (mePut is AsyncData && mePut.value!.response != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.listen(mePutProvider, (_, state) {
+      if (state is AsyncData && state.value!.response != null) {
         ref
             .read(appControllerProvider.notifier)
-            .setAccessToken(mePut.value!.response!.accessToken);
-      });
-      setState(() {
-        meUpdated = true;
-      });
-    }
+            .setAccessToken(state.value!.response!.accessToken);
+        ref.read(meProvider.notifier).reload();
+        Navigator.pop(context);
+      }
+    });
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     void onConfirmClicked() {
       if (!mounted) {
@@ -184,10 +175,23 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         },
                   ),
                   ...switch (mePut) {
-                    AsyncData(:final value) when value.hasResponse => const [
+                    AsyncData(:final value) when value.success => const [
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),
                       ],
+                    AsyncData(:final value) => switch (value.firstErrorOrNull(
+                        MePutStateErrorKey.unspecified,
+                      )) {
+                        null => const [],
+                        String error => [
+                            const SizedBox(height: SpacingConsts.s),
+                            Text(
+                              error,
+                              style: textTheme.bodySmall!
+                                  .copyWith(color: colorScheme.error),
+                            ),
+                          ],
+                      },
                     AsyncLoading() => const [
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),

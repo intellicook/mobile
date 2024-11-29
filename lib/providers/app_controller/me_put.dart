@@ -50,16 +50,24 @@ class MePut extends _$MePut {
         final problemDetails = e.response!.data as Map<String, dynamic>;
         if (problemDetails['errors'] is Map<String, dynamic>) {
           final errors = problemDetails['errors'] as Map<String, dynamic>;
-          final errorMap = <MePutStateErrorKey, List<String>>{};
 
-          errorMap[MePutStateErrorKey.name] =
-              List<String>.from(errors['Name'] ?? []);
-          errorMap[MePutStateErrorKey.email] =
-              List<String>.from(errors['Email'] ?? []);
-          errorMap[MePutStateErrorKey.username] =
-              List<String>.from(errors['Username'] ?? []);
-          errorMap[MePutStateErrorKey.unspecified] =
-              List<String>.from(errors[''] ?? []);
+          final keyToErrorKey = <String, MePutStateErrorKey>{
+            'Name': MePutStateErrorKey.name,
+            'Email': MePutStateErrorKey.email,
+            'Username': MePutStateErrorKey.username,
+          };
+
+          final errorMap = {
+            for (final e in keyToErrorKey.entries)
+              e.value: (List<String>.from(errors[e.key] ?? []))
+          };
+          errorMap[MePutStateErrorKey.unspecified] = List<String>.from(
+            errors.entries
+                .where((e) => !keyToErrorKey.containsKey(e.key))
+                .map((e) => e.value)
+                .expand((e) => e)
+                .toList(),
+          );
 
           state = AsyncData(MePutState.errors(errorMap));
           return;
@@ -92,6 +100,8 @@ class MePutState {
   final Map<MePutStateErrorKey, List<String>>? errors;
 
   bool get hasResponse => response != null || errors != null;
+
+  bool get success => response != null && errors == null;
 
   String? firstErrorOrNull(MePutStateErrorKey key) {
     return errors?[key]?.firstOrNull;

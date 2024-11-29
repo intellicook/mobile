@@ -42,14 +42,15 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
       handleErrorAsSnackBar(context),
     );
 
-    if (mePasswordPut is AsyncData && mePasswordPut.value!.success) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.listen(mePasswordPutProvider, (_, state) {
+      if (state is AsyncData && state.value!.success) {
         Navigator.of(context).pop();
-      });
-    }
+      }
+    });
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     void onConfirmClicked() {
       if (!mounted) {
@@ -165,6 +166,19 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),
                       ],
+                    AsyncData(:final value) => switch (value.firstErrorOrNull(
+                        MePasswordPutStateErrorKey.unspecified,
+                      )) {
+                        null => const [],
+                        String error => [
+                            const SizedBox(height: SpacingConsts.s),
+                            Text(
+                              error,
+                              style: textTheme.bodySmall!
+                                  .copyWith(color: colorScheme.error),
+                            ),
+                          ],
+                      },
                     _ => const [],
                   },
                   const SizedBox(height: SpacingConsts.m),
