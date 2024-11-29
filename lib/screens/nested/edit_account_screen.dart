@@ -64,26 +64,29 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       }
     });
 
-    if (me is AsyncData && !controllerInitialized) {
-      nameController.text = me.value!.name;
-      emailController.text = me.value!.email;
-      usernameController.text = me.value!.username;
-      controllerInitialized = true;
-    }
+    ref.listen(meProvider, (_, state) {
+      if (state is AsyncData && !controllerInitialized) {
+        nameController.text = state.value!.name;
+        emailController.text = state.value!.email;
+        usernameController.text = state.value!.username;
+        controllerInitialized = true;
+      }
+    });
 
-    if (mePut is AsyncData && mePut.value!.response != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.listen(mePutProvider, (_, state) {
+      if (state is AsyncData && state.value!.response != null) {
         ref
             .read(appControllerProvider.notifier)
-            .setAccessToken(mePut.value!.response!.accessToken);
-      });
-      setState(() {
-        meUpdated = true;
-      });
-    }
+            .setAccessToken(state.value!.response!.accessToken);
+        setState(() {
+          meUpdated = true;
+        });
+      }
+    });
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     void onConfirmClicked() {
       if (!mounted) {
@@ -188,6 +191,19 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),
                       ],
+                    AsyncData(:final value) => switch (value.firstErrorOrNull(
+                        MePutStateErrorKey.unspecified,
+                      )) {
+                        null => const [],
+                        String error => [
+                            const SizedBox(height: SpacingConsts.s),
+                            Text(
+                              error,
+                              style: textTheme.bodySmall!
+                                  .copyWith(color: colorScheme.error),
+                            ),
+                          ],
+                      },
                     AsyncLoading() => const [
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),

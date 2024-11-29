@@ -46,8 +46,13 @@ class MePasswordPut extends _$MePasswordPut {
               List<String>.from(errors['OldPassword'] ?? []);
           errorMap[MePasswordPutStateErrorKey.newPassword] =
               List<String>.from(errors['NewPassword'] ?? []);
-          errorMap[MePasswordPutStateErrorKey.unspecified] =
-              List<String>.from(errors[''] ?? []);
+          errorMap[MePasswordPutStateErrorKey.unspecified] = List<String>.from(
+              errors.entries
+                  .where(
+                      (e) => e.key != 'OldPassword' && e.key != 'NewPassword')
+                  .map((e) => e.value)
+                  .expand((e) => e)
+                  .toList());
 
           state = AsyncData(MePasswordPutState.errors(errorMap));
           return;
