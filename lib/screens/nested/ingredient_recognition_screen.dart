@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,6 +29,10 @@ class _IngredientRecognitionScreenState extends ConsumerState
   Widget build(BuildContext context) {
     final images = ref.watch(ingredientRecognitionImagesProvider);
 
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
     ref.listen(
       ingredientRecognitionImagesProvider,
       handleErrorAsSnackBar(context),
@@ -48,6 +50,14 @@ class _IngredientRecognitionScreenState extends ConsumerState
           .pickImages(ImageSource.gallery);
     }
 
+    void rotateImage(int index) {
+      ref.read(ingredientRecognitionImagesProvider.notifier).rotateImage(index);
+    }
+
+    void removeImage(int index) {
+      ref.read(ingredientRecognitionImagesProvider.notifier).removeImage(index);
+    }
+
     return BackgroundScaffold(
       title: 'Ingredients Recognition',
       child: Panel(
@@ -56,20 +66,47 @@ class _IngredientRecognitionScreenState extends ConsumerState
           controller: pageController,
           children: [
             ...(switch (images) {
-              AsyncData(:final value) => value.images
-                  .map((image) => Padding(
-                        padding: const EdgeInsets.all(SpacingConsts.m),
-                        child: Image.file(
-                          File(image.path),
+              AsyncData(:final value) => value.images.indexed.map((e) {
+                  final (index, image) = e;
+                  return Padding(
+                    padding: const EdgeInsets.all(SpacingConsts.m),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        Image.memory(
+                          image,
                           fit: BoxFit.contain,
                         ),
-                      ))
-                  .toList(),
+                        const SizedBox(height: SpacingConsts.l),
+                        LabelButton(
+                          label: 'Rotate',
+                          type: LabelButtonType.secondary,
+                          leading: const Icon(Icons.rotate_right_rounded),
+                          onClicked: () => rotateImage(index),
+                        ),
+                        const SizedBox(height: SpacingConsts.m),
+                        LabelButton(
+                          label: 'Remove',
+                          type: LabelButtonType.secondary,
+                          leading: const Icon(Icons.delete_rounded),
+                          onClicked: () => removeImage(index),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                }).toList(),
               AsyncLoading() => const [
                   Center(child: CircularProgressIndicator()),
                 ],
               AsyncError(:final error) => [
-                  Center(child: Text('Error: $error')),
+                  Center(
+                    child: Text(
+                      'Error: $error',
+                      style: textTheme.bodySmall!
+                          .copyWith(color: colorScheme.error),
+                    ),
+                  ),
                 ],
               _ => const [],
             }),
@@ -80,13 +117,13 @@ class _IngredientRecognitionScreenState extends ConsumerState
                   const Spacer(),
                   LabelButton(
                     label: 'Take a photo',
-                    leading: const Icon(Icons.camera_alt),
+                    leading: const Icon(Icons.camera_alt_rounded),
                     onClicked: onTakeAPhoto,
                   ),
                   const SizedBox(height: SpacingConsts.m),
                   LabelButton(
                     label: 'Select from gallery',
-                    leading: const Icon(Icons.photo),
+                    leading: const Icon(Icons.photo_rounded),
                     onClicked: onSelectFromGallery,
                   ),
                   const Spacer(),
