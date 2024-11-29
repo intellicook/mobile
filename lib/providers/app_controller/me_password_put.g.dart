@@ -6,7 +6,7 @@ part of 'me_password_put.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mePasswordPutHash() => r'ced65d7f0a699da3fe056c4239ce580e1513e749';
+String _$mePasswordPutHash() => r'db7f6acdc4d60ce83512858e87cdbdbfe34e046e';
 
 /// See also [MePasswordPut].
 @ProviderFor(MePasswordPut)

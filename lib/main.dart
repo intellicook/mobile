@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/app.dart';
-import 'package:intellicook_mobile/globals/camera.dart';
 import 'package:intellicook_mobile/providers/app_controller/app_controller.dart';
 import 'package:intellicook_mobile/providers/theme.dart';
 import 'package:intellicook_mobile/theme.dart';
@@ -9,7 +8,6 @@ import 'package:intellicook_mobile/theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initAppController();
-  await initCameras();
 
   runApp(const ProviderScope(
     child: IntelliCookApp(),

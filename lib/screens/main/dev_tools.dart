@@ -39,7 +39,7 @@ class DevTools extends ConsumerWidget {
                 LabelButton(
                   label: screen.$1,
                   type: LabelButtonType.secondary,
-                  onPressed: () {
+                  onClicked: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -61,7 +61,7 @@ class DevTools extends ConsumerWidget {
                   LabelButton(
                     label: 'Logout',
                     type: LabelButtonType.primary,
-                    onPressed: () {
+                    onClicked: () {
                       ref
                           .read(appControllerProvider.notifier)
                           .setAccessToken(null);

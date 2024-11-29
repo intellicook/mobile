@@ -14,6 +14,7 @@ class LabelButton extends StatelessWidget {
     required this.label,
     this.type = defaultType,
     this.enabled = defaultEnabled,
+    this.leading,
     this.onClicked,
     this.onPressed,
     this.onReleased,
@@ -26,6 +27,7 @@ class LabelButton extends StatelessWidget {
   final String label;
   final LabelButtonType type;
   final bool enabled;
+  final Widget? leading;
   final ClickableOnClickedCallback? onClicked;
   final ClickableOnPressedCallback? onPressed;
   final ClickableOnReleasedCallback? onReleased;
@@ -54,13 +56,24 @@ class LabelButton extends StatelessWidget {
       onStateChanged: onStateChanged,
       enabled: enabled,
       child: Center(
-        child: Text(
-          label,
-          style: enabled
-              ? textStyle
-              : textStyle?.copyWith(
-                  color: theme.disabledColor,
-                ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ...(leading != null
+                ? [
+                    leading!,
+                    const SizedBox(width: 8),
+                  ]
+                : const []),
+            Text(
+              label,
+              style: enabled
+                  ? textStyle
+                  : textStyle?.copyWith(
+                      color: theme.disabledColor,
+                    ),
+            ),
+          ],
         ),
       ),
     );

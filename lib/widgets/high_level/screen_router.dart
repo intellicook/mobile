@@ -26,14 +26,9 @@ class ScreenRouter extends ConsumerStatefulWidget {
 }
 
 class _ScreenRouterState extends ConsumerState<ScreenRouter> {
-  late PageController pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    final screenRoute = ref.read(screenRouteProvider);
-    pageController = PageController(initialPage: screenRoute.index);
-  }
+  late final pageController = PageController(
+    initialPage: ref.read(screenRouteProvider).index,
+  );
 
   @override
   void dispose() {
