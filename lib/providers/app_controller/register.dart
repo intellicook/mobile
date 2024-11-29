@@ -39,18 +39,24 @@ class Register extends _$Register {
         final problemDetails = e.response!.data as Map<String, dynamic>;
         if (problemDetails['errors'] is Map<String, dynamic>) {
           final errors = problemDetails['errors'] as Map<String, dynamic>;
-          final errorMap = <RegisterStateErrorKey, List<String>>{};
 
-          errorMap[RegisterStateErrorKey.name] =
-              List<String>.from(errors['Name'] ?? []);
-          errorMap[RegisterStateErrorKey.email] =
-              List<String>.from(errors['Email'] ?? []);
-          errorMap[RegisterStateErrorKey.username] =
-              List<String>.from(errors['Username'] ?? []);
-          errorMap[RegisterStateErrorKey.password] =
-              List<String>.from(errors['Password'] ?? []);
-          errorMap[RegisterStateErrorKey.unspecified] =
-              List<String>.from(errors[''] ?? []);
+          final keyToErrorKey = <String, RegisterStateErrorKey>{
+            'Name': RegisterStateErrorKey.name,
+            'Email': RegisterStateErrorKey.email,
+            'Username': RegisterStateErrorKey.username,
+          };
+
+          final errorMap = {
+            for (final e in keyToErrorKey.entries)
+              e.value: (List<String>.from(errors[e.key] ?? []))
+          };
+          errorMap[RegisterStateErrorKey.unspecified] = List<String>.from(
+            errors.entries
+                .where((e) => !keyToErrorKey.containsKey(e.key))
+                .map((e) => e.value)
+                .expand((e) => e)
+                .toList(),
+          );
 
           state = AsyncData(RegisterState.errors(errorMap));
           return;
