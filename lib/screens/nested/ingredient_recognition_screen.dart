@@ -1,14 +1,12 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
-import 'package:intellicook_mobile/globals/camera.dart';
-import 'package:intellicook_mobile/providers/ingredient_recognition_frames.dart';
-import 'package:intellicook_mobile/screens/nested/ingredient_frames_screen.dart';
+import 'package:intellicook_mobile/providers/ingredient_recognition_images.dart';
 import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
-import 'package:intellicook_mobile/utils/show_error_snack_bar.dart';
-import 'package:intellicook_mobile/widgets/high_level/circle_button.dart';
+import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
+import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
+import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 
 class IngredientRecognitionScreen extends ConsumerStatefulWidget {
   const IngredientRecognitionScreen({super.key});
@@ -19,178 +17,122 @@ class IngredientRecognitionScreen extends ConsumerStatefulWidget {
 
 class _IngredientRecognitionScreenState extends ConsumerState
     with WidgetsBindingObserver {
-  late CameraController controller;
-  String? error;
-
-  Future<void> initController(CameraDescription camera) async {
-    controller = CameraController(
-      camera,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-    await controller.initialize();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    error = null;
-    initController(cameras.first).then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        error = switch (e) {
-          CameraException e => switch (e.code) {
-              'CameraAccessDenied' => 'Camera access denied',
-              _ => e.code,
-            },
-          _ => 'An error occurred',
-        };
-      });
-    });
-  }
+  final pageController = PageController();
 
   @override
   void dispose() {
-    controller.dispose();
+    pageController.dispose();
     super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!controller.value.isInitialized) {
-      return;
-    }
-
-    if (state == AppLifecycleState.inactive) {
-      controller.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      initController(controller.description);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final frames = ref.watch(ingredientRecognitionFramesProvider);
+    final images = ref.watch(ingredientRecognitionImagesProvider);
+
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
 
     ref.listen(
-      ingredientRecognitionFramesProvider,
+      ingredientRecognitionImagesProvider,
       handleErrorAsSnackBar(context),
     );
 
-    if (error != null) {
-      showErrorSnackBar(
-        context,
-        error!,
-      );
-      Navigator.of(context).pop();
-    }
-
-    final mediaSize = MediaQuery.of(context).size;
-
-    const sideButtonsWidth = CircleButton.defaultDiameter * 0.6;
-
-    void onClicked() {
+    void onTakeAPhoto() {
       ref
-          .read(ingredientRecognitionFramesProvider.notifier)
-          .capture(controller);
+          .read(ingredientRecognitionImagesProvider.notifier)
+          .pickImages(ImageSource.camera);
     }
 
-    void onIngredientFramesClicked() {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const Scaffold(
-          body: IngredientFramesScreen(),
-        ),
-      ));
+    void onSelectFromGallery() {
+      ref
+          .read(ingredientRecognitionImagesProvider.notifier)
+          .pickImages(ImageSource.gallery);
     }
 
-    if (error != null ||
-        !controller.value.isInitialized ||
-        controller.value.isTakingPicture ||
-        frames is! AsyncData) {
-      return const Center(child: CircularProgressIndicator());
+    void rotateImage(int index) {
+      ref.read(ingredientRecognitionImagesProvider.notifier).rotateImage(index);
     }
 
-    return Stack(
-      children: [
-        const SizedBox.expand(),
-        ClipRect(
-          clipper: _MediaSizeClipper(mediaSize),
-          child: Transform.scale(
-            scale: 1 / (controller.value.aspectRatio * mediaSize.aspectRatio),
-            alignment: Alignment.topCenter,
-            child: CameraPreview(controller),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(
-                    width: sideButtonsWidth,
-                  ),
-                  const SizedBox(width: SpacingConsts.xl),
-                  SizedBox(
-                    width: CircleButton.defaultDiameter,
-                    child: CircleButton(
-                      primary: true,
-                      onClicked: onClicked,
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: CircleButton.defaultDiameter * 0.6,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: SpacingConsts.xl),
-                  SizedBox(
-                    width: sideButtonsWidth,
-                    child: CircleButton(
-                      diameter: sideButtonsWidth,
-                      borderRadius: SmoothBorderRadiusConsts.s,
-                      onClicked: onIngredientFramesClicked,
-                      child: Center(
-                        child: Text(
-                          frames.value!.frames.length.toString(),
-                          style: textTheme.titleSmall,
+    void removeImage(int index) {
+      ref.read(ingredientRecognitionImagesProvider.notifier).removeImage(index);
+    }
+
+    return BackgroundScaffold(
+      title: 'Ingredients Recognition',
+      child: Panel(
+        padding: EdgeInsets.zero,
+        child: PageView(
+          controller: pageController,
+          children: [
+            ...(switch (images) {
+              AsyncData(:final value) => value.images.indexed.map((e) {
+                  final (index, image) = e;
+                  return Padding(
+                    padding: const EdgeInsets.all(SpacingConsts.m),
+                    child: Column(
+                      children: [
+                        const Spacer(),
+                        Image.memory(
+                          image,
+                          fit: BoxFit.contain,
                         ),
-                      ),
+                        const SizedBox(height: SpacingConsts.l),
+                        LabelButton(
+                          label: 'Rotate',
+                          type: LabelButtonType.secondary,
+                          leading: const Icon(Icons.rotate_right_rounded),
+                          onClicked: () => rotateImage(index),
+                        ),
+                        const SizedBox(height: SpacingConsts.m),
+                        LabelButton(
+                          label: 'Remove',
+                          type: LabelButtonType.secondary,
+                          leading: const Icon(Icons.delete_rounded),
+                          onClicked: () => removeImage(index),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              AsyncLoading() => const [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              AsyncError(:final error) => [
+                  Center(
+                    child: Text(
+                      'Error: $error',
+                      style: textTheme.bodySmall!
+                          .copyWith(color: colorScheme.error),
                     ),
                   ),
                 ],
+              _ => const [],
+            }),
+            Padding(
+              padding: const EdgeInsets.all(SpacingConsts.m),
+              child: Column(
+                children: [
+                  const Spacer(),
+                  LabelButton(
+                    label: 'Take a photo',
+                    leading: const Icon(Icons.camera_alt_rounded),
+                    onClicked: onTakeAPhoto,
+                  ),
+                  const SizedBox(height: SpacingConsts.m),
+                  LabelButton(
+                    label: 'Select from gallery',
+                    leading: const Icon(Icons.photo_rounded),
+                    onClicked: onSelectFromGallery,
+                  ),
+                  const Spacer(),
+                ],
               ),
-              const SizedBox(height: SpacingConsts.l),
-            ],
-          ),
+            )
+          ],
         ),
-      ],
+      ),
     );
-  }
-}
-
-class _MediaSizeClipper extends CustomClipper<Rect> {
-  const _MediaSizeClipper(this.mediaSize);
-
-  final Size mediaSize;
-
-  @override
-  Rect getClip(Size size) {
-    return Rect.fromLTWH(0, 0, mediaSize.width, mediaSize.height);
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) {
-    return true;
   }
 }
