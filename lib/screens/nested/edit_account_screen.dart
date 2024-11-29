@@ -19,7 +19,6 @@ class EditAccountScreen extends ConsumerStatefulWidget {
 
 class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   late bool controllerInitialized;
-  late bool meUpdated;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -31,7 +30,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
   void initState() {
     super.initState();
     controllerInitialized = false;
-    meUpdated = false;
   }
 
   @override
@@ -57,13 +55,6 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       handleErrorAsSnackBar(context),
     );
 
-    ref.listen(appControllerProvider, (_, __) {
-      if (meUpdated) {
-        ref.read(meProvider.notifier).reload();
-        Navigator.pop(context);
-      }
-    });
-
     if (me is AsyncData && !controllerInitialized) {
       nameController.text = me.value!.name;
       emailController.text = me.value!.email;
@@ -76,9 +67,8 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
         ref
             .read(appControllerProvider.notifier)
             .setAccessToken(state.value!.response!.accessToken);
-        setState(() {
-          meUpdated = true;
-        });
+        ref.read(meProvider.notifier).reload();
+        Navigator.pop(context);
       }
     });
 
