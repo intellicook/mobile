@@ -64,14 +64,12 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
       }
     });
 
-    ref.listen(meProvider, (_, state) {
-      if (state is AsyncData && !controllerInitialized) {
-        nameController.text = state.value!.name;
-        emailController.text = state.value!.email;
-        usernameController.text = state.value!.username;
-        controllerInitialized = true;
-      }
-    });
+    if (me is AsyncData && !controllerInitialized) {
+      nameController.text = me.value!.name;
+      emailController.text = me.value!.email;
+      usernameController.text = me.value!.username;
+      controllerInitialized = true;
+    }
 
     ref.listen(mePutProvider, (_, state) {
       if (state is AsyncData && state.value!.response != null) {
@@ -187,7 +185,7 @@ class _EditAccountScreenState extends ConsumerState<EditAccountScreen> {
                         },
                   ),
                   ...switch (mePut) {
-                    AsyncData(:final value) when value.hasResponse => const [
+                    AsyncData(:final value) when value.success => const [
                         SizedBox(height: SpacingConsts.s),
                         LinearProgressIndicator(),
                       ],

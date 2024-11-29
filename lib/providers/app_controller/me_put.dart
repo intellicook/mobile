@@ -101,6 +101,8 @@ class MePutState {
 
   bool get hasResponse => response != null || errors != null;
 
+  bool get success => response != null && errors == null;
+
   String? firstErrorOrNull(MePutStateErrorKey key) {
     return errors?[key]?.firstOrNull;
   }
