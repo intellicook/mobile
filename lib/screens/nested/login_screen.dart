@@ -88,6 +88,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ));
     }
 
+    void onCancelClicked() {
+      Navigator.pop(context);
+    }
+
     return BackgroundScaffold(
       padding: const EdgeInsets.all(SpacingConsts.l),
       child: Column(
@@ -148,6 +152,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     label: 'Register',
                     type: LabelButtonType.secondary,
                     onClicked: onRegisterClicked,
+                  ),
+                  const SizedBox(height: SpacingConsts.s),
+                  LabelButton(
+                    label: 'Cancel',
+                    type: LabelButtonType.secondary,
+                    onClicked: onCancelClicked,
                   ),
                 ],
               ),
