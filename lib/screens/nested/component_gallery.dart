@@ -9,6 +9,7 @@ import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/circle_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/drag_dropdown.dart';
 import 'package:intellicook_mobile/widgets/high_level/dropdown.dart';
+import 'package:intellicook_mobile/widgets/high_level/ingredient_chip.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_toggle_switch.dart';
@@ -144,6 +145,9 @@ class _ComponentGalleryState extends ConsumerState<ComponentGallery> {
                 ),
               ],
             ),
+          ),
+      (BuildContext context) => const IngredientChip(
+            ingredient: 'Ingredient',
           ),
     ];
 

@@ -65,13 +65,15 @@ class LabelButton extends StatelessWidget {
                     const SizedBox(width: 8),
                   ]
                 : const []),
-            Text(
-              label,
-              style: enabled
-                  ? textStyle
-                  : textStyle?.copyWith(
-                      color: theme.disabledColor,
-                    ),
+            Flexible(
+              child: Text(
+                label,
+                style: enabled
+                    ? textStyle
+                    : textStyle?.copyWith(
+                        color: theme.disabledColor,
+                      ),
+              ),
             ),
           ],
         ),
