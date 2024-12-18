@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:intellicook_mobile/providers/app_controller/recognize_ingredients.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'ingredient_recognition_images.g.dart';
@@ -14,9 +15,10 @@ class IngredientRecognitionImages extends _$IngredientRecognitionImages {
     return IngredientRecognitionImagesState();
   }
 
-  Future<void> pickImages(ImageSource source) async {
+  Future<void> addImages(ImageSource source) async {
     try {
       final images = state.value!.images;
+      final newStartIndex = images.length;
       final newImages = source == ImageSource.camera
           ? [await state.value!.picker.pickImage(source: source)]
           : await state.value!.picker.pickMultiImage();
@@ -30,6 +32,13 @@ class IngredientRecognitionImages extends _$IngredientRecognitionImages {
         picker: state.value?.picker,
         images: images,
       ));
+
+      for (var i = 0; i < newImages.length; i++) {
+        ref.read(recognizeIngredientsProvider.notifier).recognizeIngredientsAt(
+              newStartIndex + i,
+              images[newStartIndex + i],
+            );
+      }
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
     }
@@ -50,6 +59,8 @@ class IngredientRecognitionImages extends _$IngredientRecognitionImages {
         picker: state.value?.picker,
         images: images,
       ));
+
+      ref.read(recognizeIngredientsProvider.notifier).redoAt(index, finalImage);
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
     }
@@ -64,6 +75,8 @@ class IngredientRecognitionImages extends _$IngredientRecognitionImages {
         picker: state.value?.picker,
         images: images,
       ));
+
+      ref.read(recognizeIngredientsProvider.notifier).removeAt(index);
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
     }

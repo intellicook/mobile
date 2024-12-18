@@ -12,7 +12,9 @@ import 'package:intellicook_mobile/widgets/high_level/panel_card.dart';
 import 'package:intellicook_mobile/widgets/low_level/glassmorphism.dart';
 
 class RecipeSearchScreen extends ConsumerStatefulWidget {
-  const RecipeSearchScreen({super.key});
+  const RecipeSearchScreen({super.key, this.ingredients = const []});
+
+  final List<String> ingredients;
 
   @override
   ConsumerState<RecipeSearchScreen> createState() => _RecipeSearchScreenState();
@@ -20,7 +22,19 @@ class RecipeSearchScreen extends ConsumerStatefulWidget {
 
 class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
   final searchController = TextEditingController();
-  final ingredients = ValueNotifier<List<String>>([]);
+  late final ingredients = ValueNotifier<List<String>>(widget.ingredients);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.ingredients.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(searchRecipesProvider.notifier)
+            .searchRecipes(widget.ingredients);
+      });
+    }
+  }
 
   @override
   void dispose() {
