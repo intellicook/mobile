@@ -17,7 +17,7 @@ void main() {
     (WidgetTester tester) async {
       final health = AsyncValue.data(UnmodifiableListView([
         (HealthGetResponseModelBuilder()
-              ..service = HealthServiceModel.appController
+              ..service = HealthServiceModel.auth
               ..status = HealthStatusModel.healthy
               ..checks = ListBuilder([
                 (HealthCheckModelBuilder()
@@ -34,7 +34,7 @@ void main() {
         ),
       ));
 
-      expect(find.text('App Controller is healthy'), findsOneWidget);
+      expect(find.text('Auth is healthy'), findsOneWidget);
       expect(find.text('check1'), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsNWidgets(2));
     },
@@ -45,7 +45,7 @@ void main() {
     (WidgetTester tester) async {
       final health = AsyncValue.data(UnmodifiableListView([
         (HealthGetResponseModelBuilder()
-              ..service = HealthServiceModel.appController
+              ..service = HealthServiceModel.auth
               ..status = HealthStatusModel.degraded
               ..checks = ListBuilder([
                 (HealthCheckModelBuilder()
@@ -62,7 +62,7 @@ void main() {
         ),
       ));
 
-      expect(find.text('App Controller is degraded'), findsOneWidget);
+      expect(find.text('Auth is degraded'), findsOneWidget);
       expect(find.text('check1'), findsOneWidget);
       expect(find.byIcon(Icons.error), findsNWidgets(2));
     },
@@ -73,7 +73,7 @@ void main() {
     (WidgetTester tester) async {
       final health = AsyncValue.data(UnmodifiableListView([
         (HealthGetResponseModelBuilder()
-              ..service = HealthServiceModel.appController
+              ..service = HealthServiceModel.auth
               ..status = HealthStatusModel.unhealthy
               ..checks = ListBuilder([
                 (HealthCheckModelBuilder()
@@ -90,7 +90,7 @@ void main() {
         ),
       ));
 
-      expect(find.text('App Controller is unhealthy'), findsOneWidget);
+      expect(find.text('Auth is unhealthy'), findsOneWidget);
       expect(find.text('check1'), findsOneWidget);
       expect(find.byIcon(Icons.error), findsNWidgets(2));
     },

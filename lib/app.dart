@@ -32,6 +32,8 @@ class _AppState extends ConsumerState<App> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(appControllerProvider);
+
     return const Scaffold(
       body: Background(child: ScreenRouter()),
       bottomNavigationBar: NavBar(),

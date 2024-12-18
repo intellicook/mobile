@@ -1,10 +1,9 @@
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_shadow/flutter_inset_shadow.dart';
 import 'package:intellicook_mobile/constants/shadow.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
+import 'package:intellicook_mobile/widgets/low_level/glassmorphism.dart';
 
 class AnimatedElevatedArgs {
   const AnimatedElevatedArgs({
@@ -88,7 +87,6 @@ class Elevated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const blur = 16.0;
     final boxDecoration = BoxDecoration(
       color: color,
       border: border,
@@ -124,13 +122,7 @@ class Elevated extends StatelessWidget {
               boxShadow: shadows,
             ),
             constraints: constraints,
-            child: BackdropFilter(
-              filter: ui.ImageFilter.blur(
-                sigmaX: blur,
-                sigmaY: blur,
-              ),
-              child: child,
-            ),
+            child: Glassmorphism(child: child),
           ),
     };
 
