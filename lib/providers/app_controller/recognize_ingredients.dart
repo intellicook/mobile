@@ -67,6 +67,7 @@ class RecognizeIngredients extends _$RecognizeIngredients {
         imageIngredients,
         index,
         response.data!.ingredients.toList(),
+        isNew: false,
       ));
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
@@ -105,12 +106,19 @@ class RecognizeIngredientsState {
   RecognizeIngredientsState.success(
       List<List<RecognizeIngredientsIngredientModel>?> imageIngredients,
       int index,
-      List<RecognizeIngredientsIngredientModel> ingredients)
-      : imageIngredients = [
-          ...imageIngredients.take(index),
-          ingredients,
-          ...imageIngredients.skip(index),
-        ];
+      List<RecognizeIngredientsIngredientModel> ingredients,
+      {bool isNew = true})
+      : imageIngredients = switch (isNew) {
+          true => [
+              ...imageIngredients.take(index),
+              ingredients,
+              ...imageIngredients.skip(index),
+            ],
+          false => [
+              for (var i = 0; i < imageIngredients.length; i++)
+                i == index ? ingredients : imageIngredients[i],
+            ],
+        };
 
   RecognizeIngredientsState.remove(
       List<List<RecognizeIngredientsIngredientModel>?> imageIngredients,
