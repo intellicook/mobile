@@ -27,6 +27,8 @@ class InputField extends StatefulWidget {
     this.constraints,
     this.prefix,
     this.suffix,
+    this.maxLines = defaultMaxLines,
+    this.autofocus = defaultAutofocus,
     this.enabled = defaultEnabled,
     this.readOnly = defaultReadOnly,
     this.obscureText = defaultObscureText,
@@ -35,6 +37,8 @@ class InputField extends StatefulWidget {
     this.isGlassmorphism = defaultIsGlassmorphism,
   });
 
+  static const defaultMaxLines = 1;
+  static const defaultAutofocus = false;
   static const defaultReadOnly = false;
   static const defaultEnabled = true;
   static const defaultObscureText = false;
@@ -59,6 +63,8 @@ class InputField extends StatefulWidget {
   final BoxConstraints? constraints;
   final Widget? prefix;
   final Widget? suffix;
+  final int? maxLines;
+  final bool autofocus;
   final bool enabled;
   final bool readOnly;
   final bool obscureText;
@@ -176,6 +182,8 @@ class _InputFieldState extends State<InputField> {
           controller: widget.controller,
           focusNode: focusNode,
           style: widget.style,
+          maxLines: widget.maxLines,
+          autofocus: widget.autofocus,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
           obscureText: widget.obscureText,

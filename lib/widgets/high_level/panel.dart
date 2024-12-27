@@ -10,6 +10,7 @@ class Panel extends StatelessWidget {
     this.padding = defaultPadding,
     this.scrollable = defaultScrollable,
     this.constraints,
+    this.borderRadius,
     this.child,
   });
 
@@ -20,6 +21,7 @@ class Panel extends StatelessWidget {
   final EdgeInsets? padding;
   final bool scrollable;
   final BoxConstraints? constraints;
+  final BorderRadius? borderRadius;
   final Widget? child;
 
   @override
@@ -41,6 +43,7 @@ class Panel extends StatelessWidget {
       color: color,
       padding: scrollable ? EdgeInsets.zero : padding,
       constraints: constraints,
+      borderRadius: borderRadius,
       child: elevatedChild,
     );
   }
