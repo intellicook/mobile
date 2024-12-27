@@ -7,7 +7,7 @@ part of 'recognize_ingredients.dart';
 // **************************************************************************
 
 String _$recognizeIngredientsHash() =>
-    r'b930b96bdc48e0e9b1979c4af2424d3670e1c392';
+    r'63e2ddfd7004a4a404a066c3b56a99f6667a133c';
 
 /// See also [RecognizeIngredients].
 @ProviderFor(RecognizeIngredients)

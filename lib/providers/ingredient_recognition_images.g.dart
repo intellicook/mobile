@@ -7,7 +7,7 @@ part of 'ingredient_recognition_images.dart';
 // **************************************************************************
 
 String _$ingredientRecognitionImagesHash() =>
-    r'a530714cfb2c22c42d47e0b14fd1e55ccfcc82ba';
+    r'e8ed9757e71a2568820cb92287829eaaedd11412';
 
 /// See also [IngredientRecognitionImages].
 @ProviderFor(IngredientRecognitionImages)

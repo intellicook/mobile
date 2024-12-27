@@ -1,4 +1,5 @@
 import 'package:app_controller_client/app_controller_client.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intellicook_mobile/configs/config.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -39,8 +40,11 @@ class AppController extends _$AppController {
 class AppControllerState {
   AppControllerState({this.accessToken})
       : client = AppControllerClient(
-          basePathOverride: Config.APP_CONTROLLER_URL,
-        ) {
+            dio: Dio(BaseOptions(
+          baseUrl: Config.APP_CONTROLLER_URL,
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ))) {
     if (accessToken != null) {
       client.setBearerAuth('Bearer', accessToken!);
     }
