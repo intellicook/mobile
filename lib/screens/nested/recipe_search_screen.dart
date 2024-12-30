@@ -1,3 +1,4 @@
+import 'package:app_controller_client/app_controller_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
@@ -46,6 +47,9 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final searchRecipes = ref.watch(searchRecipesProvider);
+
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     ref.listen(searchRecipesProvider, handleErrorAsSnackBar(context));
 
@@ -130,9 +134,91 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                     itemCount: value.response.length,
                     itemBuilder: (context, index) {
                       final recipe = value.response[index];
+
+                      final name = recipe.name;
+                      final List<String> nameTokens = recipe.matches.fold(
+                        [],
+                        (acc, match) {
+                          if (match.field ==
+                              SearchRecipesMatchFieldModel.nameField) {
+                            acc.addAll(match.tokens);
+                          }
+                          return acc;
+                        },
+                      );
+
+                      List<TextSpan> buildHighlightedTextSpans(
+                        String text,
+                        Iterable<String> tokens,
+                      ) {
+                        final spans = <TextSpan>[];
+                        final regex =
+                            RegExp(tokens.map(RegExp.escape).join('|'));
+                        int start = 0;
+
+                        for (final match in regex.allMatches(text)) {
+                          if (match.start > start) {
+                            spans.add(TextSpan(
+                              text: text.substring(start, match.start),
+                            ));
+                          }
+                          spans.add(TextSpan(
+                            text: match.group(0),
+                            style: const TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ));
+                          start = match.end;
+                        }
+
+                        if (start < text.length) {
+                          spans.add(TextSpan(
+                            text: text.substring(start),
+                          ));
+                        }
+
+                        return spans;
+                      }
+
                       return PanelCard(
                         child: ListTile(
-                          title: Text(recipe.name),
+                          title: RichText(
+                            text: TextSpan(
+                              style: textTheme.titleMedium,
+                              children: buildHighlightedTextSpans(
+                                name,
+                                nameTokens,
+                              ),
+                            ),
+                          ),
+                          subtitle: RichText(
+                            text: TextSpan(
+                              style: textTheme.bodySmall,
+                              children: [
+                                const TextSpan(text: 'Matched Ingredients:\n'),
+                                ...recipe.matches
+                                    .where((match) =>
+                                        match.field ==
+                                        SearchRecipesMatchFieldModel
+                                            .ingredients)
+                                    .expand(
+                                  (match) {
+                                    final tokens = match.tokens;
+                                    final ingredient =
+                                        recipe.ingredients[match.index!];
+                                    final spans = buildHighlightedTextSpans(
+                                      ingredient,
+                                      tokens,
+                                    );
+                                    return spans.followedBy(
+                                      [const TextSpan(text: '\n')],
+                                    );
+                                  },
+                                ).toList()
+                                  ..removeLast(),
+                              ],
+                            ),
+                          ),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => Scaffold(
