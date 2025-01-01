@@ -159,6 +159,7 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
           const SizedBox(height: SpacingConsts.m),
           LabelButton(
             label: 'Chat with IntelliCook for more...',
+            isHigh: true,
             onClicked: onChatClicked,
           ),
         ],
