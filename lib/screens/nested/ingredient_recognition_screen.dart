@@ -162,6 +162,7 @@ class _IngredientRecognitionScreenState extends ConsumerState
               data: (value) => !value.imageIngredients.any((e) => e == null),
               orElse: () => false,
             ),
+            isHigh: true,
             onClicked: onRecipeSearchClicked,
           ),
         ],

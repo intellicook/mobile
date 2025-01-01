@@ -13,6 +13,7 @@ class Button extends StatefulWidget {
     this.onReleased,
     this.onStateChanged,
     this.enabled = defaultEnabled,
+    this.isHigh = defaultIsHigh,
     this.pressedColor,
     this.releasedColor,
     this.disabledColor,
@@ -33,6 +34,7 @@ class Button extends StatefulWidget {
     this.onReleased,
     this.onStateChanged,
     this.enabled = defaultEnabled,
+    this.isHigh = defaultIsHigh,
     this.pressedBorder,
     this.releasedBorder,
     this.disabledBorder,
@@ -54,6 +56,7 @@ class Button extends StatefulWidget {
     this.onReleased,
     this.onStateChanged,
     this.enabled = defaultEnabled,
+    this.isHigh = defaultIsHigh,
     this.pressedColor,
     this.releasedColor,
     this.disabledColor = secondaryDisabledColor,
@@ -77,6 +80,7 @@ class Button extends StatefulWidget {
             );
 
   static const defaultEnabled = true;
+  static const defaultIsHigh = false;
   static const minHeight = 40.0;
   static const minWidth = 50.0;
   static const secondaryDisabledColor = Colors.transparent;
@@ -99,6 +103,7 @@ class Button extends StatefulWidget {
   final ClickableOnReleasedCallback? onReleased;
   final ClickableOnStateChangedCallback? onStateChanged;
   final bool enabled;
+  final bool isHigh;
   final Color? pressedColor;
   final Color? releasedColor;
   final Color? disabledColor;
@@ -137,6 +142,7 @@ class _ButtonState extends State<Button> {
                 color: theme.disabledColor,
                 width: Button.secondaryBorderWidth,
               ));
+    final elevated = widget.isHigh ? Elevated.high : Elevated.low;
 
     return Clickable(
       onClicked: widget.enabled ? widget.onClicked : null,
@@ -152,7 +158,7 @@ class _ButtonState extends State<Button> {
               widget.onStateChanged?.call(isPressed);
             }
           : null,
-      child: Elevated.low(
+      child: elevated(
         constraints: widget.constraints,
         padding: widget.padding,
         color: widget.enabled

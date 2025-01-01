@@ -14,6 +14,7 @@ class LabelButton extends StatelessWidget {
     required this.label,
     this.type = defaultType,
     this.enabled = defaultEnabled,
+    this.isHigh = defaultIsHigh,
     this.leading,
     this.onClicked,
     this.onPressed,
@@ -23,10 +24,12 @@ class LabelButton extends StatelessWidget {
 
   static const defaultType = LabelButtonType.primary;
   static const defaultEnabled = true;
+  static const defaultIsHigh = false;
 
   final String label;
   final LabelButtonType type;
   final bool enabled;
+  final bool isHigh;
   final Widget? leading;
   final ClickableOnClickedCallback? onClicked;
   final ClickableOnPressedCallback? onPressed;
@@ -55,6 +58,7 @@ class LabelButton extends StatelessWidget {
       onReleased: onReleased,
       onStateChanged: onStateChanged,
       enabled: enabled,
+      isHigh: isHigh,
       child: Center(
         child: Row(
           mainAxisSize: MainAxisSize.min,
