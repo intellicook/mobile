@@ -42,6 +42,12 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
+    final matchedIngredientIndices = widget.recipe.matches
+        .where(
+            (match) => match.field == SearchRecipesMatchFieldModel.ingredients)
+        .map((match) => match.index!)
+        .toSet();
+
     void onChatClicked() {
       FocusManager.instance.primaryFocus?.unfocus();
       showModalBottomSheet(
@@ -73,8 +79,58 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.recipe.name,
+                            widget.recipe.title,
                             style: textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: SpacingConsts.s),
+                          Text(
+                            widget.recipe.description,
+                            style: textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: SpacingConsts.m),
+                          Text(
+                            'Nutrition Values',
+                            style: textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: SpacingConsts.s),
+                          Row(
+                            children: [
+                              Text('Calories: ', style: textTheme.bodyMedium),
+                              buildNutritionValue(
+                                context,
+                                widget.recipe.detail!.nutrition.calories,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: SpacingConsts.xs),
+                          Row(
+                            children: [
+                              Text('Protein: ', style: textTheme.bodyMedium),
+                              buildNutritionValue(
+                                context,
+                                widget.recipe.detail!.nutrition.protein,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: SpacingConsts.xs),
+                          Row(
+                            children: [
+                              Text('Fat: ', style: textTheme.bodyMedium),
+                              buildNutritionValue(
+                                context,
+                                widget.recipe.detail!.nutrition.fat,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: SpacingConsts.xs),
+                          Row(
+                            children: [
+                              Text('Carbs: ', style: textTheme.bodyMedium),
+                              buildNutritionValue(
+                                context,
+                                widget.recipe.detail!.nutrition.carbs,
+                              ),
+                            ],
                           ),
                           const SizedBox(height: SpacingConsts.m),
                           Text(
@@ -86,8 +142,69 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                             spacing: SpacingConsts.s,
                             runSpacing: SpacingConsts.s,
                             children: widget.recipe.ingredients
+                                .asMap()
+                                .entries
                                 .map(
-                                  (ingredient) => DecoratedBox(
+                                  (entry) => DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      borderRadius: SmoothBorderRadius(
+                                        cornerRadius: SmoothBorderRadiusConsts
+                                            .sCornerRadius,
+                                        cornerSmoothing:
+                                            SmoothBorderRadiusConsts
+                                                .cornerSmoothing,
+                                      ),
+                                      border: Border.all(
+                                        width: 1.5,
+                                        color: colorScheme.outline,
+                                      ),
+                                      color: colorScheme.surfaceContainerLow
+                                          .withOpacity(
+                                              OpacityConsts.low(context)),
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.all(SpacingConsts.s),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (matchedIngredientIndices
+                                              .contains(entry.key))
+                                            Icon(
+                                              Icons.check_circle_outline,
+                                              color:
+                                                  textTheme.bodyMedium?.color,
+                                              size: SpacingConsts.m,
+                                            ),
+                                          const SizedBox(
+                                            width: SpacingConsts.xs,
+                                          ),
+                                          Text(
+                                            '${entry.value.name}'
+                                            '${entry.value.quantity == null && entry.value.unit == null ? '' : ': '}'
+                                            '${entry.value.quantity}'
+                                            ' ${entry.value.unit}',
+                                            style: textTheme.bodyMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          const SizedBox(height: SpacingConsts.m),
+                          Text(
+                            'Utensils',
+                            style: textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: SpacingConsts.s),
+                          Wrap(
+                            spacing: SpacingConsts.s,
+                            runSpacing: SpacingConsts.s,
+                            children: widget.recipe.detail!.utensils
+                                .map(
+                                  (utensil) => DecoratedBox(
                                     decoration: BoxDecoration(
                                       borderRadius: SmoothBorderRadius(
                                         cornerRadius: SmoothBorderRadiusConsts
@@ -108,7 +225,7 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                                       padding:
                                           const EdgeInsets.all(SpacingConsts.s),
                                       child: Text(
-                                        ingredient,
+                                        utensil,
                                         style: textTheme.bodyMedium,
                                       ),
                                     ),
@@ -122,7 +239,7 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           const SizedBox(height: SpacingConsts.s),
-                          ...widget.recipe.detail!.instructions
+                          ...widget.recipe.detail!.directions
                               .where((value) => value.isNotEmpty)
                               .toList()
                               .asMap()
@@ -163,6 +280,57 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
             onClicked: onChatClicked,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildNutritionValue(
+      BuildContext context, RecipeNutritionValueModel nutritionValue) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: SmoothBorderRadius(
+          cornerRadius: SmoothBorderRadiusConsts.sCornerRadius,
+          cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing,
+        ),
+        border: Border.all(
+          width: 1.5,
+          color: colorScheme.outline,
+        ),
+        color: colorScheme.surfaceContainerLow
+            .withOpacity(OpacityConsts.low(context)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: SpacingConsts.s,
+          vertical: SpacingConsts.xs,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              nutritionValue.name,
+              style: textTheme.bodyMedium,
+            ),
+            const SizedBox(
+              width: SpacingConsts.xs,
+            ),
+            Icon(
+              switch (nutritionValue) {
+                RecipeNutritionValueModel.none => Icons.exposure_zero,
+                RecipeNutritionValueModel.low => Icons.keyboard_arrow_down,
+                RecipeNutritionValueModel.medium => Icons.remove,
+                RecipeNutritionValueModel.high => Icons.keyboard_arrow_up,
+                _ => Icons.error_outlined,
+              },
+              color: textTheme.bodyMedium?.color,
+              size: SpacingConsts.ms,
+            ),
+          ],
+        ),
       ),
     );
   }

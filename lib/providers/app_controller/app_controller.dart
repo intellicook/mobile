@@ -43,7 +43,7 @@ class AppControllerState {
             dio: Dio(BaseOptions(
           baseUrl: Config.APP_CONTROLLER_URL,
           connectTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 60),
         ))) {
     if (accessToken != null) {
       client.setBearerAuth('Bearer', accessToken!);

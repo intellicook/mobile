@@ -6,7 +6,7 @@ part of 'chat_by_recipe.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatByRecipeHash() => r'd36f188339a4210d023e8adb0220c0473d5ad1db';
+String _$chatByRecipeHash() => r'815acdcd40901907120d28973bdfe5d990155d0d';
 
 /// See also [ChatByRecipe].
 @ProviderFor(ChatByRecipe)

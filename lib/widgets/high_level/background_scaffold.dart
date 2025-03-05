@@ -8,16 +8,19 @@ class BackgroundScaffold extends StatelessWidget {
     super.key,
     this.background = defaultBackground,
     this.padding = defaultPadding,
+    this.titleGutterButton = defaultTitleGutterBottom,
     this.backButton,
     this.child,
     this.title,
   });
 
   static const defaultBackground = true;
+  static const defaultTitleGutterBottom = SpacingConsts.m;
   static const defaultPadding = EdgeInsets.all(SpacingConsts.m);
 
   final bool background;
   final EdgeInsetsGeometry padding;
+  final double titleGutterButton;
   final bool? backButton;
   final String? title;
   final Widget? child;
@@ -47,8 +50,8 @@ class BackgroundScaffold extends StatelessWidget {
                 null => const [],
                 String title => [
                     Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: SpacingConsts.m,
+                      padding: EdgeInsets.only(
+                        bottom: titleGutterButton,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

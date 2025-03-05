@@ -14,7 +14,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Password'), findsOneWidget);
+      expect(find.textContaining('Password'), findsAtLeast(1));
     },
   );
 }

@@ -37,14 +37,26 @@ class MockMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final context = MockBuildContext();
-    final theme = IntelliCookTheme.theme(context, brightness);
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: IntelliCookTheme.primaryColorSeed,
+      brightness: brightness,
+    );
+
+    final theme = ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      textTheme: Theme.of(context).textTheme.apply(
+            bodyColor: colorScheme.onSurface,
+            displayColor: colorScheme.onSurface,
+          ),
+    );
 
     return ProviderScope(
       overrides: providerOverrides,
       child: MaterialApp(
         navigatorObservers: navigatorObservers,
         theme: theme,
-        home: child,
+        home: Scaffold(body: child),
       ),
     );
   }

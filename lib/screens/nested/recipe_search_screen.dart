@@ -135,12 +135,12 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                     itemBuilder: (context, index) {
                       final recipe = value.response[index];
 
-                      final name = recipe.name;
+                      final title = recipe.title;
                       final List<String> nameTokens = recipe.matches.fold(
                         [],
                         (acc, match) {
                           if (match.field ==
-                              SearchRecipesMatchFieldModel.nameField) {
+                              SearchRecipesMatchFieldModel.title) {
                             acc.addAll(match.tokens);
                           }
                           return acc;
@@ -186,7 +186,7 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                             text: TextSpan(
                               style: textTheme.titleMedium,
                               children: buildHighlightedTextSpans(
-                                name,
+                                title,
                                 nameTokens,
                               ),
                             ),
@@ -196,7 +196,7 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                               style: textTheme.bodySmall,
                               children: [
                                 const TextSpan(text: 'Matched Ingredients:\n'),
-                                ...recipe.matches
+                                ...switch (recipe.matches
                                     .where((match) =>
                                         match.field ==
                                         SearchRecipesMatchFieldModel
@@ -207,15 +207,17 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                                     final ingredient =
                                         recipe.ingredients[match.index!];
                                     final spans = buildHighlightedTextSpans(
-                                      ingredient,
+                                      ingredient.name,
                                       tokens,
                                     );
                                     return spans.followedBy(
                                       [const TextSpan(text: '\n')],
                                     );
                                   },
-                                ).toList()
-                                  ..removeLast(),
+                                ).toList()) {
+                                  [] => const [TextSpan(text: 'None')],
+                                  List spans => spans..removeLast(),
+                                },
                               ],
                             ),
                           ),
