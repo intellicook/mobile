@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intellicook_mobile/theme.dart';
+import 'package:mockito/annotations.dart';
+
+@GenerateNiceMocks([MockSpec<NavigatorObserver>(), MockSpec<BuildContext>()])
+import 'fixtures.mocks.dart';
 
 class TextFixture {
   static const text = 'Test Text';
@@ -32,7 +36,8 @@ class MockMaterialApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var colorScheme = ColorScheme.fromSeed(
+    final context = MockBuildContext();
+    final colorScheme = ColorScheme.fromSeed(
       seedColor: IntelliCookTheme.primaryColorSeed,
       brightness: brightness,
     );
@@ -40,10 +45,10 @@ class MockMaterialApp extends StatelessWidget {
     final theme = ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      textTheme: const TextTheme().apply(
-        bodyColor: colorScheme.onSurface,
-        displayColor: colorScheme.onSurface,
-      ),
+      textTheme: Theme.of(context).textTheme.apply(
+            bodyColor: colorScheme.onSurface,
+            displayColor: colorScheme.onSurface,
+          ),
     );
 
     return ProviderScope(
