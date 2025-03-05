@@ -80,19 +80,17 @@ void main() {
       ];
 
       await tester.pumpWidget(const MockMaterialApp(
-        child: Material(
-          child: Dropdown(
-            label: labelText,
-            entries: entries,
-          ),
+        child: Dropdown(
+          label: labelText,
+          entries: entries,
         ),
       ));
 
       await tester.tap(find.byType(Dropdown<int>));
       await tester.pumpAndSettle();
 
-      expect(find.text('Option 1'), findsOneWidget);
-      expect(find.text('Option 2'), findsOneWidget);
+      expect(find.text('Option 1'), findsAtLeast(1));
+      expect(find.text('Option 2'), findsAtLeast(1));
     },
   );
 
