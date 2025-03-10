@@ -12,7 +12,7 @@ void main() {
           child: ProfilePasswordPanel(),
         ),
       );
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(find.textContaining('Password'), findsAtLeast(1));
     },
