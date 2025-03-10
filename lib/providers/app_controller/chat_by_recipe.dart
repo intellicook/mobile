@@ -35,10 +35,24 @@ class ChatByRecipe extends _$ChatByRecipe {
 
       messages.add(response.data!.message);
 
-      state = ChatByRecipeState.success(messages);
+      state = ChatByRecipeState.success(
+        messages,
+        functionCall: response.data!.functionCall,
+      );
     } catch (e) {
       state = ChatByRecipeState.error(messages, e);
     }
+  }
+
+  void addAssistantMessage(String message) {
+    final messages = state.messages;
+
+    messages.add((ChatByRecipeMessageModelBuilder()
+          ..role = ChatByRecipeRoleModel.assistant
+          ..text = message)
+        .build());
+
+    state = ChatByRecipeState.success(messages);
   }
 }
 
@@ -50,9 +64,10 @@ class ChatByRecipeState {
                 ..text = 'Hello! I am IntelliCook AI, your cooking assistant. '
                     'How can I help you?')
               .build()
-        ];
+        ],
+        functionCall = null;
 
-  const ChatByRecipeState.success(this.messages);
+  const ChatByRecipeState.success(this.messages, {this.functionCall});
 
   ChatByRecipeState.error(messages, error)
       : messages = [
@@ -62,7 +77,9 @@ class ChatByRecipeState {
                 ..text = '⚠️ An error occurred, I am sincerely sorry for not '
                     'being able to process your request: ${error.toString()}')
               .build()
-        ];
+        ],
+        functionCall = null;
 
   final List<ChatByRecipeMessageModel> messages;
+  final ChatByRecipePostResponseModelFunctionCall? functionCall;
 }

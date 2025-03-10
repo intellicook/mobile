@@ -30,7 +30,7 @@ packages:
     description:
       path: "."
       ref: dart-client
-      resolved-ref: f9cedc017d2658afc7e5499ece17f95afdfa3358
+      resolved-ref: "9eb6fbb78a3c54cdfc84c5e74ba475c2e9e55be6"
       url: "https://github.com/intellicook/app-controller.git"
     source: git
     version: "1.0.0"
