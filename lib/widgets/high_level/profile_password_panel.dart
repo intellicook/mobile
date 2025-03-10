@@ -5,6 +5,7 @@ import 'package:intellicook_mobile/providers/app_controller/me.dart';
 import 'package:intellicook_mobile/screens/nested/change_password_screen.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
+import 'package:intellicook_mobile/widgets/high_level/shimmer.dart';
 
 class ProfilePasswordPanel extends ConsumerWidget {
   const ProfilePasswordPanel({super.key});
@@ -30,10 +31,18 @@ class ProfilePasswordPanel extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Password',
-            style: textTheme.titleLarge,
-          ),
+          switch (me) {
+            AsyncData() => Text(
+                'Password',
+                style: textTheme.titleLarge,
+              ),
+            _ => Shimmer(
+                child: Text(
+                  'Password',
+                  style: textTheme.titleLarge,
+                ),
+              ),
+          },
           const SizedBox(height: SpacingConsts.m),
           LabelButton(
             type: LabelButtonType.secondary,

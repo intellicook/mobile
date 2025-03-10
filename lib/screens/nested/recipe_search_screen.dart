@@ -10,12 +10,18 @@ import 'package:intellicook_mobile/widgets/high_level/ingredient_chip.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel_card.dart';
+import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 import 'package:intellicook_mobile/widgets/low_level/glassmorphism.dart';
 
 class RecipeSearchScreen extends ConsumerStatefulWidget {
-  const RecipeSearchScreen({super.key, this.ingredients = const []});
+  const RecipeSearchScreen({
+    super.key,
+    this.ingredients = const [],
+    this.extraTerms,
+  });
 
   final List<String> ingredients;
+  final String? extraTerms;
 
   @override
   ConsumerState<RecipeSearchScreen> createState() => _RecipeSearchScreenState();
@@ -23,16 +29,20 @@ class RecipeSearchScreen extends ConsumerStatefulWidget {
 
 class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
   final searchController = TextEditingController();
+  final extraTermsController = TextEditingController();
   late final ingredients = ValueNotifier<List<String>>(widget.ingredients);
+  late final extraTerms = ValueNotifier<String?>(widget.extraTerms);
+  var isSearchExpanded = true;
 
   @override
   void initState() {
     super.initState();
+    extraTermsController.text = widget.extraTerms ?? '';
     if (widget.ingredients.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .read(searchRecipesProvider.notifier)
-            .searchRecipes(widget.ingredients);
+            .searchRecipes(widget.ingredients, widget.extraTerms);
       });
     }
   }
@@ -40,7 +50,9 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
   @override
   void dispose() {
     searchController.dispose();
+    extraTermsController.dispose();
     ingredients.dispose();
+    extraTerms.dispose();
     super.dispose();
   }
 
@@ -56,7 +68,24 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
     void onSearchSubmitted(String text) {
       ingredients.value = [...ingredients.value, text];
       searchController.clear();
-      ref.read(searchRecipesProvider.notifier).searchRecipes(ingredients.value);
+      ref.read(searchRecipesProvider.notifier).searchRecipes(
+            ingredients.value,
+            extraTerms.value,
+          );
+    }
+
+    void onExtraTermsChanged(String text) {
+      extraTerms.value = text.isNotEmpty ? text : null;
+      ref.read(searchRecipesProvider.notifier).searchRecipes(
+            ingredients.value,
+            extraTerms.value,
+          );
+    }
+
+    void toggleSearchExpanded() {
+      setState(() {
+        isSearchExpanded = !isSearchExpanded;
+      });
     }
 
     return BackgroundScaffold(
@@ -78,43 +107,26 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        InputField(
-                          controller: searchController,
-                          label: 'Search for recipes',
-                          hint: 'Enter recipe title or ingredients',
-                          onSubmitted: onSearchSubmitted,
-                        ),
-                        const SizedBox(height: SpacingConsts.m),
                         ValueListenableBuilder<List<String>>(
                           valueListenable: ingredients,
-                          builder: (context, ingredients, child) {
-                            return ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: ingredients.length,
-                              itemBuilder: (context, index) {
-                                final ingredient = ingredients[index];
-                                return IngredientChip(
-                                  ingredient: ingredient,
-                                  onEdit: (text) {
-                                    ingredients[index] = text;
-                                    ref
-                                        .read(searchRecipesProvider.notifier)
-                                        .searchRecipes(ingredients);
-                                  },
-                                  onRemove: () {
-                                    ingredients.removeAt(index);
-                                    ref
-                                        .read(searchRecipesProvider.notifier)
-                                        .searchRecipes(ingredients);
-                                  },
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: SpacingConsts.s),
+                          builder: (context, ingredientsList, _) {
+                            return AnimatedCrossFade(
+                              duration: const Duration(milliseconds: 300),
+                              crossFadeState: isSearchExpanded
+                                  ? CrossFadeState.showFirst
+                                  : CrossFadeState.showSecond,
+                              sizeCurve: Curves.easeInOut,
+                              firstChild: buildExpandedSearchView(
+                                ingredientsList,
+                                onSearchSubmitted,
+                                onExtraTermsChanged,
+                              ),
+                              secondChild:
+                                  buildCollapsedSearchView(ingredientsList),
                             );
                           },
                         ),
-                        const SizedBox(height: SpacingConsts.m),
+                        buildToggleButton(toggleSearchExpanded),
                         const Divider(height: 1.0),
                       ],
                     ),
@@ -237,6 +249,116 @@ class _RecipeSearchScreenState extends ConsumerState<RecipeSearchScreen> {
                 ),
               _ => const SliverFillRemaining(),
             },
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildExpandedSearchView(
+    List<String> ingredientsList,
+    Function(String) onSearchSubmitted,
+    Function(String) onExtraTermsChanged,
+  ) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InputField(
+          controller: searchController,
+          label: 'Search for recipes',
+          hint: 'Enter recipe title or ingredients',
+          onSubmitted: onSearchSubmitted,
+        ),
+        const SizedBox(height: SpacingConsts.m),
+        InputField(
+          controller: extraTermsController,
+          label: 'Additional search terms',
+          hint: 'Enter extra search terms (optional)',
+          onSubmitted: onExtraTermsChanged,
+          suffix: IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => onExtraTermsChanged(extraTermsController.text),
+          ),
+        ),
+        const SizedBox(height: SpacingConsts.m),
+        if (ingredientsList.isNotEmpty)
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: ingredientsList.length,
+            itemBuilder: (context, index) {
+              final ingredient = ingredientsList[index];
+              return IngredientChip(
+                ingredient: ingredient,
+                onEdit: (text) {
+                  ingredientsList[index] = text;
+                  ref.read(searchRecipesProvider.notifier).searchRecipes(
+                        ingredientsList,
+                        extraTerms.value,
+                      );
+                },
+                onRemove: () {
+                  ingredientsList.removeAt(index);
+                  ref.read(searchRecipesProvider.notifier).searchRecipes(
+                        ingredientsList,
+                        extraTerms.value,
+                      );
+                },
+              );
+            },
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: SpacingConsts.s),
+          ),
+        const SizedBox(height: SpacingConsts.m),
+      ],
+    );
+  }
+
+  Widget buildCollapsedSearchView(List<String> ingredientsList) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: SpacingConsts.s),
+      child: Row(
+        children: [
+          Icon(Icons.search, size: textTheme.bodyLarge?.fontSize ?? 20),
+          const SizedBox(width: SpacingConsts.s),
+          Text(
+            extraTerms.value != null && extraTerms.value!.isNotEmpty
+                ? '"${extraTerms.value}" + ${ingredientsList.length} ingredients'
+                : '${ingredientsList.length} ingredients in search',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildToggleButton(VoidCallback onPressed) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return Clickable(
+      onPressed: onPressed,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: SpacingConsts.m),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSearchExpanded
+                  ? Icons.keyboard_arrow_up
+                  : Icons.keyboard_arrow_down,
+              size: textTheme.bodyLarge?.fontSize ?? 20,
+            ),
+            const SizedBox(width: SpacingConsts.xs),
+            Text(
+              isSearchExpanded ? 'Hide search' : 'Show search',
+              style:
+                  textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),

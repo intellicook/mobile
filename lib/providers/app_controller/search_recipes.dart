@@ -13,7 +13,8 @@ class SearchRecipes extends _$SearchRecipes {
     return const SearchRecipesState.none();
   }
 
-  Future<void> searchRecipes(List<String> ingredients) async {
+  Future<void> searchRecipes(
+      List<String> ingredients, String? extraTerms) async {
     final client = ref.watch(appControllerProvider).client;
     final api = client.getRecipeSearchApi();
     final prevState = state.value;
@@ -25,6 +26,7 @@ class SearchRecipes extends _$SearchRecipes {
     try {
       final requestBuilder = SearchRecipesPostRequestModelBuilder()
         ..ingredients = ListBuilder(ingredients)
+        ..extraTerms = extraTerms
         ..page = page
         ..perPage = 10
         ..includeDetail = true;
@@ -35,6 +37,7 @@ class SearchRecipes extends _$SearchRecipes {
 
       state = AsyncData(SearchRecipesState.success(
         ingredients,
+        extraTerms,
         page,
         response.data!.recipes.toList(),
       ));
@@ -83,20 +86,27 @@ enum SearchRecipesStateErrorKey {
 class SearchRecipesState {
   const SearchRecipesState.none()
       : ingredients = const [],
+        extraTerms = null,
         page = 1,
         response = const [],
         errors = null;
 
-  const SearchRecipesState.success(this.ingredients, this.page, this.response)
-      : errors = null;
+  const SearchRecipesState.success(
+    this.ingredients,
+    this.extraTerms,
+    this.page,
+    this.response,
+  ) : errors = null;
 
   const SearchRecipesState.error(
     this.errors,
   )   : ingredients = null,
+        extraTerms = null,
         page = 1,
         response = const [];
 
   final List<String>? ingredients;
+  final String? extraTerms;
   final int page;
 
   final List<SearchRecipesRecipeModel> response;

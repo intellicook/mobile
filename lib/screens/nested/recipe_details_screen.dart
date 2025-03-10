@@ -6,6 +6,9 @@ import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
 import 'package:intellicook_mobile/providers/app_controller/chat_by_recipe.dart';
+import 'package:intellicook_mobile/providers/app_controller/set_user_profile.dart';
+import 'package:intellicook_mobile/screens/nested/recipe_search_screen.dart';
+import 'package:intellicook_mobile/utils/handle_error_as_snack_bar.dart';
 import 'package:intellicook_mobile/widgets/high_level/background_scaffold.dart';
 import 'package:intellicook_mobile/widgets/high_level/input_field.dart';
 import 'package:intellicook_mobile/widgets/high_level/label_button.dart';
@@ -179,12 +182,14 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                                           const SizedBox(
                                             width: SpacingConsts.xs,
                                           ),
-                                          Text(
-                                            '${entry.value.name}'
-                                            '${entry.value.quantity == null && entry.value.unit == null ? '' : ': '}'
-                                            '${entry.value.quantity}'
-                                            ' ${entry.value.unit}',
-                                            style: textTheme.bodyMedium,
+                                          Flexible(
+                                            child: Text(
+                                              '${entry.value.name}'
+                                              '${entry.value.quantity == null && entry.value.unit == null ? '' : ': '}'
+                                              '${entry.value.quantity}'
+                                              ' ${entry.value.unit}',
+                                              style: textTheme.bodyMedium,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -432,8 +437,26 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.all(SpacingConsts.s),
-                                    child: Text(
-                                      message.text,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          message.text,
+                                        ),
+                                        if (index == 0 &&
+                                            chatByRecipe.functionCall !=
+                                                null) ...[
+                                          const SizedBox(
+                                            height: SpacingConsts.s,
+                                          ),
+                                          buildFunctionCall(
+                                            context,
+                                            chatByRecipe.functionCall!,
+                                          ),
+                                        ]
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -481,6 +504,108 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
             ),
           ),
         );
+      },
+    );
+  }
+
+  Widget buildFunctionCall(
+    BuildContext context,
+    ChatByRecipePostResponseModelFunctionCall functionCall,
+  ) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    if (functionCall.oneOf.value is SetUserProfilePostRequestModel) {
+      ref.listen(
+        setUserProfileProvider,
+        handleErrorAsSnackBar(context),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: switch (functionCall.oneOf.value) {
+        SetUserProfilePostRequestModel setUserProfile => [
+            Text(
+              'Action: update dietary preferences',
+              style: textTheme.bodyMedium,
+            ),
+            Text(
+              'Diet type: ${setUserProfile.veggieIdentity.name}',
+              style: textTheme.bodyMedium,
+            ),
+            Text(
+              'Preferred foods:',
+              style: textTheme.bodyMedium,
+            ),
+            ...setUserProfile.prefer.map(
+              (food) => Text(
+                '• $food',
+                style: textTheme.bodyMedium,
+              ),
+            ),
+            Text(
+              'Disliked foods:',
+              style: textTheme.bodyMedium,
+            ),
+            ...setUserProfile.dislike.map(
+              (food) => Text(
+                '• $food',
+                style: textTheme.bodyMedium,
+              ),
+            ),
+            const SizedBox(height: SpacingConsts.m),
+            LabelButton(
+              label: 'Update Profile',
+              onClicked: () {
+                ref.read(setUserProfileProvider.notifier).post(
+                      setUserProfile.veggieIdentity,
+                      setUserProfile.prefer,
+                      setUserProfile.dislike,
+                    );
+                ref.read(chatByRecipeProvider.notifier).addAssistantMessage(
+                      'User profile updated successfully!',
+                    );
+              },
+            ),
+          ],
+        SearchRecipesPostRequestModel searchRecipes => [
+            Text(
+              'Action: search recipes',
+              style: textTheme.bodyMedium,
+            ),
+            Text(
+              'Ingredients:',
+              style: textTheme.bodyMedium,
+            ),
+            ...searchRecipes.ingredients.map(
+              (ingredient) => Text(
+                '• $ingredient',
+                style: textTheme.bodyMedium,
+              ),
+            ),
+            Text(
+              'Extra terms: ${searchRecipes.extraTerms}',
+              style: textTheme.bodyMedium,
+            ),
+            const SizedBox(height: SpacingConsts.m),
+            LabelButton(
+              label: 'Search Recipes',
+              onClicked: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    body: RecipeSearchScreen(
+                      ingredients: searchRecipes.ingredients.toList(),
+                      extraTerms: searchRecipes.extraTerms,
+                    ),
+                  ),
+                ));
+              },
+            ),
+          ],
+        _ => const [],
       },
     );
   }
