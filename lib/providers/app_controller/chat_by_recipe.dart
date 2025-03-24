@@ -12,7 +12,7 @@ class ChatByRecipe extends _$ChatByRecipe {
     return ChatByRecipeState.init();
   }
 
-  Future<void> sendMessage(String message, int recipeId) async {
+  Future<String> sendMessage(String message, int recipeId) async {
     final client = ref.watch(appControllerProvider).client;
     final api = client.getRecipeSearchApi();
     final messages = state.messages;
@@ -39,9 +39,14 @@ class ChatByRecipe extends _$ChatByRecipe {
         messages,
         functionCall: response.data!.functionCall,
       );
+
+      return response.data!.message.text;
     } catch (e) {
       state = ChatByRecipeState.error(messages, e);
     }
+
+    return 'An error occurred, I am sincerely sorry for not being able to '
+        'process your request';
   }
 
   void addAssistantMessage(String message) {

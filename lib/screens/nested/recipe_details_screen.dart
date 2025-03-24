@@ -2,6 +2,7 @@ import 'package:app_controller_client/app_controller_client.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intellicook_mobile/constants/opacity.dart';
 import 'package:intellicook_mobile/constants/smooth_border_radius.dart';
 import 'package:intellicook_mobile/constants/spacing.dart';
@@ -16,6 +17,7 @@ import 'package:intellicook_mobile/widgets/high_level/panel.dart';
 import 'package:intellicook_mobile/widgets/high_level/panel_card.dart';
 import 'package:intellicook_mobile/widgets/low_level/clickable.dart';
 import 'package:intellicook_mobile/widgets/low_level/glassmorphism.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 
 class RecipeDetailsScreen extends ConsumerStatefulWidget {
   const RecipeDetailsScreen({super.key, required this.recipe});
@@ -27,15 +29,113 @@ class RecipeDetailsScreen extends ConsumerStatefulWidget {
       _RecipeDetailsScreenState();
 }
 
-class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
+class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen>
+    with WidgetsBindingObserver {
   final chatController = TextEditingController();
   final chatFocusNode = FocusNode();
+  final flutterTts = FlutterTts();
+  final speechToText = SpeechToText();
+  final speechPartialText = ValueNotifier<String>('');
+  final speechEntireText = ValueNotifier<String>('');
+  final speechAvailable = ValueNotifier<bool>(false);
+  final speechEnabled = ValueNotifier<bool>(false);
+
+  Future<void> sendChatMessage() async {
+    debugPrint('Sending chat message: ${chatController.text}');
+
+    final value = chatController.text.trim();
+    if (value.isEmpty) return;
+
+    chatController.clear();
+    chatFocusNode.requestFocus();
+
+    final response = await ref
+        .read(chatByRecipeProvider.notifier)
+        .sendMessage(value, widget.recipe.id);
+
+    if (response.isNotEmpty) {
+      await flutterTts.speak(response);
+    }
+  }
+
+  @override
+  void initState() {
+    Future<void> initTts() async {
+      await flutterTts.setLanguage('en-US');
+      await flutterTts.setSpeechRate(0.5);
+      await flutterTts.setVolume(1.0);
+      await flutterTts.setPitch(1.0);
+    }
+
+    Future<void> initSpeech() async {
+      final available = await speechToText.initialize(
+        onStatus: (status) async {
+          if (!speechEnabled.value || !mounted) {
+            return;
+          }
+
+          if (status == 'notListening' || status == 'done') {
+            await startSpeechToText();
+          }
+        },
+      );
+      speechAvailable.value = available;
+    }
+
+    super.initState();
+    initTts();
+    initSpeech();
+  }
+
+  Future<void> startSpeechToText() async {
+    if (speechToText.isListening) {
+      return;
+    }
+
+    if (speechAvailable.value) {
+      await speechToText.listen(
+        onResult: (result) async {
+          if (!speechEnabled.value || !mounted) {
+            return;
+          }
+
+          flutterTts.stop();
+          chatController.text = result.recognizedWords;
+          if (result.finalResult &&
+              chatController.text.isNotEmpty &&
+              ref.read(chatByRecipeProvider).messages.last.role ==
+                  ChatByRecipeRoleModel.assistant) {
+            await sendChatMessage();
+          }
+        },
+        listenFor: const Duration(minutes: 1),
+        pauseFor: const Duration(seconds: 2),
+        listenOptions: SpeechListenOptions(
+          listenMode: ListenMode.dictation,
+          autoPunctuation: true,
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
     chatController.dispose();
     chatFocusNode.dispose();
+    flutterTts.stop();
+    speechToText.stop();
+    speechEntireText.dispose();
+    speechPartialText.dispose();
+    speechAvailable.dispose();
+    speechEnabled.dispose();
     super.dispose();
+  }
+
+  @override
+  Future<bool> didPopRoute() {
+    flutterTts.stop();
+    speechToText.stop();
+    return super.didPopRoute();
   }
 
   @override
@@ -290,7 +390,9 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
   }
 
   Widget buildNutritionValue(
-      BuildContext context, RecipeNutritionValueModel nutritionValue) {
+    BuildContext context,
+    RecipeNutritionValueModel nutritionValue,
+  ) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
@@ -347,20 +449,20 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
 
         final theme = Theme.of(context);
 
-        void onChatSubmitted() async {
+        void onChatSubmitted() {
           if (chatByRecipe.messages.last.role == ChatByRecipeRoleModel.user) {
             return;
           }
 
-          final value = chatController.text.trim();
-          if (value.isEmpty) return;
+          sendChatMessage();
+        }
 
-          chatController.clear();
-          chatFocusNode.requestFocus();
+        void onSpeechToggled() async {
+          speechEnabled.value = !speechEnabled.value;
 
-          await ref
-              .read(chatByRecipeProvider.notifier)
-              .sendMessage(value, widget.recipe.id);
+          if (speechEnabled.value) {
+            startSpeechToText();
+          }
         }
 
         return Padding(
@@ -368,11 +470,13 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
           child: Panel(
             borderRadius: const SmoothBorderRadius.only(
               topLeft: SmoothRadius(
-                  cornerRadius: SmoothBorderRadiusConsts.lCornerRadius,
-                  cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing),
+                cornerRadius: SmoothBorderRadiusConsts.lCornerRadius,
+                cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing,
+              ),
               topRight: SmoothRadius(
-                  cornerRadius: SmoothBorderRadiusConsts.lCornerRadius,
-                  cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing),
+                cornerRadius: SmoothBorderRadiusConsts.lCornerRadius,
+                cornerSmoothing: SmoothBorderRadiusConsts.cornerSmoothing,
+              ),
             ),
             child: Glassmorphism(
               child: Column(
@@ -420,15 +524,15 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                                 : MainAxisAlignment.start,
                             children: [
                               if (!isUserMessage)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: SpacingConsts.xs,
                                   ),
                                   child: CircleAvatar(
                                     radius: SpacingConsts.m,
-                                    backgroundImage: Image.asset(
-                                      'assets/icons/default.png',
-                                    ).image,
+                                    backgroundImage: AssetImage(
+                                      'assets/default_chat_icon.png',
+                                    ),
                                   ),
                                 ),
                               const SizedBox(width: SpacingConsts.s),
@@ -470,7 +574,7 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                                   child: CircleAvatar(
                                     radius: SpacingConsts.m,
                                     backgroundImage: AssetImage(
-                                      'assets/profile/profile_picture.jpg',
+                                      'assets/default_chat_icon.png',
                                     ),
                                   ),
                                 ),
@@ -486,15 +590,52 @@ class _RecipeDetailsScreenState extends ConsumerState<RecipeDetailsScreen> {
                     autofocus: true,
                     maxLines: null,
                     hint: 'Ask for tips or interesting facts...',
-                    suffix: Clickable(
-                      onClicked: onChatSubmitted,
-                      child: Icon(
-                        Icons.send_rounded,
-                        size: SpacingConsts.ml,
-                        color: chatByRecipe.messages.last.role ==
-                                ChatByRecipeRoleModel.user
-                            ? theme.disabledColor
-                            : null,
+                    suffix: Padding(
+                      padding: const EdgeInsets.all(SpacingConsts.s),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: speechAvailable,
+                            builder: (context, speechAvailable, _) {
+                              if (!speechAvailable) {
+                                return const SizedBox.shrink();
+                              }
+
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Clickable(
+                                    onClicked: onSpeechToggled,
+                                    child: ValueListenableBuilder(
+                                      valueListenable: speechEnabled,
+                                      builder: (context, speechEnabled, _) {
+                                        return Icon(
+                                          speechEnabled
+                                              ? Icons.mic
+                                              : Icons.mic_off,
+                                          size: SpacingConsts.ml,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: SpacingConsts.s),
+                                ],
+                              );
+                            },
+                          ),
+                          Clickable(
+                            onClicked: onChatSubmitted,
+                            child: Icon(
+                              Icons.send_rounded,
+                              size: SpacingConsts.ml,
+                              color: chatByRecipe.messages.last.role ==
+                                      ChatByRecipeRoleModel.user
+                                  ? theme.disabledColor
+                                  : null,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
